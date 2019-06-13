@@ -1,0 +1,5 @@
+.chart text {
+    fill: cyan;
+    font: 10px sans-serif;
+    text-anchor: middle;
+}
