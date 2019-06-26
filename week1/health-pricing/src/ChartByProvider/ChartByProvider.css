@@ -1,3 +1,32 @@
+/*.container {*/
+    /*float: left;*/
+    /*height: 250px;*/
+    /*width: 250px;*/
+    /*padding: 3px;*/
+    /*background: #FFA500;*/
+/*}*/
+
+
+.scaling-svg-container {
+    height: 600px;
+    width: 1150px;
+    overflow: auto;
+    border: 2px;
+}
+
+/*.anchor {*/
+    /*height: 224px;*/
+    /*overflow: auto;*/
+    /*background: #FFFFFF;*/
+/*}*/
+
+
+.bar:hover {
+    fill: black !important;
+}
+
+
+
 .chart text {
     fill: cyan;
     font: 2px sans-serif;

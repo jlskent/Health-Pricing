@@ -3,7 +3,7 @@
 // import data from '../Data/sample_data.csv';
 
 import React from 'react';
-import './ChartByProvider.css';
+import './ChartByProcedure.css';
 import * as d3 from "d3";
 import * as dataForge from 'data-forge';
 import { Boxplot, computeBoxplotStats } from 'react-boxplot';
@@ -12,7 +12,7 @@ import d3Tip from 'd3-tip';
 
 
 
-class ChartByProvider extends React.Component {
+class ChartByProcedure extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
@@ -261,4 +261,4 @@ class ChartByProvider extends React.Component {
 
 }
 
-export default ChartByProvider;
+export default ChartByProcedure;
