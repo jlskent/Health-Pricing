@@ -1,0 +1,68 @@
+.chart text {
+    fill: cyan;
+    font: 10px sans-serif;
+    text-anchor: middle;
+}
+
+
+.svg-container {
+    display: inline-block;
+    position: relative;
+    width: 100%;
+    padding-bottom: 100%; /* aspect ratio */
+    vertical-align: top;
+    overflow: hidden;
+}
+.svg-content-responsive {
+    display: inline-block;
+    position: absolute;
+    top: 10px;
+    left: 0;
+}
+
+
+.lines {
+    stroke:black;
+    stroke-width:2;
+}
+
+
+.lines:hover {
+    stroke: black;
+    stroke-width:4;
+}
+
+
+.medianLine {
+    stroke: black;
+    stroke-width:1;
+    stroke-dasharray: 4;
+}
+
+.medianLine:hover {
+    stroke-dasharray: 0;
+    stroke: black;
+    stroke-width:4;
+}
+
+
+.d3-tip {
+    line-height: 1;
+    padding: 6px;
+    background: rgba(0, 0, 0, 0.8);
+    color: #fff;
+    border-radius: 4px;
+    font-size: 12px;
+}
+
+/*.d3-tip:after {*/
+    /*box-sizing: border-box;*/
+    /*display: inline;*/
+    /*font-size: 10px;*/
+    /*width: 100%;*/
+    /*line-height: 1;*/
+    /*color: rgba(0, 0, 0, 0.8);*/
+    /*content: "\25BC";*/
+    /*position: absolute;*/
+    /*text-align: center;*/
+/*}*/
