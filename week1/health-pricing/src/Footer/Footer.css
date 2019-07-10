@@ -1,9 +1,24 @@
-body {
-    display: flex;
-    min-height: 100vh;
-    flex-direction: column;
+
+
+.not-fixed-bottom {
+    border-top: black;
+    border-width: thin;
+    padding-top: 10px;
+    /*paading-bottm: px;*/
+    /*transform: translate(0px, 100px);*/
+
+    background: #E9ECEE;
+
+
+
+
 }
 
-main {
-    flex: 1 0 auto;
-}
+
+/*.fixed-bottom {*/
+    /*border-top: black;*/
+    /*border-width: thin;*/
+    /*padding-top: 10px;*/
+    /*background: black;*/
+    /*color: black;*/
+/*}*/

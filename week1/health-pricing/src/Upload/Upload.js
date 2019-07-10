@@ -5,12 +5,15 @@ import ListOfVariables from '../ListOfVariables/ListOfVariables'
 import Papa from 'papaparse';
 import 'data-forge-fs';
 import * as dataForge from 'data-forge';
-// import { readFile, Series, DataFrame } from 'data-forge';
+// import { readFile, Series, DataFrame } from 'Data-forge';
+import { BootstrapTable, TableHeaderColumn } from 'react-bootstrap-table';
+
+
 
 
 
 // import * as d3 from "d3";
-// import data from "../Data/sample_data.csv";
+// import Data from "../Data/sample_data.csv";
 
 
 class Upload extends React.Component {
@@ -68,7 +71,7 @@ class Upload extends React.Component {
 
   // helper function for parseData
   updateData(result) {
-    //all the data uploaded in array
+    //all the Data uploaded in array
     const data = result.data;
     //all the columns uploaded
 
@@ -82,15 +85,15 @@ class Upload extends React.Component {
       rows: data
     });
     //console.log("rightdf "+ rightDf);
-    console.log("rightdf "+ rightDf.getColumnNames());
+    //console.log("rightdf "+ rightDf.getColumnNames());
     this.setState({df: rightDf});
-    console.log("update data "+ this.state.df);
-    var columnSubset = rightDf.subset(["CPT_CODE", "ORIG_SERVICE_DATE"]);
-    console.log("columnSubset "+ columnSubset);
+    //console.log("update Data "+ this.state.df);
+    // var columnSubset = rightDf.subset(["CPT_CODE", "ORIG_SERVICE_DATE"]);
+    //console.log("columnSubset "+ columnSubset);
 
 
-    // data forge
-    // const df = new dataForge.DataFrame(data);
+    // Data forge
+    // const df = new dataForge.DataFrame(Data);
     // var columnNames = df.getColumnNames();
     // console.log("columnNames "+ columnNames)
     // console.log("df "+ df)
@@ -108,29 +111,35 @@ class Upload extends React.Component {
 
   render() {
     return (
-      <div className="Upload">
-        {/*<span className="Title">Upload csv file</span>*/}
-        <div className="Content">
-          <div className="col s6 offset-s6">
-            <DropZone onFilesAdded = {this.onFilesAdded} disabled= {this.state.uploading || this.state.uploadSuccess} />
-          </div>
-          {/*show a list of files*/}
-          <div className="Files">
-            {this.state.files.map(file => {
-              return (
-                <div key={file.name} className="Row">
-                  <span className="Filename">{file.name}</span>
-                  {/*{this.renderProgress(file)}*/}
+      <div className="">
+        <div className="row py-md-4">
+          {/*<span className="Title">Upload csv file</span>*/}
+            <div className="col-6">
+              <DropZone onFilesAdded = {this.onFilesAdded} disabled= {this.state.uploading || this.state.uploadSuccess} />
+            </div>
+            {/*show a list of files*/}
+            <div className="col-6">
+              <div className="row h-100">
+                <div className="col">
+                    {this.state.files.map(file => {
+                      return (
+                        <div key={file.name} className="Row">
+                          <span className="Filename">{file.name}</span>
+                          {/*{this.renderProgress(file)}*/}
+                        </div>
+                      );
+                    })}
                 </div>
-              );
-            })}
-          </div>
+                <div className="col align-self-end">
+                  <div className = "">
+                  {this.renderActions()}
+                  </div>
+                </div>
+              </div>
+            </div>
         </div>
-        <div className="Actions">{this.renderActions()}</div>
-        <div className="Variables">
-          <ListOfVariables {...this.state} />
-        </div>
-      </div>
+        <div><ListOfVariables {...this.state} /></div>
+    </div>
     );
   }
 
@@ -141,13 +150,13 @@ class Upload extends React.Component {
       // console.log('uploadSuccess');
       return (
         <div>
-          <button className="btn btn-outline-primary" onClick={() => this.setState({ files: [], uploadSuccess: false })}>Clear</button>
+          <button className="btn btn-outline-primary btn-lg btn-block" onClick={() => this.setState({ files: [], uploadSuccess: false })}>Clear</button>
           {/*pass state to child component*/}
         </div>
       );
     } else {
       return (
-        <button className="btn btn-outline-primary" disabled={this.state.files.length < 0 || this.state.uploading} onClick={this.uploadFiles}>Upload</button>
+        <button className="btn btn-outline-primary btn-lg btn-block" disabled={this.state.files.length < 0 || this.state.uploading} onClick={this.uploadFiles}>Upload</button>
       );
     }
   }
@@ -167,21 +176,21 @@ class Upload extends React.Component {
 
 
   // loadData() {
-  //   var data = this.files;
-  //   d3.csv(data, function(d) {
+  //   var Data = this.files;
+  //   d3.csv(Data, function(d) {
   //     return {
   //       // provider : d['BILLING_PROV_NM'],
   //       // charge : d['Charges'],
   //       // cptCode : d['CPT_CODE'],
   //     };
-  //   }).then(function(data) {
-  //     data.forEach(function (row) {
+  //   }).then(function(Data) {
+  //     Data.forEach(function (row) {
   //       // console.log(row);
   //       // we got a row object
   //       // providerArray.push(row.provider);
   //       // chargeArray.push(row.charge);
-  //       data.push(row);
-  //       // console.log(data);
+  //       Data.push(row);
+  //       // console.log(Data);
   //     });
   //     // nowDrawTheChart();
   //   });

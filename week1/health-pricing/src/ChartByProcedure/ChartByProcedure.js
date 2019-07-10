@@ -110,7 +110,7 @@ class ChartByProcedure extends React.Component {
       // .padding(0.2);
     const yScale = d3.scaleLinear()
       .range([dimensions.height, 0])
-      .domain([min< 0 ? min*1.2 :min*1.2, max]);
+      .domain([min< 0 ? min*1.2 :min*1.2, max*1.2]);
       // .domain([0, max*1.2]);
 
     const x_axis = d3.axisBottom()

@@ -3,7 +3,7 @@
 // import data from '../Data/sample_data.csv';
 
 import React from 'react';
-import './ChartA.css';
+import './ChartByCpt.css';
 import * as d3 from "d3";
 import * as dataForge from 'data-forge';
 import { Boxplot, computeBoxplotStats } from 'react-boxplot';
@@ -12,7 +12,7 @@ import d3Tip from 'd3-tip';
 
 
 
-class ChartA extends React.Component {
+class ChartByCpt extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
@@ -294,4 +294,4 @@ class ChartA extends React.Component {
 
 }
 
-export default ChartA;
+export default ChartByCpt;

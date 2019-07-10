@@ -1,9 +1,9 @@
 import pandas as pd
 
-data = pd.read_csv("../health-pricing/src/Data/sample_data.csv")
+data = pd.read_csv("../health-pricing/src/Data/fulldata.csv")
 print(data.describe())
 
-data = data.ix[:200, :]
+# data = data.ix[:200, :]
 
 # groupedData = data.groupby(['CPT_CODE']).agg({'Charges': 'mean', 'Payments': 'mean'})\
 #     .rename(columns={'Charges': 'charges_mean', 'Payments': 'payments_mean'})
@@ -28,52 +28,67 @@ numberOfProcedures.to_csv("../health-pricing/src/Data/grouped_data.csv")
 #     print(groupedData.get_group())
 
 
-
-numberOfProcedures.boxplot(column=['CPT_CODE', 'BILLING_PROV_NM'])
-
+df = data.apply(pd.Series.nunique)
 
 
-boxplot = numberOfProcedures.boxplot(by='BILLING_PROV_NM')
-import matplotlib.pyplot as plt
-import numpy as np
+print("unique values of each column")
+print(df)
 
-# Random test data
-np.random.seed(19680801)
-# all_data = numberOfProcedures
-all_data = [np.random.normal(0, std, size=100) for std in range(1, 4)]
-print (all_data)
-labels = ['x1', 'x2', 'x3']
+group = data.groupby(['CPT_CODE']).get_group(str(99204))
+print("99204"+group.to_string())
+# print("99204-----" + group)
 
-fig, axes = plt.subplots(nrows=1, ncols=2, figsize=(9, 4))
 
-# rectangular box plot
-bplot1 = axes[0].boxplot(all_data,
-                         vert=True,  # vertical box alignment
-                         patch_artist=True,  # fill with color
-                         labels=labels)  # will be used to label x-ticks
-axes[0].set_title('Rectangular box plot')
+print("Payments")
+print(data['Payments'].describe())
+print("Charges")
+print(data['Charges'].describe())
 
-# notch shape box plot
-bplot2 = axes[1].boxplot(all_data,
-                         notch=True,  # notch shape
-                         vert=True,  # vertical box alignment
-                         patch_artist=True,  # fill with color
-                         labels=labels)  # will be used to label x-ticks
-axes[1].set_title('Notched box plot')
-
-# fill with colors
-colors = ['pink', 'lightblue', 'lightgreen']
-for bplot in (bplot1, bplot2):
-    for patch, color in zip(bplot['boxes'], colors):
-        patch.set_facecolor(color)
-
-# adding horizontal grid lines
-for ax in axes:
-    ax.yaxis.grid(True)
-    ax.set_xlabel('Three separate samples')
-    ax.set_ylabel('Observed values')
-
-plt.show()
+# numberOfProcedures.boxplot(column=['CPT_CODE', 'BILLING_PROV_NM'])
+#
+#
+#
+# boxplot = numberOfProcedures.boxplot(by='BILLING_PROV_NM')
+# import matplotlib.pyplot as plt
+# import numpy as np
+#
+# # Random test data
+# np.random.seed(19680801)
+# # all_data = numberOfProcedures
+# all_data = [np.random.normal(0, std, size=100) for std in range(1, 4)]
+# print (all_data)
+# labels = ['x1', 'x2', 'x3']
+#
+# fig, axes = plt.subplots(nrows=1, ncols=2, figsize=(9, 4))
+#
+# # rectangular box plot
+# bplot1 = axes[0].boxplot(all_data,
+#                          vert=True,  # vertical box alignment
+#                          patch_artist=True,  # fill with color
+#                          labels=labels)  # will be used to label x-ticks
+# axes[0].set_title('Rectangular box plot')
+#
+# # notch shape box plot
+# bplot2 = axes[1].boxplot(all_data,
+#                          notch=True,  # notch shape
+#                          vert=True,  # vertical box alignment
+#                          patch_artist=True,  # fill with color
+#                          labels=labels)  # will be used to label x-ticks
+# axes[1].set_title('Notched box plot')
+#
+# # fill with colors
+# colors = ['pink', 'lightblue', 'lightgreen']
+# for bplot in (bplot1, bplot2):
+#     for patch, color in zip(bplot['boxes'], colors):
+#         patch.set_facecolor(color)
+#
+# # adding horizontal grid lines
+# for ax in axes:
+#     ax.yaxis.grid(True)
+#     ax.set_xlabel('Three separate samples')
+#     ax.set_ylabel('Observed values')
+#
+# plt.show()
 
 
 # Create a sample data frame
@@ -103,7 +118,7 @@ df.groupby('A').agg({'B': 'sum', 'C': 'min'}).rename(columns={'B': 'foo', 'C': '
 )
 """""
 # import np from numpy
-# 
+#
 # def fetch_price(symbol, producer, topic_name):
 #     """
 #     retrieve data and sent to kafka
@@ -127,37 +142,37 @@ df.groupby('A').agg({'B': 'sum', 'C': 'min'}).rename(columns={'B': 'foo', 'C': '
 #         logger.warn('Failed to send price to kafka, caused by: %s', (timeout_error.message))
 #     except Exception as e:
 #         logger.warn('Failed to fetch price: %s', (e))
-# 
-# 
-# 
-# 
-#         
+#
+#
+#
+#
+#
 # if __name__ == '__main__':
 #     # Setup command line arguments
 #     parser = argparse.ArgumentParser()
 #     parser.add_argument('symbol', help='the symbol you want to pull')
 #     parser.add_argument('topic_name', help='the kafka topic push to')
 #     parser.add_argument('kafka_broker', help='the location of the kafka broker')
-# 
+#
 #     args = parser.parse_args()
 #     symbol = args.symbol
 #     topic_name = args.topic_name
 #     kafka_broker = args.kafka_broker
-# 
+#
 #     # Check if the symbol is supported.
 #     check_symbol(symbol)
-# 
+#
 #     # init a simple kafka producer
 #     # see KafkaProducer source code in github
 #     producer = KafkaProducer(bootstrap_servers=kafka_broker)
-# 
+#
 #     # Schedule and run the fetch_price function every second
 #     # function name + parameters
 #     schedule.every(1).second.do(fetch_price, symbol, producer, topic_name)
-# 
+#
 #     # Setup shutdown hook:release producer function
 #     atexit.register(shutdown_hook, producer)
-# 
+#
 #     while True:
 #         schedule.run_pending()
 #         time.sleep(1)

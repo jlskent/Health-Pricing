@@ -1,14 +1,15 @@
 import React from 'react';
 import './App.css';
-import 'materialize-css/dist/css/materialize.min.css';
+// import 'materialize-css/dist/css/materialize.min.css';
 import 'bootstrap/dist/css/bootstrap.min.css';
-
-import PricePanel from './PricePanel/PricePanel';
-import SearchBar from  './SearchBar/SearchBar';
+// import PricePanel from './PricePanel/PricePanel';
+// import SearchBar from  './SearchBar/SearchBar';
 import Guide from './Guide/Guide';
 import Visualization from './Visualization/Visualization';
 import Footer from './Footer/Footer';
 import UploadFile from './UploadFile/UploadFile';
+import {Nav,Navbar,NavDropdown} from 'react-bootstrap';
+
 
 import {
   Link,
@@ -24,18 +25,26 @@ class App extends React.Component {
   {
     return(
       <div className="App">
+        <div>
         <Router>
+          <Navbar collapseOnSelect expand="lg" bg="dark" variant="dark">
+            <Navbar.Brand href="#home">React-Bootstrap</Navbar.Brand>
+            <Navbar.Toggle aria-controls="responsive-navbar-nav" />
+            <Navbar.Collapse id="responsive-navbar-nav">
+              <Nav className="mr-auto">
+                <Nav.Link><Link to="/guide" className = "link">Guide</Link></Nav.Link>
+                <Nav.Link><Link to="/hospitals" className = "link">Visualization</Link></Nav.Link>
+                <Nav.Link><Link to="/upload" className = "link">Upload File</Link></Nav.Link>
+              </Nav>
+              <Nav>
+                <Nav.Link href="#deets">LogIn</Nav.Link>
+                <Nav.Link href="#deets">SignUp</Nav.Link>
+
+              </Nav>
+            </Navbar.Collapse>
+          </Navbar>
+
           <div>
-            <nav>
-              <div className="nav-wrapper light-green darken-3">
-                <a className="brand-logo left"><Link to="/">NameOfProject</Link></a>
-                <ul id="nav-mobile" className="right hide-on-med-and-down">
-                  <li><Link to="/guide">Guide</Link></li>
-                  <li><Link to="/hospitals">Visualization</Link></li>
-                  <li><Link to="/upload">Upload File</Link></li>
-                </ul>
-              </div>
-            </nav>
             <Switch>
               {/*<Route path="/" component={App} />*/}
               <Route path="/guide" component={Guide} />
@@ -44,12 +53,16 @@ class App extends React.Component {
             </Switch>
           </div>
         </Router>
+        </div>
+        <div style={{"height": "200px"}}>
+        </div>
 
         {/*<SearchBar/>*/}
         {/*<PricePanel/>*/}
-        {/*<Footer/>*/}
+        <Footer />
       </div>
-    );
+
+  );
   }
 
 

@@ -104,7 +104,7 @@ class ChartByProvider extends React.Component {
       // .padding(0.2);
     const yScale = d3.scaleLinear()
       .range([dimensions.height, 0])
-      .domain([min< 0 ? min*1.2 :min*1.2, max]);
+      .domain([min< 0 ? min*1.2 :min*1.2, max*1.2]);
       // .domain([0, max*1.2]);
 
     const x_axis = d3.axisBottom()
@@ -118,6 +118,26 @@ class ChartByProvider extends React.Component {
     anchor.append("g").attr("transform", "translate(40, 0)").style("font", "4px times").call(y_axis);
     // anchor.select("g").attr("transform", "translate(40, 0)");
     anchor.append("p");
+
+
+    //
+    // var currentTransform = null;
+    // var zoom = d3.zoom()
+    //   .scaleExtent([0.5, 5])
+    //   .translateExtent([
+    //     [-dimensions.width * 2, -dimensions.height * 2],
+    //     [dimensions.width * 2, dimensions.height * 2]
+    //   ])
+    //   .on("zoom", zoomed);
+    //
+    // function zoomed() {
+    //   currentTransform = d3.event.transform;
+    //   anchor.attr("transform", currentTransform);
+    //   gX.call(xAxis.scale(d3.event.transform.rescaleX(xScale)));
+    //   gY.call(yAxis.scale(d3.event.transform.rescaleY(yScale)));
+    //   slider.property("value", d3.event.scale);
+    // }
+
 
 
 
