@@ -7,11 +7,37 @@
 /*}*/
 
 
+/*p {*/
+    /*display: block;*/
+    /*position: absolute;*/
+    /*top: 20px;*/
+    /*right: 20px;*/
+/*}*/
+
 .scaling-svg-container {
     height: 600px;
     width: 1150px;
     overflow: auto;
     border: 2px;
+}
+
+
+
+/*grid*/
+.grid line {
+    /*fill: none;*/
+    stroke: #ddd;
+    shape-rendering: crispEdges;
+    vector-effect: non-scaling-stroke;
+    /*z-index: -1;*/
+
+}
+
+
+
+.axis line {
+    /*fill: none;*/
+    stroke: black;
 }
 
 /*.anchor {*/
@@ -21,17 +47,23 @@
 /*}*/
 
 
+
+.legendText{
+    font-size: small;
+}
+
+
 .bar:hover {
     fill: black !important;
 }
 
 
 
-.chart text {
-    fill: cyan;
-    font: 2px sans-serif;
-    text-anchor: middle;
-}
+/*.chart text {*/
+    /*fill: cyan;*/
+    /*font: 2px sans-serif;*/
+    /*text-anchor: middle;*/
+/*}*/
 
 
 .svg-container {
@@ -83,6 +115,7 @@
     border-radius: 4px;
     font-size: 12px;
 }
+
 
 /*.d3-tip:after {*/
     /*box-sizing: border-box;*/

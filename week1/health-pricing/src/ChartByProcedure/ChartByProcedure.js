@@ -8,6 +8,7 @@ import * as d3 from "d3";
 import * as dataForge from 'data-forge';
 import { Boxplot, computeBoxplotStats } from 'react-boxplot';
 import d3Tip from 'd3-tip';
+import { sliderBottom } from 'd3-simple-slider';
 
 
 
@@ -16,21 +17,27 @@ class ChartByProcedure extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      dataSorted : [],
+      // dataSorted : [],
+      data:null,
+      receivedData: false
     };
 
-    // this.xScale = scaleBand();
-    // this.yScale = scaleLinear();
-    this.createBarChart = this.createBarChart.bind(this)
+    this.createBarChart = this.createBarChart.bind(this);
+    this.resetZoom = this.resetZoom.bind(this);
+
   }
+
 
   componentDidMount() {
   }
 
   async componentWillReceiveProps(nextProps) {
-    if ( this.props !== nextProps && nextProps.wholeData) {
-      console.log("receiving props in chartByProvider "+ nextProps);
-      this.createBarChart(nextProps.wholeData);
+    if ( this.props !== nextProps && nextProps.procedure_Graph_Data) {
+      // console.log("receiving props in chartByProvider "+ nextProps.procedure_Graph_Data);
+      this.createBarChart(nextProps.procedure_Graph_Data);
+      this.setState({data: nextProps.procedure_Graph_Data});
+      this.setState({receivedData: true});
+
     }
   }
 
@@ -39,28 +46,57 @@ class ChartByProcedure extends React.Component {
 
 
 
+  renderButtons() {
+    if (this.state.receivedData){
+      return(
+          <button className="btn btn-outline-primary" onClick={this.resetZoom}>reset view</button>
+      );
+    }
+  }
+
+
+  resetZoom(){
+    // console.log(this.node);
+    var node = this.node;
+    const defaultTransform = d3.zoomIdentity;
+    console.log(defaultTransform);
+    d3.select(node).attr("transform", defaultTransform);
+    this.createBarChart(this.state.data)
+  }
 
 
   createBarChart(data) {
+
+
+
+
+
+
     //clean-up old graph
-    console.log(this.node);
-
-    d3.select(this.node).selectAll("line").remove();
-    d3.select(this.node).selectAll("rect").remove();
-    d3.select(this.node).selectAll("text").remove();
-    d3.select(this.node).selectAll("circle").remove();
-
+    d3.select("#graph").remove();
+    d3.select("#value-fill").remove();
+    d3.select("#legend").remove();
 
     // variables
     var theData = new dataForge.DataFrame(data);
-    console.log("create bar chart provider\n "+ theData);
+    // console.log("create bar chart provider\n "+ theData);
     var node = this.node;
     var anchor = d3.select(node);
-    const dimensions = { width: 1000, height: 500, half: 250, halfBarWidth : 50, tailLength: 30, margin: 40};
+    const clientWidth = this.node.parentNode.clientWidth;
+    var dimensions =
+      {
+        client: clientWidth,
+        width: clientWidth - 150,
+        height: 500,
+        half: 250,
+        halfBarWidth : 50,
+        tailLength: 30,
+        margin: 40
+      };
+    var graph = anchor.append("g").attr("id", "graph");
+    const colors = { blue: '#6b89ba', red: 'red'};
 
-    // anchor.remove();
-    // anchor.selectAll("line").remove();
-    // anchor.selectAll("rect").remove();
+
 
     // group by provider
     const theGroups = theData.groupBy(row => row.BILLING_PROV_NM).after(0);
@@ -76,7 +112,7 @@ class ChartByProcedure extends React.Component {
       .select(group => (
          group.first().BILLING_PROV_NM)
      ).toArray();
-    console.log(listOfGroupNames);
+    // console.log(listOfGroupNames);
 
     // get max/min value of col payment && charges for scaling
     const chargeSeriesAll = theData.getSeries("Charges").parseInts().after(0);
@@ -86,44 +122,207 @@ class ChartByProcedure extends React.Component {
     var max = 0;
     var min = 0;
 
+    // calculate range
     for (const group of theGroups) {
-      console.log("kent" );
-
       const chargeSeries = group.getSeries("Charges").parseInts();
       const paymentSeries = group.getSeries("Payments").parseInts();
       const chargeStats = computeBoxplotStats(chargeSeries.toArray());
       const paymentStats = computeBoxplotStats(paymentSeries.toArray());
       var maxOfTwo = Math.max(chargeStats.whiskerHigh, paymentStats.whiskerHigh);
       max = Math.max(maxOfTwo, max);
-      console.log("hihihihi" + maxOfTwo);
-
+      // console.log("hihihihi" + maxOfTwo);
       var minOfTwo = Math.min(chargeStats.whiskerLow, paymentStats.whiskerLow);
       min = Math.min(minOfTwo, min);
     }
 
 
-      //console.log("max value  "+ max);
 
+
+
+    /*
+    create axis
+    */
+
+    //console.log("max value  "+ max);
     const xScale = d3.scaleBand()
       .range([40, dimensions.width])
       .domain(listOfGroupNames);
-      // .padding(0.2);
+
+    // console.log(xScale);
     const yScale = d3.scaleLinear()
       .range([dimensions.height, 0])
       .domain([min< 0 ? min*1.2 :min*1.2, max*1.2]);
       // .domain([0, max*1.2]);
 
-    const x_axis = d3.axisBottom()
-      .scale(xScale);
-    // anchor.append("g").attr("transform", "translate(0," + dimensions.height +")").call(x_axis);
 
-    anchor.append("g").attr("transform", "translate(0," + dimensions.height +")").style("font", "2px times").call(x_axis);
 
-    const y_axis = d3.axisLeft()
-      .scale(yScale);
-    anchor.append("g").attr("transform", "translate(40, 0)").style("font", "4px times").call(y_axis);
-    // anchor.select("g").attr("transform", "translate(40, 0)");
-    anchor.append("p");
+
+    /*
+    create a background (for drag)
+    */
+    graph.append("rect")
+      .attr("width", dimensions.width)
+      .attr("height", dimensions.width)
+      .style("fill", "white");
+
+
+
+
+
+    // draw axis
+    var x_axis = d3.axisBottom().scale(xScale);
+    var y_axis = d3.axisLeft().scale(yScale);
+
+
+
+    // add grid
+
+    //vertical
+    graph.append("g")
+      .attr("class", "grid")
+      .selectAll("line")
+      .data(d3.range(40, dimensions.width, xScale.bandwidth()))
+      .enter().append("line")
+      .attr("x1", function(d) { return d; })
+      .attr("y1", 0)
+      .attr("x2", function(d) { return d; })
+      .attr("y2", dimensions.height);
+
+    // horizontal
+    graph.append("g")
+      .attr("class", "grid")
+      .selectAll("line")
+      .data(y_axis.scale().ticks().map( (d) => yScale(d)))
+      .enter().append("line")
+      .attr("x1", 0)
+      .attr("y1", function(d) { return d; })
+      .attr("x2", dimensions.width)
+      .attr("y2", function(d) { return d; });
+    // console.log("ticks "+y_axis.scale().ticks());
+
+
+
+    // continue to draw axis
+    graph.append("g")
+      .attr("class", "axis")
+      .attr("transform", "translate(0," + dimensions.height +")")
+      .style("font-size", function(d) { return ( `${xScale.bandwidth()/15}px`); })
+      .call(x_axis);
+    graph.append("g")
+      .attr("class", "axis")
+      .attr("transform", "translate(40, 0)").style("font-size", function(d) { return ( `${xScale.bandwidth()/15}px`); })
+      .call(y_axis);
+
+
+
+    /*
+    create slider
+    */
+
+    // construct the slider
+    // note we can not append html elements(like div) to svg
+    var data = [1, 1.5, 2, 2.5, 3,3.5,4];
+    const sliderFill = sliderBottom()
+      .min(d3.min(data))
+      .max(d3.max(data))
+      .width(300)
+      .tickFormat(d3.format('.2%'))
+      .ticks(5)
+      .default(1)
+      .fill('#2196f3')
+      .handle(
+        d3
+          .symbol()
+          .type(d3.symbolCircle)
+          .size(100)()
+      )
+      .on('onchange', val => {
+        slided(val);
+      });
+
+    const gRange = anchor
+      .append("g")
+      .attr("id", "value-fill")
+      .attr('x', 800)
+      .attr('width', 300)
+      .attr('height', 100)
+      .append('g')
+      .attr('transform', 'translate(30,30)');
+    gRange.call(sliderFill);
+
+    // create new zoom behavior
+    var zoom = d3.zoom()
+      .scaleExtent([1, 4])
+      .on("zoom", zoomed);
+
+    // apply zoom behavior to graph
+    graph.call(zoom);
+
+    function zoomed(){
+      const currentTransform = d3.event.transform;
+      // graph.attr("transform", currentTransform);
+      graph.attr("transform", currentTransform).call(() => x_axis, y_axis);
+    }
+
+    function slided(d) {
+      // console.log(d);
+      zoom.scaleTo(graph, d);
+    }
+
+
+
+
+
+    /*
+    * create legend
+    * */
+
+
+    // console.log("parentnode width" + typeof clientWidth);
+    anchor.append("g")
+      .attr("id", "legend")
+      .attr("transform", "translate(" + (clientWidth-200) +  ",0)");
+    d3.select("g#legend")
+      .append("circle")
+      .attr("cx", 10)
+      .attr("cy",10)
+      .attr("r", 5)
+      .style("fill" , colors.blue);
+    d3.select("g#legend")
+      .append("circle")
+      .attr("cx", 10)
+      .attr("cy",40)
+      .attr("r", 5)
+      .style("fill" , colors.red);
+
+    d3.select("g#legend")
+      .append("text")
+      .attr("class", "legendText")
+      .attr("x", 20)
+      .attr("y",10)
+      .text("Charge");
+
+    d3.select("g#legend")
+      .attr("class", "legendText")
+      .append("text")
+      .attr("x", 20)
+      .attr("y",40)
+      .text("Payment");
+
+    /*
+    * create grid
+    *
+    *
+    * */
+
+
+
+
+
+
+
+
+
 
     // iterate each group and draw box plot
     for (const group of theGroups) {
@@ -144,11 +343,11 @@ class ChartByProcedure extends React.Component {
 
       const xPosition = xScale(groupName);
 
-      drawOneBoxPlot(chargeStats, xPosition, max, min, "#6b89ba");
-      drawOneBoxPlot(paymentStats, xPosition + xScale.bandwidth()/2, max, min, "red");
+      drawOneBoxPlot(chargeStats, xPosition, max, min, colors.blue);
+      drawOneBoxPlot(paymentStats, xPosition + xScale.bandwidth()/2, max, min, colors.red);
 
 
-      anchor.selectAll(".back").data(chargeStats)
+      graph.selectAll(".back").data(chargeStats)
         .enter().append("rect")
         .attr("class", "back")
         .attr("x", function(d) { return xPosition; })
@@ -160,16 +359,18 @@ class ChartByProcedure extends React.Component {
       // anchor.addEventListener('scroll', function(evt) {
         // label.node().setAttribute('y', 10 + this.scrollTop);
       // }, false)
-
-
-
     }
+
+
+
+
+
 
 
 
     function drawOneBoxPlot(stats, xPosition, max, min ,color) {
 
-      console.log(color);
+      // console.log(color);
       // const anchor = d3.select(node);
 
       // const yScale = d3.scaleLinear()
@@ -179,17 +380,16 @@ class ChartByProcedure extends React.Component {
       // const y_axis = d3.axisLeft()
       //   .scale(yScale);
 
-      console.log("max " + max + "min" + min);
-      console.log("stats per group " + JSON.stringify(stats));
-      console.log("yScale q3 " + yScale(stats.quartile3) + ",q1 " + yScale(stats.quartile1));
-      console.log("yScale high " + yScale(stats.whiskerHigh) + ",low " + yScale(stats.whiskerLow));
-
-      console.log("yScale 0 " + yScale(0) + ",q1 " + yScale(stats.quartile1));
+      // console.log("max " + max + "min" + min);
+      // console.log("stats per group " + JSON.stringify(stats));
+      // console.log("yScale q3 " + yScale(stats.quartile3) + ",q1 " + yScale(stats.quartile1));
+      // console.log("yScale high " + yScale(stats.whiskerHigh) + ",low " + yScale(stats.whiskerLow));
+      // console.log("yScale 0 " + yScale(0) + ",q1 " + yScale(stats.quartile1));
 
 
 
       //draw center line
-      anchor.append("line")
+      graph.append("line")
         .attr("x1", xPosition + xScale.bandwidth() / 4)
         .attr("x2", xPosition + xScale.bandwidth() / 4)
         .attr("y1", yScale(stats.whiskerLow))
@@ -198,7 +398,7 @@ class ChartByProcedure extends React.Component {
 
       //console.log("y "  + stats.quartile3 + ", " + stats.quartile1);
       // console.log("xPos  "+ xPosition);
-      anchor.append("rect").attr('class', 'bar')
+      graph.append("rect").attr('class', 'bar')
         .attr("x", xPosition)
         .attr("y", yScale(stats.quartile3))
         .attr("width", xScale.bandwidth() / 2)
@@ -209,13 +409,13 @@ class ChartByProcedure extends React.Component {
 
 
       // draw the low line/ high line
-      anchor.append("line").attr('class', 'lines')
+      graph.append("line").attr('class', 'lines')
         .attr("x1", xPosition)
         .attr("x2", xPosition + xScale.bandwidth() / 2)
         .attr("y1", yScale(stats.whiskerLow))
         .attr("y2", yScale(stats.whiskerLow));
 
-      anchor.append("line").attr('class', 'lines')
+      graph.append("line").attr('class', 'lines')
         .attr("x1", xPosition)
         .attr("x2", xPosition + xScale.bandwidth() / 2)
         .attr("y1", yScale(stats.whiskerHigh))
@@ -223,7 +423,7 @@ class ChartByProcedure extends React.Component {
 
 
       // // draw the median line
-      anchor.append("line").attr('class', 'medianLine')
+      graph.append("line").attr('class', 'medianLine')
         .attr("x1", xPosition)
         .attr("x2", xPosition + xScale.bandwidth() / 2)
         .attr("y1", yScale(stats.quartile2))
@@ -231,28 +431,50 @@ class ChartByProcedure extends React.Component {
         .attr("stroke", "black");
 
 
-      const tip = d3Tip().attr('class', 'd3-tip').html(function(d) {
+      // const tip = d3Tip().attr('class', 'd3-tip').html(function(d) {
         // lines.selectAll('dashLines').style("display",null);
         // lines.style("display",null);
-        return "value:" + d.toString();
-      });
-      anchor.call(tip);
+      //   return "value:" + d.toString();
+      // });
+      // anchor.call(tip);
 
+
+      // alternative
+      // var toolbar = document.getElementById("toolbar");
+      // toolbar.onclick = function (e) {
+      //   alert("Hello");
+      // };
 
 
     }
-  }
+    //end of draw
 
+
+    // function resetZoom(e){
+    //   // console.log(this.node);
+    //   var node = this.node;
+    //   // const currentTransform = d3.zoomIdentity;
+    //   // d3.select(node).attr("transform", currentTransform)
+    // }
+
+
+
+
+  }
+  //end of createBarChart()
 
 
   render() {
-  // console.log(this.props.cpt_Graph_Data);
+
     return(
       <div className="scaling-svg-container">
+        {this.renderButtons()}
+        {/*<button className="btn btn-outline-primary" onClick={this.resetZoom}>reset view</button>*/}
         <svg ref={ node => this.node = node } width="100%" height="auto" class="svg-content"  ></svg>
-        {/*<svg ref={node => this.node = node}  width ="3000" height= "1000" className="svg-content" overflow="auto" ></svg>*/}
       </div>
     );
+
+
   }
 
 

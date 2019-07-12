@@ -1,24 +1,21 @@
 
 
-.not-fixed-bottom {
-    border-top: black;
-    border-width: thin;
-    padding-top: 10px;
-    /*paading-bottm: px;*/
-    /*transform: translate(0px, 100px);*/
-
-    background: #E9ECEE;
-
-
-
-
-}
-
-
-/*.fixed-bottom {*/
+/*.not-fixed-bottom {*/
     /*border-top: black;*/
     /*border-width: thin;*/
     /*padding-top: 10px;*/
-    /*background: black;*/
-    /*color: black;*/
+
+    /*background: #E9ECEE;*/
+
+
+
+
 /*}*/
+
+
+.fixed-bottom {
+    /*border-top: black;*/
+    /*border-width: thin;*/
+    padding-top: 20px;
+    background: #E9ECEE;
+}

@@ -95,7 +95,7 @@ class ListOfVariables extends React.Component {
         this.setState({provider_Graph_Data: filtered})
       }
       if (currentVar == "PROC_NAME" ){
-        // pass all the rows have the current provider name
+        // pass all the rows have the current procedure name
         this.setState({procedure_Graph_Data: filtered})
       }
 
@@ -230,6 +230,7 @@ class ListOfVariables extends React.Component {
               </div>
             </div>
           </div>
+          <div><h5></h5></div>
           <ChartByProvider wholeData={this.state.provider_Graph_Data}></ChartByProvider>
         </div>
       )
@@ -249,7 +250,7 @@ class ListOfVariables extends React.Component {
               </div>
             </div>
           </div>
-          <ChartByProcedure wholeData = {this.state.procedure_Graph_Data}></ChartByProcedure>
+          <ChartByProcedure procedure_Graph_Data = {this.state.procedure_Graph_Data}></ChartByProcedure>
         </div>
       );
 

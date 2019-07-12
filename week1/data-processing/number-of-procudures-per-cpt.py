@@ -16,12 +16,22 @@ numberOfProcedures = data.groupby(['CPT_CODE', 'BILLING_PROV_NM']).agg({'PROCQTY
     .rename(columns={'PROCQTY': 'PROCQTY_sum'})
 
 
+print("hi")
+print(data['PROC_NAME'].unique())
+
+df = data['PROC_NAME'].unique()
+s = pd.Series(df)
+
+s.to_csv("../health-pricing/src/Data/unique.csv")
+
+
+
 print(groupedData)
 print(numberOfProcedures)
 
 print(numberOfProcedures.to_json(orient='columns'))
 # print(numberOfProcedures)
-numberOfProcedures.to_csv("../health-pricing/src/Data/grouped_data.csv")
+# numberOfProcedures.to_csv("../health-pricing/src/Data/grouped_data.csv")
 
 # for k, v in numberOfProcedures.keys():
 #     print(k)
