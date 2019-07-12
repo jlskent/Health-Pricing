@@ -1,25 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="7c67dac7-4af2-4d20-9cdf-c094623a4eb7" name="Default Changelist" comment="">
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/package-lock.json" beforeDir="false" afterPath="$PROJECT_DIR$/package-lock.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/week1/data-processing/number-of-procudures-per-cpt.py" beforeDir="false" afterPath="$PROJECT_DIR$/week1/data-processing/number-of-procudures-per-cpt.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/week1/health-pricing/package-lock.json" beforeDir="false" afterPath="$PROJECT_DIR$/week1/health-pricing/package-lock.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/week1/health-pricing/package.json" beforeDir="false" afterPath="$PROJECT_DIR$/week1/health-pricing/package.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/week1/health-pricing/src/App.css" beforeDir="false" afterPath="$PROJECT_DIR$/week1/health-pricing/src/App.css" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/week1/health-pricing/src/App.js" beforeDir="false" afterPath="$PROJECT_DIR$/week1/health-pricing/src/App.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/week1/health-pricing/src/ChartByProcedure/ChartByProcedure.css" beforeDir="false" afterPath="$PROJECT_DIR$/week1/health-pricing/src/ChartByProcedure/ChartByProcedure.css" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/week1/health-pricing/src/ChartByProcedure/ChartByProcedure.js" beforeDir="false" afterPath="$PROJECT_DIR$/week1/health-pricing/src/ChartByProcedure/ChartByProcedure.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/week1/health-pricing/src/ChartByProvider/ChartByProvider.js" beforeDir="false" afterPath="$PROJECT_DIR$/week1/health-pricing/src/ChartByProvider/ChartByProvider.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/week1/health-pricing/src/Footer/Footer.css" beforeDir="false" afterPath="$PROJECT_DIR$/week1/health-pricing/src/Footer/Footer.css" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/week1/health-pricing/src/Footer/Footer.js" beforeDir="false" afterPath="$PROJECT_DIR$/week1/health-pricing/src/Footer/Footer.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/week1/health-pricing/src/ListOfVariables/ListOfVariables.js" beforeDir="false" afterPath="$PROJECT_DIR$/week1/health-pricing/src/ListOfVariables/ListOfVariables.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/week1/health-pricing/src/TableComponent/TableComponent.js" beforeDir="false" afterPath="$PROJECT_DIR$/week1/health-pricing/src/TableComponent/TableComponent.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/week1/health-pricing/src/UploadFile/UploadFile.js" beforeDir="false" afterPath="$PROJECT_DIR$/week1/health-pricing/src/UploadFile/UploadFile.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/week1/health-pricing/src/WelcomePage/WelcomePage.css" beforeDir="false" afterPath="$PROJECT_DIR$/week1/health-pricing/src/WelcomePage/WelcomePage.css" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/week1/health-pricing/src/WelcomePage/WelcomePage.js" beforeDir="false" afterPath="$PROJECT_DIR$/week1/health-pricing/src/WelcomePage/WelcomePage.js" afterDir="false" />
-    </list>
+    <list default="true" id="7c67dac7-4af2-4d20-9cdf-c094623a4eb7" name="Default Changelist" comment="" />
     <ignored path="$PROJECT_DIR$/.tmp/" />
     <ignored path="$PROJECT_DIR$/temp/" />
     <ignored path="$PROJECT_DIR$/tmp/" />
@@ -433,12 +415,12 @@
       <workItem from="1558722373495" duration="113697000" />
       <workItem from="1560527232587" duration="77398000" />
       <workItem from="1561181694793" duration="22522000" />
-      <workItem from="1561993418726" duration="71945000" />
+      <workItem from="1561993418726" duration="72182000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="285562000" />
+    <option name="totallyTimeSpent" value="285799000" />
   </component>
   <component name="TodoView">
     <todo-panel id="selected-file">
