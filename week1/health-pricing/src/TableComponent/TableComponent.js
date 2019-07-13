@@ -3,15 +3,16 @@ import './TableComponent.css';
 import BootstrapTable from 'react-bootstrap-table-next';
 import * as dataForge from "data-forge";
 import PriceComponent from "../PriceComponent/PriceComponent";
+// import 'react-bootstrap-table-next/dist/react-bootstrap-table2.min.css';
 
 
-
+// here we actually get a list of dataframes
 class TableComponent extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
       // dataSorted: [],
-      tableData: []
+      tableData: null
     };
     this.renderTable = this.renderTable.bind(this)
   }
@@ -37,42 +38,73 @@ class TableComponent extends React.Component {
     }
   }
 
+
+
+  componentDidUpdate(prevProps) {
+    // Typical usage (don't forget to compare props):
+    if (this.props.tableData !== prevProps.tableData) {
+      this.renderTable();
+    }
+  }
   //first step create variables to choose from on the left
   renderTable(){
 
 
     if (this.state.tableData) {
 
-      // actually array?
-      const theData = this.state.tableData;
-      const df  = new dataForge.DataFrame(theData);
-      const arr = df.toRows();
-      console.log(df.toString());
-      const colNames = df.getColumnNames();
-      // console.table("res" + colNames.toString());
+      // so this.state.tableData is an array of dataframes(each ele is a group), for each we will create a table
+      // iterate each dataframe
+      // var theDataList = this.state.tableData;
+      // for (var i = 0; i < theDataList.length; i++)
+      // {
+      //   const theData = theDataList[i];
+      //
+      //   // console.log(theData);
+      //   // actually array?
+      //   const df  = new dataForge.DataFrame(theData);
+      //   const arr = df.toArray();
+      //   // const rows = df.toJSON();
+      //
+      //   // console.log(arr);
+      //   const colNames = df.getColumnNames();
+      //
+      //   //prepare for react-bootstrap-table columns
+      //   const col_list = colNames.map(
+      //     function(el) {
+      //       var o = Object.assign({}, el);
+      //       o.dataField = el;
+      //       o.text = el;
+      //       return o;
+      //     }
+      //   ).map(
+      //     function(el) {
+      //       let unwrap = ({dataField, text}) => ({dataField, text});
+      //       const picked = unwrap(el);
+      //       console.log("picked" + JSON.stringify(picked));
+      //       return picked;
+      //     }
+      //   );
 
 
-      // for (const column in colNames) {
-      //   console.log("Column name: ");
-      //   console.log(column.name);
-      //   console.log("Data:");
-      //   console.log(column.series.toArray());
+
+        // const picked = (({ fieldName, text }) => ({ fieldName, text }))(col_list);
+
+        // console.log("res" + JSON.stringify(col_list));
+        // console.log("arr" + JSON.stringify(arr));
+
+
+
+      //   return (
+      //
+      //     <BootstrapTable data={ arr } keyField="Payments" columns={col_list}>
+      //     </BootstrapTable>
+      //
+      //   );
+      //
       // }
-      // const columns = df.getColumns().toArray();
-      // console.log("*********** ");
 
-      // console.log("data "+arr.toString());
-      // console.log("cols "+ columns.toString());
 
-      // const res = [];
-      // const col_list = colNames.map(
-      //   function(el) {
-      //     console.log("el "+el);
-      //   var o = Object.assign({}, el);
-      //   o.fieldName = true;
-      //   return o;
-      //   }
-      // );
+
 
 
 
@@ -80,10 +112,60 @@ class TableComponent extends React.Component {
       // console.log("res" + col_list);
 
       const result_list = this.state.tableData.map(x => {
-        // console.log("each element "+x);
-        return (
-          <li class="list-group-item">{x.toString()}</li>
+        const theData = x;
+
+        // console.log(theData);
+        // actually array?
+        const df  = new dataForge.DataFrame(theData);
+        const arr = df.toArray();
+        // const rows = df.toJSON();
+
+        // console.log(arr);
+        const colNames = df.getColumnNames();
+
+        //prepare for react-bootstrap-table columns
+        const col_list = colNames.map(
+          function(el) {
+            var o = Object.assign({}, el);
+            o.dataField = el;
+            o.text = el;
+            return o;
+          }
+        ).map(
+          function(el) {
+            let unwrap = ({dataField, text}) => ({dataField, text});
+            const picked = unwrap(el);
+            // console.log("picked" + JSON.stringify(picked));
+            return picked;
+          }
         );
+
+
+
+        // const picked = (({ fieldName, text }) => ({ fieldName, text }))(col_list);
+
+        // console.log("res" + JSON.stringify(col_list));
+        // console.log("arr" + JSON.stringify(arr));
+
+
+
+        return (
+          <div>
+            <h1> {<arr className="CPT_CODE"></arr>} </h1>
+            <BootstrapTable
+              data={ arr }
+              keyField="Payments"
+              columns={col_list}
+              // rowStyle={{backgroundColor: 'white'}}
+              striped
+              hover
+              condensed/>
+          </div>
+
+
+        );
+
+
       });
 
       // {/*<div>*/}
@@ -93,10 +175,10 @@ class TableComponent extends React.Component {
       //iterate result list
       return (
 
-        <div className = 'list-group'>
-          <ul>
+        <div>
+
           {result_list}
-          </ul>
+
         </div>
 
       );
@@ -110,14 +192,14 @@ class TableComponent extends React.Component {
 
     return (
 
-      <div className="news-description">
-        {this.renderTable(this.state.tableData)}
+      <div className="">
+        {this.renderTable()}
 
-        <ul className="collection">
+        {/*<ul className="collection">*/}
           {/*<li>{this.props.result.price}</li>*/}
           {/*<li>{this.props.result.description}</li>*/}
           {/*<li>{this.props.result.location}</li>*/}
-        </ul>
+        {/*</ul>*/}
       </div>
 
     );

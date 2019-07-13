@@ -54,14 +54,26 @@ class ChartByProvider extends React.Component {
     // const groupName = group.getSeries('CPT_CODE').first();
 
     let tableData = [...this.state.tableData];
-    tableData.push(group);
-    this.setState({ tableData });
+    // tableData.push(group);
+    // this.setState({ tableData });
+
+    console.log(tableData.toString());
+
+    if(tableData.indexOf(group) === -1) {
+      tableData.push(group);
+      this.setState({ tableData });
+
+    }
+
+
+
+
     // here to show data being posted !!!!!!
     // console.log("state " + this.state.tableData);
 
-    this.setState(prevState => ({
-      tableData: [...prevState.tableData, group]
-    }));
+    // this.setState(prevState => ({
+    //   tableData: [...prevState.tableData, group]
+    // }));
 
     // this.setState({ tableData: group});
 
@@ -541,11 +553,16 @@ class ChartByProvider extends React.Component {
   render() {
   // console.log(this.props.cpt_Graph_Data);
     return(
-      <div className="scaling-svg-container">
+      <div className="">
+        <div className="scaling-svg-container">
 
         <svg ref={ node => this.node = node } width="100%" height="auto" class="svg-content"  ></svg>
         {/*<svg ref={node => this.node = node}  width ="3000" height= "1000" className="svg-content" overflow="auto" ></svg>*/}
-        <div>
+
+        </div>
+
+
+        <div className="">
           <TableComponent tableData = {this.state.tableData}></TableComponent>
         </div>
       </div>
