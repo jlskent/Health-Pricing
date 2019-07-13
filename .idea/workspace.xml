@@ -3,17 +3,6 @@
   <component name="ChangeListManager">
     <list default="true" id="7c67dac7-4af2-4d20-9cdf-c094623a4eb7" name="Default Changelist" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/week1/health-pricing/src/ChartByProvider/ChartByProvider.js" beforeDir="false" afterPath="$PROJECT_DIR$/week1/health-pricing/src/ChartByProvider/ChartByProvider.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/week1/health-pricing/src/Data/2019-06-03 Dr Rodger Qual Ctrl Request (1).xlsx" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/week1/health-pricing/src/Data/HospitalPriceIndex_scrape.csv" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/week1/health-pricing/src/Data/fulldata.csv" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/week1/health-pricing/src/Data/fulldata.xlsx" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/week1/health-pricing/src/Data/grouped_data.csv" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/week1/health-pricing/src/Data/ramzi.csv" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/week1/health-pricing/src/Data/sample_data.csv" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/week1/health-pricing/src/Data/sample_data.xlsx" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/week1/health-pricing/src/Data/unique.csv" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/week1/health-pricing/src/TableComponent/TableComponent.js" beforeDir="false" afterPath="$PROJECT_DIR$/week1/health-pricing/src/TableComponent/TableComponent.js" afterDir="false" />
     </list>
     <ignored path="$PROJECT_DIR$/.tmp/" />
     <ignored path="$PROJECT_DIR$/temp/" />
@@ -82,7 +71,7 @@
   </component>
   <component name="FileEditorManager">
     <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
-      <file pinned="false" current-in-tab="true">
+      <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/week1/health-pricing/src/TableComponent/TableComponent.js">
           <provider selected="true" editor-type-id="text-editor">
             <state relative-caret-position="51">
@@ -94,10 +83,10 @@
           </provider>
         </entry>
       </file>
-      <file pinned="false" current-in-tab="false">
+      <file pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/week1/health-pricing/src/ChartByProvider/ChartByProvider.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="424">
+            <state relative-caret-position="397">
               <caret line="560" lean-forward="true" selection-start-line="560" selection-end-line="560" />
               <folding>
                 <element signature="e#132#158#0" expanded="true" />
@@ -431,12 +420,12 @@
       <workItem from="1558722373495" duration="113697000" />
       <workItem from="1560527232587" duration="77398000" />
       <workItem from="1561181694793" duration="22522000" />
-      <workItem from="1561993418726" duration="81181000" />
+      <workItem from="1561993418726" duration="81563000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="294798000" />
+    <option name="totallyTimeSpent" value="295180000" />
   </component>
   <component name="TodoView">
     <todo-panel id="selected-file">
@@ -814,22 +803,22 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/week1/health-pricing/src/ChartByProvider/ChartByProvider.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="424">
-          <caret line="560" lean-forward="true" selection-start-line="560" selection-end-line="560" />
-          <folding>
-            <element signature="e#132#158#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/week1/health-pricing/src/TableComponent/TableComponent.js">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="51">
           <caret line="149" lean-forward="true" selection-start-line="149" selection-end-line="149" />
           <folding>
             <element signature="e#0#26#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/week1/health-pricing/src/ChartByProvider/ChartByProvider.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="397">
+          <caret line="560" lean-forward="true" selection-start-line="560" selection-end-line="560" />
+          <folding>
+            <element signature="e#132#158#0" expanded="true" />
           </folding>
         </state>
       </provider>
