@@ -147,19 +147,38 @@ class TableComponent extends React.Component {
         // console.log("res" + JSON.stringify(col_list));
         // console.log("arr" + JSON.stringify(arr));
 
+        var chargesSeries = df.getSeries('Charges').parseInts();
+        // console.log(chargesSeries.toString());
+
+        // console.log(parseFloat(chargesSeries.sum()));
+        // console.log(chargesSeries.count());
+
+        var paymentsSeries = df.getSeries('Payments').parseInts();
+        var chargesAverage = parseFloat(chargesSeries.sum()) / parseFloat(chargesSeries.count());
+        // var paymentsAverage = paymentsSeries.sum() / paymentsSeries.count();
+        // console.log("avg "+chargesAverage);
+
 
 
         return (
           <div>
-            <h1> {<arr className="CPT_CODE"></arr>} </h1>
+            <h5>CPT CODE: {arr[0].CPT_CODE} </h5>
             <BootstrapTable
               data={ arr }
               keyField="Payments"
               columns={col_list}
-              // rowStyle={{backgroundColor: 'white'}}
+              tableStyle={ { background: 'black' } }
+              headerStyle={ { background: '#00ff00' } }
+
               striped
               hover
-              condensed/>
+              condensed
+              id = "table"
+            />
+            <p>charges Average: {chargesSeries.average()} </p>
+            <p>payments Average: {paymentsSeries.average()} </p>
+            <p>number of rows: {paymentsSeries.count()} </p>
+
           </div>
 
 
@@ -174,13 +193,7 @@ class TableComponent extends React.Component {
       // {/*</div>*/}
       //iterate result list
       return (
-
-        <div>
-
-          {result_list}
-
-        </div>
-
+        <div>{result_list}</div>
       );
     }
   }
@@ -192,7 +205,7 @@ class TableComponent extends React.Component {
 
     return (
 
-      <div className="">
+      <div className="container">
         {this.renderTable()}
 
         {/*<ul className="collection">*/}

@@ -1,6 +1,5 @@
 // import { scaleLinear } from 'd3-scale';
 // import { scaleBand } from 'd3-scale';
-// import data from '../Data/sample_data.csv';
 
 import React from 'react';
 import './ChartByProvider.css';

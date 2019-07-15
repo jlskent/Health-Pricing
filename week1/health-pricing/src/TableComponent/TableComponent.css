@@ -1,0 +1,14 @@
+.container {
+    /*height: 600px;*/
+    width: 1150px;
+    overflow: auto;
+    border: 2px;
+}
+
+
+#table {
+    width : 1150px;
+    font-size: 10px;
+
+
+}

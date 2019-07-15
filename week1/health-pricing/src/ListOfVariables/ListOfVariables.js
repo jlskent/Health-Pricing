@@ -5,6 +5,8 @@ import './ListOfVariables.css';
 import ChartByCpt from "../ChartByCpt/ChartByCpt";
 import ChartByProvider from "../ChartByProvider/ChartByProvider";
 import ChartByProcedure from "../ChartByProcedure/ChartByProcedure";
+import DropdownButton from 'react-bootstrap/DropdownButton'
+import Dropdown from 'react-bootstrap/Dropdown'
 
 
 class ListOfVariables extends React.Component {
@@ -28,15 +30,24 @@ class ListOfVariables extends React.Component {
       // yAxisVariables : [],
       // groupByVariables : [],
       // aggregateVariables : [],
+      sorBy : {sort_by_avg_bill: 'sort_by_avg_bill',
+        sort_by_num_procedures: 'sort_by_num_procedures',
+        sort_by_name: 'sort_by_name'
+      },
+
+
       CPT_CODE: [],
       selections : {CPT_CODE: 'CPT_CODE',
         BILLING_PROV_NM: 'BILLING_PROV_NM',
         PROC_NAME: 'PROC_NAME'}
+
     };
 
     // bind event handler
     this.renderListOfVariables = this.renderListOfVariables.bind(this);
     this.selectVariable = this.selectVariable.bind(this);
+    this.sortByProvider = this.sortByProvider.bind(this);
+
 
   }
 
@@ -69,6 +80,54 @@ class ListOfVariables extends React.Component {
   // };
 
 
+
+
+
+  // if selected provider name and sort option, we update the dataframe and then call re-render
+  sortByProvider(e){
+    // e.preventDefault();
+
+    const currentSortBy = e.target.value;
+
+    this.setState({  sortBy: currentSortBy});
+    // console.log("e  " + currentSortBy);
+    const theDf = this.props.df;
+    // console.log("child df " + theDf);
+    if (currentSortBy) {
+      switch(currentSortBy) {
+        case "sort_by_name":
+          const df = this.props.df;
+          const newDf = df.orderBy(row => row.BILLING_PROV_NM);
+          this.setState({  dataAfterSorting: newDf});
+          this.renderListOfVariables(this.state.varChosen);
+          break;
+        case "sort_by_avg_bill":
+
+          // code block
+          break;
+        case "sort_by_num_procedures":
+
+
+          // this.setState()
+          // const grouped = theDf.groupBy(row => row.CPT_CODE)
+          //   .select(group => {
+          //     return {
+          //       CPT_CODE: group.first().CPT_CODE,
+          //       Count: group.count(),
+          //     };
+          //   }).inflate().after(0).orderByDescending(row => row.Count);
+          // code block
+          break;
+        default:
+        // code block
+      }
+
+
+    }
+
+
+
+  }
 
 
 
@@ -144,7 +203,15 @@ class ListOfVariables extends React.Component {
   // cpt requires frequency
   renderListOfVariables(varChosen){
     // take each element in results dictionary
-    const theDf = this.props.df;
+    var theDf= this.props.df;
+
+    if (this.state.dataAfterSorting) {
+      theDf = this.state.dataAfterSorting;
+    }
+
+
+
+
     // console.log("child df " + theDf);
     if (theDf && varChosen) {
       //group by CPT code and count number for each
@@ -229,8 +296,28 @@ class ListOfVariables extends React.Component {
                 {this.renderListOfVariables(this.state.varChosen)}
               </div>
             </div>
+            <div>
+              <h5>Sort By</h5>
+              <div className="input-group mb-3">
+                <div className="input-group-prepend">
+                  <label className="input-group-text" htmlFor="inputGroupSelect01">Options</label>
+                </div>
+                <select className="custom-select" id="inputGroupSelect01" onChange={(e) => this.sortByProvider(e)}>
+                  <option selected>Choose a way of sorting doctors</option>
+                  <option value="sort_by_name">by names</option>
+                  <option value="sort_by_avg_bill">by amount of bill</option>
+                  <option value="sort_by_num_procedures">by number of procedures</option>
+                </select>
+
+                {/*<DropdownButton id="dropdown-basic-button" title="Dropdown button">*/}
+                  {/*<Dropdown.Item value = "1"  name = "1" onClick={this.sortByProvider()}>sort_by_avg_bill</Dropdown.Item>*/}
+                  {/*<Dropdown.Item value = "2" name = "2" onClick={this.sortByProvider()}>sort_by_num_procedures</Dropdown.Item>*/}
+                  {/*<Dropdown.Item href="#/action-3" onClick={this.this.state.sortBy }>Something else</Dropdown.Item>*/}
+                {/*</DropdownButton>*/}
+              </div>
+            </div>
+
           </div>
-          <div><h5></h5></div>
           <ChartByProvider wholeData={this.state.provider_Graph_Data}></ChartByProvider>
         </div>
       )
