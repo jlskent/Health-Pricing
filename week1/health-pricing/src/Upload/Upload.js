@@ -5,15 +5,14 @@ import ListOfVariables from '../ListOfVariables/ListOfVariables'
 import Papa from 'papaparse';
 import 'data-forge-fs';
 import * as dataForge from 'data-forge';
-// import { readFile, Series, DataFrame } from 'Data-forge';
-import { BootstrapTable, TableHeaderColumn } from 'react-bootstrap-table';
+import Navigation from '../Navigation/Navigation'
 
 
 
 
 
-// import * as d3 from "d3";
-// import Data from "../Data/sample_data.csv";
+// parent component of since we receive data here
+
 
 
 class Upload extends React.Component {
@@ -29,7 +28,11 @@ class Upload extends React.Component {
       files: [],
       uploading: false,
       uploadProgress: {},
-      uploadSuccess: false
+      uploadSuccess: false,
+      newStep : null
+
+
+
     };
 
     this.onFilesAdded = this.onFilesAdded.bind(this);
@@ -112,8 +115,11 @@ class Upload extends React.Component {
   render() {
     return (
       <div className="">
+        <Navigation currentStep = {this.props.newStep}> </Navigation>
+        <h4 className="pt-md-4">Step 1. upload csv file</h4>
+
         <div className="row py-md-4">
-          {/*<span className="Title">Upload csv file</span>*/}
+          {/*<span className="Title">Navigation csv file</span>*/}
             <div className="col-6">
               <DropZone onFilesAdded = {this.onFilesAdded} disabled= {this.state.uploading || this.state.uploadSuccess} />
             </div>
@@ -262,7 +268,7 @@ class Upload extends React.Component {
   //   } else {
   //     return (
   //       <button disabled={this.state.files.length < 0 || this.state.uploading} onClick={this.uploadFiles}>
-  //         Upload
+  //         Navigation
   //       </button>
   //     );
   //   }

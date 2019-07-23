@@ -24,6 +24,7 @@ class ChartByProcedure extends React.Component {
 
     this.createBarChart = this.createBarChart.bind(this);
     this.resetZoom = this.resetZoom.bind(this);
+    this.renderTitle = this.renderTitle.bind(this);
 
   }
 
@@ -38,10 +39,17 @@ class ChartByProcedure extends React.Component {
       this.setState({data: nextProps.procedure_Graph_Data});
       this.setState({receivedData: true});
 
+      const procedureCodeReceived = nextProps.procedure_Graph_Data.toArray()[0].PROC_CODE;
+      const procedureNameReceived = nextProps.procedure_Graph_Data.toArray()[0].PROC_NAME;
+      this.setState({currentProcedureName: procedureNameReceived});
+      this.setState({currentProcedureCode: procedureCodeReceived});
+
     }
   }
 
   componentDidUpdate() {
+    this.renderTitle()
+
   }
 
 
@@ -464,14 +472,42 @@ class ChartByProcedure extends React.Component {
   //end of createBarChart()
 
 
+
+
+
+  renderTitle(){
+
+    if (!this.state.receivedData){
+      return (
+        <p className="h4" id = "header">BoxPlot Visualization </p>
+      )
+    }
+
+    else return(
+      <div>
+        <p className="h4" id = "header">BoxPlot Visualization </p>
+        <p className="h4" id = "procedureCode">Procedure Code: {this.state.currentProcedureCode}</p>
+        <p id = "procedureName">({this.state.currentProcedureName})</p>
+      </div>
+    )
+  }
+
+
   render() {
 
+
+
     return(
+
+    <div>
+      {this.renderTitle()}
+
       <div className="scaling-svg-container">
         {this.renderButtons()}
         {/*<button className="btn btn-outline-primary" onClick={this.resetZoom}>reset view</button>*/}
         <svg ref={ node => this.node = node } width="100%" height="auto" class="svg-content"  ></svg>
       </div>
+    </div>
     );
 
 

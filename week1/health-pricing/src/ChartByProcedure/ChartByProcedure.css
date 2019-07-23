@@ -1,3 +1,31 @@
+
+#header {
+    display:inline;
+    text-align: left;
+    display:inline-block;
+    width:49%
+
+}
+
+
+#procedureCode {
+    display:inline;
+    display:inline-block;
+    width: 50%;
+    text-align: right;
+    color: darkgrey;
+    font-weight: bold;
+}
+
+#procedureName {
+    display:block;
+    text-align: right;
+    color: darkgrey;
+    font-weight: bold;
+}
+
+
+
 /*.container {*/
     /*float: left;*/
     /*height: 250px;*/
