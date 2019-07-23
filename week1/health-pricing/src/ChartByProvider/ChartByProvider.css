@@ -7,6 +7,25 @@
 /*}*/
 
 
+#header {
+    display:inline;
+    text-align: left;
+    display:inline-block;
+    width:49%
+
+}
+
+
+#providerName {
+    display:inline;
+    display:inline-block;
+    width: 50%;
+    text-align: right;
+    color: darkgrey;
+    font-weight: bold;
+}
+
+
 .scaling-svg-container {
     height: 600px;
     width: 1150px;
@@ -14,17 +33,36 @@
     border: 2px;
 }
 
-/*.anchor {*/
-    /*height: 224px;*/
-    /*overflow: auto;*/
-    /*background: #FFFFFF;*/
-/*}*/
 
 
+/*on hover of box plot bars*/
 .bar:hover {
     fill: black !important;
 }
 
+
+
+
+* {
+pointer-events: all;
+}
+
+
+
+/*on hover of background rectangle bars*/
+
+.back_ground_bar:hover {
+opacity: 0.5!important;
+
+fill: lightgrey !important;
+}
+
+/*axis text*/
+
+/*.axis {*/
+    /*font: 14px times;*/
+
+/*}*/
 
 
 .chart text {

@@ -7,6 +7,7 @@ import ChartByProvider from "../ChartByProvider/ChartByProvider";
 import ChartByProcedure from "../ChartByProcedure/ChartByProcedure";
 import DropdownButton from 'react-bootstrap/DropdownButton'
 import Dropdown from 'react-bootstrap/Dropdown'
+import * as dataForge from "data-forge";
 
 
 class ListOfVariables extends React.Component {
@@ -30,7 +31,7 @@ class ListOfVariables extends React.Component {
       // yAxisVariables : [],
       // groupByVariables : [],
       // aggregateVariables : [],
-      sorBy : {sort_by_avg_bill: 'sort_by_avg_bill',
+      sortBy : {sort_by_avg_bill: 'sort_by_avg_bill',
         sort_by_num_procedures: 'sort_by_num_procedures',
         sort_by_name: 'sort_by_name'
       },
@@ -94,29 +95,39 @@ class ListOfVariables extends React.Component {
     const theDf = this.props.df;
     // console.log("child df " + theDf);
     if (currentSortBy) {
+      var df = this.props.df;
+      // var sortedDf;
       switch(currentSortBy) {
         case "sort_by_name":
-          const df = this.props.df;
-          const newDf = df.orderBy(row => row.BILLING_PROV_NM);
-          this.setState({  dataAfterSorting: newDf});
-          this.renderListOfVariables(this.state.varChosen);
+          const dfSortedByName = df.orderBy(row => row.BILLING_PROV_NM);
+          this.setState( {dataAfterSorting: dfSortedByName},
+            () => this.renderListOfVariables(this.state.varChosen)
+          );
           break;
         case "sort_by_avg_bill":
-
-          // code block
+          const dfSortedByAvgBill = df.groupBy(row => row.BILLING_PROV_NM)
+            .select(group => {
+              return {
+                BILLING_PROV_NM: group.first().BILLING_PROV_NM,
+                Average: group.deflate(row => row.Charges).parseFloats().average(),
+              };
+            }).inflate().after(0).orderByDescending(row => row.Average);
+          this.setState( {dataAfterSorting: dfSortedByAvgBill},
+            () => this.renderListOfVariables(this.state.varChosen)
+            );
           break;
         case "sort_by_num_procedures":
-
-
-          // this.setState()
-          // const grouped = theDf.groupBy(row => row.CPT_CODE)
-          //   .select(group => {
-          //     return {
-          //       CPT_CODE: group.first().CPT_CODE,
-          //       Count: group.count(),
-          //     };
-          //   }).inflate().after(0).orderByDescending(row => row.Count);
-          // code block
+          const dfSortedByNumProcedures = df.groupBy(row => row.BILLING_PROV_NM)
+            .select(group => {
+              return {
+                BILLING_PROV_NM: group.first().BILLING_PROV_NM,
+                numberOfProcedures: group.deflate(row => row.PROCQTY).parseInts().sum(),
+              };
+            }).inflate().after(0).orderByDescending(row => row.numberOfProcedures);
+          // console.log("grouped" + dfSortedByNumProcedures);
+          this.setState( {dataAfterSorting: dfSortedByNumProcedures},
+            () => this.renderListOfVariables(this.state.varChosen)
+          );
           break;
         default:
         // code block
@@ -169,7 +180,32 @@ class ListOfVariables extends React.Component {
   // select one variable from list of cpt, proc code and provider name
   selectVariable(e){
     this.state.editing = true;
+    // this.state.dataAfterSorting = null;
     e.preventDefault();
+
+
+    this.setState({
+      currentSelection: e.target.value.toString(),
+
+  }, () => {
+    this.setState({
+      dataAfterSorting: null,
+      sortBy: null,
+      varChosen : this.state.currentSelection
+    }, () => {
+
+        // this.state.varChosen = this.state.currentSelection;
+        this.setState({wholeData: this.props.df});
+        this.renderListOfVariables(this.state.currentSelection);
+        this.state.editing = false;
+      });
+
+    });
+
+
+
+    // old
+    // this.state.dataAfterSorting = null;
     // note if we use this we can be one step behind
     // this.setState({currentSelection: e.target.value});
     //instead we use callback function
@@ -177,10 +213,13 @@ class ListOfVariables extends React.Component {
       currentSelection: e.target.value.toString()
     }, () => {
       this.state.varChosen = this.state.currentSelection;
-      this.renderListOfVariables(this.state.currentSelection);
       this.setState({wholeData: this.props.df});
+      this.renderListOfVariables(this.state.currentSelection);
       this.state.editing = false;
     });
+
+
+
   }
 
   //first step create variables to choose from on the left
@@ -203,6 +242,8 @@ class ListOfVariables extends React.Component {
   // cpt requires frequency
   renderListOfVariables(varChosen){
     // take each element in results dictionary
+
+    // we already get sorted df if we did sorting
     var theDf= this.props.df;
 
     if (this.state.dataAfterSorting) {
@@ -241,14 +282,42 @@ class ListOfVariables extends React.Component {
         );
       }
 
+      else if (varChosen === "BILLING_PROV_NM" && this.state.sortBy && this.state.sortBy !='sort_by_name') {
+
+        var text = "";
+        if (this.state.sortBy === 'sort_by_avg_bill') {  text = "Average Bill: "  }
+        if (this.state.sortBy === 'sort_by_num_procedures') {  text = "procedures: "  }
 
 
+        console.log(theDf.toString());
+        const variable_array = theDf.toRows();
+        // console.log(variable_array);
+
+        const result_list = variable_array.map(x => {
+          return(
+            <div>
+              <button className="list-group-item list-group-item-action" value={x[0]} onClick={(e)=>this.selectItem(e)}>{x[0]}
+              <span className="badge badge-secondary float-right mt-2">{text} {x[1]}</span>
+            </button>
+            </div>
+          );
+        });
+        //iterate result list
+        return(
+          <div className="list-group" id="list-tab" role="tablist">{result_list}</div>
+        );
+
+
+      }
 
       else {
+        // theDf = this.props.df;
         const variable_array = theDf.getSeries(varChosen).distinct().after(0).toArray();
         const result_list = variable_array.map(x => {
           return(
             <div><button className="list-group-item list-group-item-action" value={x} onClick={(e)=>this.selectItem(e)}>{x}</button>
+              {/*<span className="badge badge-secondary float-right mt-2">frequency {x[1]}</span>*/}
+
             </div>
           );
         });

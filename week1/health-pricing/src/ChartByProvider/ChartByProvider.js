@@ -19,14 +19,18 @@ class ChartByProvider extends React.Component {
     super(props);
     this.state = {
       dataSorted : [],
-      tableData : []
+      tableData : [],
+      data: null,
+      receivedData: false
+
     };
 
     // this.xScale = scaleBand();
     // this.yScale = scaleLinear();
     this.createBarChart = this.createBarChart.bind(this);
-    this.updateTableData = this.updateTableData.bind(this)
-
+    this.updateTableData = this.updateTableData.bind(this);
+    this.resetZoom = this.resetZoom.bind(this);
+    this.renderTitle = this.renderTitle.bind(this);
 
   }
 
@@ -37,6 +41,10 @@ class ChartByProvider extends React.Component {
     if ( this.props !== nextProps && nextProps.wholeData) {
       // console.log("receiving props in chartByProvider "+ nextProps);
       this.createBarChart(nextProps.wholeData);
+      this.setState({data: nextProps.wholeData});
+      this.setState({receivedData: true});
+      const providerNameReceived = nextProps.wholeData.toArray()[0].BILLING_PROV_NM;
+      this.setState({currentProvider: providerNameReceived});
     }
   }
 
@@ -83,6 +91,28 @@ class ChartByProvider extends React.Component {
 
 
 
+  renderButtons() {
+    if (this.state.receivedData){
+      return(
+        <button className="btn btn-outline-primary" onClick={this.resetZoom}>reset view</button>
+      );
+    }
+  }
+
+
+  resetZoom(){
+    // console.log(this.node);
+    var node = this.node;
+    const defaultTransform = d3.zoomIdentity;
+    console.log(defaultTransform);
+    d3.select(node).attr("transform", defaultTransform);
+    this.createBarChart(this.state.data)
+  }
+
+
+
+
+
   createBarChart = (data) => {
     //clean-up old graph
     d3.select("#graph").remove();
@@ -99,7 +129,7 @@ class ChartByProvider extends React.Component {
     var dimensions =
       {
         client: clientWidth,
-        width: clientWidth - 150,
+        width: clientWidth - 50,
         height: 500,
         half: 250,
         halfBarWidth : 50,
@@ -157,7 +187,7 @@ class ChartByProvider extends React.Component {
       .range([40, dimensions.width])
       .domain(listOfGroupNames);
       // .padding(0.2);
-    const yScale = d3.scaleLinear()
+    const yScale = d3.scaleLinear().nice()
       .range([dimensions.height, 0])
       .domain([min< 0 ? min*1.2 :min*1.2, max*1.2]);
       // .domain([0, max*1.2]);
@@ -225,7 +255,7 @@ class ChartByProvider extends React.Component {
       .selectAll("line")
       .data(y_axis.scale().ticks().map( (d) => yScale(d)))
       .enter().append("line")
-      .attr("x1", 0)
+      .attr("x1", 40)
       .attr("y1", function(d) { return d; })
       .attr("x2", dimensions.width)
       .attr("y2", function(d) { return d; });
@@ -237,14 +267,15 @@ class ChartByProvider extends React.Component {
     graph.append("g")
       .attr("class", "axis")
       .attr("transform", "translate(0," + dimensions.height +")")
-      .style("font-size", function(d) { return ( `${xScale.bandwidth()/15}px`); })
-      // .attr("transform", "translate(0,0) rotate("+315+")")
+      .style("font-size", function(d) { return ( `${xScale.bandwidth()/5}px`); })
+      .style("font-size", function(d) { return ( "font-min-size: 10px"); })
       .call(x_axis);
 
 
     graph.append("g")
       .attr("class", "axis")
-      .attr("transform", "translate(40, 0)").style("font-size", function(d) { return ( `${xScale.bandwidth()/15}px`); })
+      .attr("transform", "translate(40, 0)").style("font-size", function(d) { return ( `${xScale.bandwidth()/5}px`); })
+      .style("font-size", function(d) { return ( "font-min-size: 30px"); })
       .call(y_axis);
 
 
@@ -427,10 +458,11 @@ class ChartByProvider extends React.Component {
           // .attr("y", 300)
           // .attr("width", 200)
           // .attr("height", 400)
+          // .attr("y", yScale(max*1.2))
 
-          .attr("y", yScale(max*1.2))
+          .attr("y", 0)
           .attr("width", xScale.bandwidth())
-          .attr("height", yScale(min-max))
+          .attr("height", dimensions.height)
           .style("fill", "green")
           .style("opacity", "0")
           .on("click", (d) =>  {
@@ -442,7 +474,14 @@ class ChartByProvider extends React.Component {
       };
 
       const xPosition = xScale(groupName);
-      drawBackGroundRect(xPosition, max, min, group);
+
+
+      // so lets pass scale ticks instead
+      const minTickPos = yScale.ticks()[0] - (yScale.ticks()[0]-yScale.ticks()[0]);
+      const maxTickPos = yScale.ticks()[yScale.ticks().length - 1];
+      // console.log("ysclae ticks "+ minTickPos + maxTickPos);
+
+      drawBackGroundRect(xPosition, maxTickPos, minTickPos, group);
       drawOneBoxPlot(chargeStats, xPosition, max, min, colors.blue);
       drawOneBoxPlot(paymentStats, xPosition + xScale.bandwidth()/2, max, min, colors.red);
 
@@ -549,12 +588,32 @@ class ChartByProvider extends React.Component {
 
 
 
+
+  renderTitle(){
+    if (!this.state.receivedData){
+      return(
+        <p className="h4" id = "header">BoxPlot Visualization </p>
+      )
+    }
+
+    else return(
+      <div>
+          <p className="h4" id = "header">BoxPlot Visualization </p>
+          <p className="h4" id = "providerName">Provider: {this.state.currentProvider}</p>
+      </div>
+    )
+  }
+
   render() {
   // console.log(this.props.cpt_Graph_Data);
+
+
+
     return(
       <div className="">
+        {this.renderTitle()}
+        {this.renderButtons()}
         <div className="scaling-svg-container">
-
         <svg ref={ node => this.node = node } width="100%" height="auto" class="svg-content"  ></svg>
         {/*<svg ref={node => this.node = node}  width ="3000" height= "1000" className="svg-content" overflow="auto" ></svg>*/}
 
