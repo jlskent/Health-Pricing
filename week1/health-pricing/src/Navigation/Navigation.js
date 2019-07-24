@@ -55,17 +55,30 @@ class Navigation extends React.Component {
   }
 
 
+  handleClick(e){
+    console.log("e " + e.target.value)
+  }
 
   render() {
     return (
       <div>
         <nav aria-label="Page navigation example">
           <ul className="pagination">
-            <li className="page-item"><a className="page-link" href="#">Previous</a></li>
-            <li className="page-item"><a className="page-link" href="#">Upload File</a></li>
-            <li className="page-item"><a className="page-link" href="#">Choose a Variable</a></li>
-            <li className="page-item"><a className="page-link" href="#">Visualization</a></li>
-            <li className="page-item"><a className="page-link" href="#">Next</a></li>
+            {/*<li className="page-item"><a className="page-link" value = "upload" onClick={(e)=>this.handleClick(e)}>Upload File</a></li>*/}
+            {/*<li className="page-item"><a className="page-link" value = "variable" onClick={(e)=>this.handleClick(e)}>variable</a></li>*/}
+            <li className="page-item">
+              <button className="list-group-item list-group-item-action" value="upload" onClick={(e)=>this.handleClick(e)}>upload</button>
+            </li>
+
+            <li className="page-item">
+              <button className="list-group-item list-group-item-action" value="choose" onClick={(e)=>this.handleClick(e)}>choose var</button>
+            </li>
+
+            <li className="page-item">
+              <button className="list-group-item list-group-item-action" value="visualization" onClick={(e)=>this.handleClick(e)}>visualization</button>
+            </li>
+            {/*<li className="page-item"><a className="page-link" href="#">Visualization</a></li>*/}
+            {/*<li className="page-item"><a className="page-link" href="#">Next</a></li>*/}
           </ul>
         </nav>
 

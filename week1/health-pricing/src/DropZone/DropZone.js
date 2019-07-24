@@ -51,6 +51,7 @@ class DropZone extends React.Component {
     if (this.props.onFilesAdded) {
       const array = this.fileListToArray(files);
       this.props.onFilesAdded(array)
+
     }
     this.setState({ hightlight: false })
   }

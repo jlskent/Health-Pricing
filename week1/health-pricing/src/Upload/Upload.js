@@ -6,9 +6,14 @@ import Papa from 'papaparse';
 import 'data-forge-fs';
 import * as dataForge from 'data-forge';
 import Navigation from '../Navigation/Navigation'
+import StepZilla from "react-stepzilla";
 
 
+import ChartByProcedure from '../ChartByProcedure/ChartByProcedure';
+import ChartByProvider from '../ChartByProvider/ChartByProvider';
+import ChartByCpt from '../ChartByCpt/ChartByCpt';
 
+import TableComponent from '../TableComponent/TableComponent';
 
 
 // parent component of since we receive data here
@@ -19,6 +24,12 @@ class Upload extends React.Component {
   // constructor called before component is mounted
   // local state && bind events
   // must do super(props)
+
+
+
+
+
+
   constructor(props) {
     super(props);
     this.state = {
@@ -29,9 +40,8 @@ class Upload extends React.Component {
       uploading: false,
       uploadProgress: {},
       uploadSuccess: false,
-      newStep : null
-
-
+      // currentStep : null,
+      // steps: null
 
     };
 
@@ -39,25 +49,42 @@ class Upload extends React.Component {
     this.uploadFiles = this.uploadFiles.bind(this);
     this.sendRequest = this.sendRequest.bind(this);
     this.renderActions = this.renderActions.bind(this);
-    //
     this.updateData = this.updateData.bind(this);
+    // this.jumpToStep = this.jumpToStep.bind(this);
+
+
+
+    const handleClick = () => {
+
+      console.log("passing func")
+
+    }
+
+
   }
 
   componentDidMount() {
-    // let df = new dataForge.DataFrame({
-    //   columns: {
-    //     'regiment': ['Nighthawks', 'Nighthawks', 'Nighthawks', 'Nighthawks', 'Dragoons', 'Dragoons', 'Dragoons', 'Dragoons', 'Scouts', 'Scouts', 'Scouts', 'Scouts'],
-    //     'company': ['1st', '1st', '2nd', '2nd', '1st', '1st', '2nd', '2nd','1st', '1st', '2nd', '2nd'],
-    //     'TestScore': [4, 24, 31, 2, 3, 4, 24, 31, 2, 3, 2, 3]
-    //   }
-    // });
-    // const pivotted = df.pivot(["regiment", "company"], "TestScore", testScores => testScores.average());
-    // console.log(pivotted.toArray())
+
 
   }
 
   // called before render, do not access dom
   componentWillMount() {
+    const theSteps =
+      [
+        {name: 'Upload', component: <DropZone onFilesAdded = {this.onFilesAdded} disabled= {this.state.uploading || this.state.uploadSuccess} />},
+        {name: 'Choose Variable', component: < ListOfVariables/>},
+        {name: 'Visualization', component: < ChartByProcedure/>},
+        {name: 'Compare', component: < TableComponent/>},
+
+        // {name: 'Step 4', component: < />},
+        // {name: 'Step 5', component: < />}
+      ];
+
+    this.setState({ steps : theSteps});
+
+
+
   }
 
   // take current state and parse csv
@@ -112,16 +139,26 @@ class Upload extends React.Component {
   }
 
 
+
+
+
+
+
+
+
+  // in order to get child component's state, we pass a function as prop to child component
+
   render() {
+
     return (
       <div className="">
-        <Navigation currentStep = {this.props.newStep}> </Navigation>
-        <h4 className="pt-md-4">Step 1. upload csv file</h4>
-
+        <Navigation currentStep = {this.props.currentStep}> </Navigation>
+        <div className='step-progress'>
+          <StepZilla steps={this.state.steps} showSteps = {true} showNavigation = {false} stepsNavigation = {true} stepsNavigation={false} />
+        </div>
         <div className="row py-md-4">
-          {/*<span className="Title">Navigation csv file</span>*/}
             <div className="col-6">
-              <DropZone onFilesAdded = {this.onFilesAdded} disabled= {this.state.uploading || this.state.uploadSuccess} />
+              {/*<DropZone onFilesAdded = {this.onFilesAdded} disabled= {this.state.uploading || this.state.uploadSuccess} />*/}
             </div>
             {/*show a list of files*/}
             <div className="col-6">
@@ -144,8 +181,13 @@ class Upload extends React.Component {
               </div>
             </div>
         </div>
-        <div><ListOfVariables {...this.state} /></div>
-    </div>
+        {/*<div><ListOfVariables {...this.state _onChange={this.onChange}} /></div>*/}
+        <div>
+          <ListOfVariables {...this.state}  />
+
+        </div>
+
+      </div>
     );
   }
 
@@ -173,6 +215,7 @@ class Upload extends React.Component {
     this.setState(prevState => ({
       files: prevState.files.concat(files)
     }));
+
 
     if (this.state.files!=null){
       this.setState({theFile: this.state.files[0]});
@@ -211,7 +254,12 @@ class Upload extends React.Component {
     });
     try {
       await Promise.all(promises);
-      this.setState({ uploadSuccess: true, uploading: false });
+      this.setState({
+        uploadSuccess: true,
+        uploading: false
+
+      });
+
     } catch (e) {
       // Not Production ready! Do some error handling here instead...
     }

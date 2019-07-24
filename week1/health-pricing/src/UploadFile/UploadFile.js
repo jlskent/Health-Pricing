@@ -3,6 +3,15 @@ import './UploadFile.css';
 import Upload from '../Upload/Upload';
 
 
+
+/*
+*
+* this is the parent component with no data
+*
+* */
+
+
+
 class UploadFile extends React.Component {
 
   //

@@ -8,6 +8,8 @@ import ChartByProcedure from "../ChartByProcedure/ChartByProcedure";
 import DropdownButton from 'react-bootstrap/DropdownButton'
 import Dropdown from 'react-bootstrap/Dropdown'
 import * as dataForge from "data-forge";
+import { create, all } from 'mathjs'
+
 
 
 class ListOfVariables extends React.Component {
@@ -25,22 +27,22 @@ class ListOfVariables extends React.Component {
       cpt_Graph_Data: null,
       provider_Graph_Data: null,
       procedure_Graph_Data: null,
-
-      // editing: false,
-      // xAxisVariables : [],
-      // yAxisVariables : [],
-      // groupByVariables : [],
-      // aggregateVariables : [],
       sortBy : {sort_by_avg_bill: 'sort_by_avg_bill',
         sort_by_num_procedures: 'sort_by_num_procedures',
-        sort_by_name: 'sort_by_name'
-      },
+        sort_by_name: 'sort_by_name',
+        procedure_sort_by_variance : 'procedure_sort_by_variance',
+        procedure_sort_by_num_procedures : 'procedure_sort_by_num_procedures',
+        procedure_sort_by_avg_bill: 'procedure_sort_by_avg_bill'
 
+      },
 
       CPT_CODE: [],
       selections : {CPT_CODE: 'CPT_CODE',
         BILLING_PROV_NM: 'BILLING_PROV_NM',
         PROC_NAME: 'PROC_NAME'}
+
+
+
 
     };
 
@@ -48,6 +50,7 @@ class ListOfVariables extends React.Component {
     this.renderListOfVariables = this.renderListOfVariables.bind(this);
     this.selectVariable = this.selectVariable.bind(this);
     this.sortByProvider = this.sortByProvider.bind(this);
+    this.sortByProcedure = this.sortByProcedure.bind(this);
 
 
   }
@@ -112,7 +115,14 @@ class ListOfVariables extends React.Component {
                 Average: group.deflate(row => row.Charges).parseFloats().average(),
               };
             }).inflate().after(0).orderByDescending(row => row.Average);
-          this.setState( {dataAfterSorting: dfSortedByAvgBill},
+
+          const format = dfSortedByAvgBill.transformSeries({
+            Average: value => value.toFixed(3)
+          });
+
+          // console.log(format.toString());
+
+          this.setState( {dataAfterSorting: format},
             () => this.renderListOfVariables(this.state.varChosen)
             );
           break;
@@ -132,18 +142,108 @@ class ListOfVariables extends React.Component {
         default:
         // code block
       }
-
-
     }
-
-
-
   }
 
 
 
-  // prepare data
-  // select item and get relevant data out of df
+
+  // if selected provider name and sort option, we update the dataframe and then call re-render
+  sortByProcedure(e){
+    // e.preventDefault();
+
+    const currentSortBy = e.target.value;
+
+    this.setState({  sortBy: currentSortBy  });
+    console.log("e  " + currentSortBy);
+    const theDf = this.props.df;
+    // console.log("child df " + theDf);
+    if (currentSortBy) {
+      var df = this.props.df;
+      // var sortedDf;
+      switch(currentSortBy) {
+        case "procedure_sort_by_variance":
+          const config = { }
+          const math = create(all, config)
+
+
+          const dfSortedByStd = df.groupBy(row => row.PROC_NAME)
+            .select(group => {
+              // console.log(group.toString());
+              const arr = group.deflate(row => row.Charges).parseFloats().toArray();
+              // console.log( "arr "+ arr  );
+              // over N, default over N-1
+              var std = math.std(arr);
+
+              // var variance = math.variance(arr, 'uncorrected');
+              if (arr.length<2) std = null;
+              return {
+                PROC_NAME: group.first().PROC_NAME,
+                Std: std
+              };
+            }).inflate().after(0).orderByDescending(row => row.Std);
+
+
+          const formatted = dfSortedByStd.transformSeries({
+            Std: value => (value != null) ? value.toFixed(3) : "DataPoint not enough"
+          });
+
+          this.setState( {dataAfterSorting: formatted},
+            () => this.renderListOfVariables(this.state.varChosen)
+          );
+          break;
+
+        case "procedure_sort_by_avg_bill":
+          const dfSortedByAvgBill = df.groupBy(row => row.PROC_NAME)
+            .select(group => {
+              return {
+                PROC_NAME: group.first().PROC_NAME,
+                Average: group.deflate(row => row.Charges).parseFloats().average(),
+              };
+            }).inflate().after(0).orderByDescending(row => row.Average);
+
+          console.log("sorted df "+dfSortedByAvgBill.toString());
+
+          const format = dfSortedByAvgBill.transformSeries({
+            Average: value => value.toFixed(3)
+          });
+
+          // console.log(format.toString());
+
+          this.setState( {dataAfterSorting: format},
+            () => this.renderListOfVariables(this.state.varChosen)
+          );
+          break;
+        case "procedure_sort_by_num_procedures":
+          const dfSortedByNumProcedures = df.groupBy(row => row.PROC_NAME)
+            .select(group => {
+              return {
+                PROC_NAME: group.first().PROC_NAME,
+                numberOfProcedures: group.deflate(row => row.PROCQTY).parseInts().sum(),
+              };
+            }).inflate().after(0).orderByDescending(row => row.numberOfProcedures);
+          // console.log("grouped" + dfSortedByNumProcedures);
+          this.setState( {dataAfterSorting: dfSortedByNumProcedures},
+            () => this.renderListOfVariables(this.state.varChosen)
+          );
+          break;
+        default:
+        // code block
+      }
+    }
+  }
+
+
+
+
+
+
+
+
+
+
+
+  // select item and get relevant data out of df -> pass it to graph
   selectItem(e){
     e.preventDefault();
     console.log("target value " + typeof e.target.value);
@@ -160,11 +260,11 @@ class ListOfVariables extends React.Component {
       // eg filter row[some cpt code 33999] = 33999
       const filtered = this.props.df.where(row => row[currentVar] === currentItem);
       this.setState({cpt_Graph_Data: filtered});
-      if (currentVar == "BILLING_PROV_NM" ){
+      if (currentVar === "BILLING_PROV_NM" ){
         // pass all the rows have the current provider name
         this.setState({provider_Graph_Data: filtered})
       }
-      if (currentVar == "PROC_NAME" ){
+      if (currentVar === "PROC_NAME" ){
         // pass all the rows have the current procedure name
         this.setState({procedure_Graph_Data: filtered})
       }
@@ -289,7 +389,7 @@ class ListOfVariables extends React.Component {
         if (this.state.sortBy === 'sort_by_num_procedures') {  text = "procedures: "  }
 
 
-        console.log(theDf.toString());
+        // console.log(theDf.toString());
         const variable_array = theDf.toRows();
         // console.log(variable_array);
 
@@ -306,9 +406,42 @@ class ListOfVariables extends React.Component {
         return(
           <div className="list-group" id="list-tab" role="tablist">{result_list}</div>
         );
-
-
       }
+
+
+
+      else if (varChosen === "PROC_NAME" && this.state.sortBy) {
+        var text = "";
+        if (this.state.sortBy === 'procedure_sort_by_variance') {  text = "Standard deviation: "  }
+        if (this.state.sortBy === 'procedure_sort_by_avg_bill') {  text = "Average Bill: "  }
+        if (this.state.sortBy === 'procedure_sort_by_num_procedures') {  text = "procedures: "  }
+
+        // console.log(theDf.toString());
+        const variable_array = theDf.toRows();
+        // console.log(variable_array);
+        const result_list = variable_array.map(x => {
+          return(
+            <div>
+              <button className="list-group-item list-group-item-action" value={x[0]} onClick={(e)=>this.selectItem(e)}>{x[0]}
+                <span className="badge badge-secondary float-right mt-2">{text} {x[1]}</span>
+              </button>
+            </div>
+          );
+        });
+        //iterate result list
+        return(
+          <div className="list-group" id="list-tab" role="tablist">{result_list}</div>
+        );
+      }
+
+
+
+
+
+
+
+
+
 
       else {
         // theDf = this.props.df;
@@ -369,7 +502,7 @@ class ListOfVariables extends React.Component {
               <h5>Sort By</h5>
               <div className="input-group mb-3">
                 <div className="input-group-prepend">
-                  <label className="input-group-text" htmlFor="inputGroupSelect01">Options</label>
+                  <label className="input-group-text" htmlFor="inputGroupSelect01">Sorting Options</label>
                 </div>
                 <select className="custom-select" id="inputGroupSelect01" onChange={(e) => this.sortByProvider(e)}>
                   <option selected>Choose a way of sorting doctors</option>
@@ -377,12 +510,6 @@ class ListOfVariables extends React.Component {
                   <option value="sort_by_avg_bill">by amount of bill</option>
                   <option value="sort_by_num_procedures">by number of procedures</option>
                 </select>
-
-                {/*<DropdownButton id="dropdown-basic-button" title="Dropdown button">*/}
-                  {/*<Dropdown.Item value = "1"  name = "1" onClick={this.sortByProvider()}>sort_by_avg_bill</Dropdown.Item>*/}
-                  {/*<Dropdown.Item value = "2" name = "2" onClick={this.sortByProvider()}>sort_by_num_procedures</Dropdown.Item>*/}
-                  {/*<Dropdown.Item href="#/action-3" onClick={this.this.state.sortBy }>Something else</Dropdown.Item>*/}
-                {/*</DropdownButton>*/}
               </div>
             </div>
 
@@ -404,6 +531,20 @@ class ListOfVariables extends React.Component {
               <div className="col-8">
                 {this.renderListOfVariables(this.state.varChosen)}
               </div>
+            </div>
+            <div>
+              <h5>Sort By</h5>
+              <div className="input-group mb-3">
+                <div className="input-group-prepend">
+                  <label className="input-group-text" htmlFor="inputGroupSelect01">Sorting Options</label>
+                </div>
+              <select className="custom-select" id="inputGroupSelect01" onChange={(e) => this.sortByProcedure(e)}>
+                <option selected>Choose a way of sorting procedures</option>
+                <option value="procedure_sort_by_variance">by standard deviation</option>
+                <option value="procedure_sort_by_avg_bill">by average amount of bill</option>
+                <option value="procedure_sort_by_num_procedures">by number of procedures</option>
+              </select>
+            </div>
             </div>
           </div>
           <ChartByProcedure procedure_Graph_Data = {this.state.procedure_Graph_Data}></ChartByProcedure>
