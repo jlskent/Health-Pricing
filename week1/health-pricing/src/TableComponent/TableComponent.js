@@ -2,9 +2,11 @@ import React from 'react';
 import './TableComponent.css';
 import BootstrapTable from 'react-bootstrap-table-next';
 import * as dataForge from "data-forge";
-import PriceComponent from "../PriceComponent/PriceComponent";
-// import 'react-bootstrap-table-next/dist/react-bootstrap-table2.min.css';
+import paginationFactory from 'react-bootstrap-table2-paginator';
 
+// import PriceComponent from "../PriceComponent/PriceComponent";
+// import 'react-bootstrap-table-next/dist/react-bootstrap-table2.min.css';
+//
 
 // here we actually get a list of dataframes
 class TableComponent extends React.Component {
@@ -15,6 +17,9 @@ class TableComponent extends React.Component {
       tableData: null
     };
     this.renderTable = this.renderTable.bind(this)
+
+    this.removeItem = this.removeItem.bind(this)
+
   }
 
   async componentWillReceiveProps(nextProps) {
@@ -38,14 +43,25 @@ class TableComponent extends React.Component {
     }
   }
 
+  componentWillLoad(){
+    this.clearData();
+
+  }
 
 
   componentDidUpdate(prevProps) {
+
     // Typical usage (don't forget to compare props):
     if (this.props.tableData !== prevProps.tableData) {
       this.renderTable();
     }
   }
+
+
+
+
+
+
   //first step create variables to choose from on the left
   renderTable(){
 
@@ -163,13 +179,16 @@ class TableComponent extends React.Component {
         return (
           <div>
             <h5>CPT CODE: {arr[0].CPT_CODE} </h5>
+            <div className="text-right">
+              <button className="btn btn-outline-primary btn-sm" value = {this.state.tableData.indexOf(x)} onClick={(e)=>this.removeItem(e)}>remove</button>
+            </div>
             <BootstrapTable
               data={ arr }
               keyField="Payments"
               columns={col_list}
               tableStyle={ { background: 'black' } }
               headerStyle={ { background: '#00ff00' } }
-
+              pagination={ paginationFactory()}
               striped
               hover
               condensed
@@ -196,6 +215,34 @@ class TableComponent extends React.Component {
         <div>{result_list}</div>
       );
     }
+  }
+
+
+
+
+  clearData(){
+    this.setState({
+      tableData : null
+    });  }
+
+
+  removeItem(e) {
+    console.log(e.target.value);
+    const item = parseInt(e.target.value);
+    console.log(this.state.tableData.length);
+
+    this.setState((prevState) => ({
+      tableData: prevState.tableData.filter((_, i) => i !== item)
+    }));
+
+
+    // const deletedItem = this.state.tableData.filter((this.state.tableData, e.target.value) => {
+    //   return this.state.tableData[0] !== index
+    // });
+    // this.setState({ tableData[item]: null })
+
+    // this.renderTable();
+
   }
 
   render() {

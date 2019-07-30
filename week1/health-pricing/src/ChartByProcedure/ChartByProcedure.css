@@ -1,4 +1,12 @@
 
+.back_ground_bar:hover {
+    opacity: 0.5!important;
+
+    fill: lightgrey !important;
+}
+
+
+
 #header {
     display:inline;
     text-align: left;

@@ -9,6 +9,8 @@ import * as dataForge from 'data-forge';
 import { Boxplot, computeBoxplotStats } from 'react-boxplot';
 import d3Tip from 'd3-tip';
 import { sliderBottom } from 'd3-simple-slider';
+import TableComponent from "../TableComponent/TableComponent";
+import TableComponentForProc from "../TableComponentForProc/TableComponentForProc";
 
 
 
@@ -19,12 +21,14 @@ class ChartByProcedure extends React.Component {
     this.state = {
       // dataSorted : [],
       data:null,
+      tableData : [],
       receivedData: false
     };
 
     this.createBarChart = this.createBarChart.bind(this);
     this.resetZoom = this.resetZoom.bind(this);
     this.renderTitle = this.renderTitle.bind(this);
+    this.updateTableData = this.updateTableData.bind(this);
 
   }
 
@@ -63,6 +67,23 @@ class ChartByProcedure extends React.Component {
   }
 
 
+  clearTableData(){
+    this.setState({  tableData : []  });
+  }
+
+
+  updateTableData (group) {
+    // const groupName = group.getSeries('CPT_CODE').first();
+    let tableData = [...this.state.tableData];
+    //console.log(tableData.toString());
+    if (tableData.indexOf(group) === -1) {
+      tableData.push(group);
+      this.setState({tableData});
+    }
+  }
+
+
+
   resetZoom(){
     // console.log(this.node);
     var node = this.node;
@@ -71,6 +92,10 @@ class ChartByProcedure extends React.Component {
     d3.select(node).attr("transform", defaultTransform);
     this.createBarChart(this.state.data)
   }
+
+
+
+
 
 
   createBarChart(data) {
@@ -94,7 +119,7 @@ class ChartByProcedure extends React.Component {
     var dimensions =
       {
         client: clientWidth,
-        width: clientWidth - 150,
+        width: clientWidth - 50,
         height: 500,
         half: 250,
         halfBarWidth : 50,
@@ -202,7 +227,7 @@ class ChartByProcedure extends React.Component {
       .selectAll("line")
       .data(y_axis.scale().ticks().map( (d) => yScale(d)))
       .enter().append("line")
-      .attr("x1", 0)
+      .attr("x1", 40)
       .attr("y1", function(d) { return d; })
       .attr("x2", dimensions.width)
       .attr("y2", function(d) { return d; });
@@ -226,7 +251,6 @@ class ChartByProcedure extends React.Component {
     /*
     create slider
     */
-
     // construct the slider
     // note we can not append html elements(like div) to svg
     var data = [1, 1.5, 2, 2.5, 3,3.5,4];
@@ -276,6 +300,10 @@ class ChartByProcedure extends React.Component {
       // console.log(d);
       zoom.scaleTo(graph, d);
     }
+    /*
+    create slider
+    */
+
 
 
 
@@ -284,8 +312,6 @@ class ChartByProcedure extends React.Component {
     /*
     * create legend
     * */
-
-
     // console.log("parentnode width" + typeof clientWidth);
     anchor.append("g")
       .attr("id", "legend")
@@ -302,14 +328,12 @@ class ChartByProcedure extends React.Component {
       .attr("cy",40)
       .attr("r", 5)
       .style("fill" , colors.red);
-
     d3.select("g#legend")
       .append("text")
       .attr("class", "legendText")
       .attr("x", 20)
       .attr("y",10)
       .text("Charge");
-
     d3.select("g#legend")
       .attr("class", "legendText")
       .append("text")
@@ -317,40 +341,92 @@ class ChartByProcedure extends React.Component {
       .attr("y",40)
       .text("Payment");
 
+
+
+
+
     /*
     * create grid
     *
     *
     * */
 
-
-
-
-
-
-
-
+    graph.append("g").attr("id", "whiteBar");
 
 
     // iterate each group and draw box plot
     for (const group of theGroups) {
       const groupName = group.getSeries('BILLING_PROV_NM').first();
-      console.log("a group\n "+ group);
+      // console.log("a group\n "+ group);
       //console.log("group name  "+ groupName);
       //console.log("max value  "+ max);
 
       const chargeSeries = group.getSeries("Charges").parseInts();
       const paymentSeries = group.getSeries("Payments").parseInts();
 
+
+      const positive = paymentSeries.forEach(value => {
+        Math.abs(value);
+        // ... do something with value ...
+      });
+
       // console.log("a group payment  "+ paymentSeries);
       const chargeStats = computeBoxplotStats(chargeSeries.toArray());
-      const paymentStats = computeBoxplotStats(paymentSeries.toArray());
+      const paymentStats = computeBoxplotStats(positive.toArray());
 
       // min = chargeSeries.min();
       // max = chargeSeries.max();
 
       const xPosition = xScale(groupName);
 
+
+      const update = (group) => {
+        this.updateTableData(group);
+      };
+
+
+      const drawBackGroundRect = (xPosition, max, min, group) => {
+        var data = [];
+        data.push(group);
+
+        graph.select("g#whiteBar")
+          .append("g")
+          .selectAll("rect")
+          .data(data)
+          .enter()
+          .append("rect").attr('class', 'back_ground_bar')
+        // .attr("x", (d) => console.log(d))
+        // .attr("x", (d) => console.log(d.toString()))
+        // .attr("x", (d) => console.log())
+
+          .attr("x", (d) => {
+            const providerNameAsGroup = d.getSeries('BILLING_PROV_NM').first();
+            const position = xScale(providerNameAsGroup);
+            // console.log(position);
+            return position;
+          })
+          // .attr("y", 300)
+          // .attr("width", 200)
+          // .attr("height", 400)
+          // .attr("y", yScale(max*1.2))
+
+          .attr("y", 0)
+          .attr("width", xScale.bandwidth())
+          .attr("height", dimensions.height)
+          .style("fill", "green")
+          .style("opacity", "0")
+          .on("click", (d) =>  {
+            // console.log(d);
+            this.updateTableData(d);
+            update(d);
+          } );
+      };
+
+
+
+      const minTickPos = yScale.ticks()[0] - (yScale.ticks()[0]-yScale.ticks()[0]);
+      const maxTickPos = yScale.ticks()[yScale.ticks().length - 1];
+      drawBackGroundRect(xPosition, maxTickPos, minTickPos, group);
       drawOneBoxPlot(chargeStats, xPosition, max, min, colors.blue);
       drawOneBoxPlot(paymentStats, xPosition + xScale.bandwidth()/2, max, min, colors.red);
 
@@ -377,6 +453,7 @@ class ChartByProcedure extends React.Component {
 
 
     function drawOneBoxPlot(stats, xPosition, max, min ,color) {
+      console.log("stats per group " + JSON.stringify(stats));
 
       // console.log(color);
       // const anchor = d3.select(node);
@@ -439,12 +516,12 @@ class ChartByProcedure extends React.Component {
         .attr("stroke", "black");
 
 
-      // const tip = d3Tip().attr('class', 'd3-tip').html(function(d) {
+      const tip = d3Tip().attr('class', 'd3-tip').html(function(d) {
         // lines.selectAll('dashLines').style("display",null);
         // lines.style("display",null);
-      //   return "value:" + d.toString();
-      // });
-      // anchor.call(tip);
+        return "value:" + d.toString();
+      });
+      anchor.call(tip);
 
 
       // alternative
@@ -452,6 +529,31 @@ class ChartByProcedure extends React.Component {
       // toolbar.onclick = function (e) {
       //   alert("Hello");
       // };
+
+
+      var data_sorted = stats.outliers.length>0 ? stats.outliers: [NaN];
+
+      console.log("stats " + data_sorted);
+
+      // append dots
+      anchor.select("g").selectAll("dot")
+        .data(data_sorted)
+        .enter()
+
+        .each(function (d,i) {
+          if(d){
+            d3.select(this).append('circle')
+              .attr("r", xScale.bandwidth() / 25)
+              .attr("cx", (d,i) => xPosition + xScale.bandwidth() / 4)
+              .attr("cy", (d,i ) => yScale(d))
+              .attr("fill", "black")
+              .on('mouseover', tip.show)
+              .on('mouseout', tip.hide);
+          }else{
+            d3.select(this).remove();
+          }
+        });
+
 
 
     }
@@ -501,11 +603,12 @@ class ChartByProcedure extends React.Component {
 
     <div>
       {this.renderTitle()}
-
+      {this.renderButtons()}
       <div className="scaling-svg-container">
-        {this.renderButtons()}
-        {/*<button className="btn btn-outline-primary" onClick={this.resetZoom}>reset view</button>*/}
         <svg ref={ node => this.node = node } width="100%" height="auto" class="svg-content"  ></svg>
+      </div>
+      <div className="">
+        <TableComponentForProc tableData = {this.state.tableData}></TableComponentForProc>
       </div>
     </div>
     );

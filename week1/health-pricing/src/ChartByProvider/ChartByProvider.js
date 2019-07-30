@@ -18,7 +18,7 @@ class ChartByProvider extends React.Component {
     constructor(props) {
     super(props);
     this.state = {
-      dataSorted : [],
+      // dataSorted : [],
       tableData : [],
       data: null,
       receivedData: false
@@ -57,14 +57,12 @@ class ChartByProvider extends React.Component {
   * handle event when clicking on the certain provider
   * */
   updateTableData (group){
-
     // const groupName = group.getSeries('CPT_CODE').first();
-
     let tableData = [...this.state.tableData];
     // tableData.push(group);
     // this.setState({ tableData });
 
-    console.log(tableData.toString());
+    // console.log(tableData.toString());
 
     if(tableData.indexOf(group) === -1) {
       tableData.push(group);
@@ -104,7 +102,7 @@ class ChartByProvider extends React.Component {
     // console.log(this.node);
     var node = this.node;
     const defaultTransform = d3.zoomIdentity;
-    console.log(defaultTransform);
+    // console.log(defaultTransform);
     d3.select(node).attr("transform", defaultTransform);
     this.createBarChart(this.state.data)
   }
@@ -172,8 +170,10 @@ class ChartByProvider extends React.Component {
     for (const group of theGroups) {
       const chargeSeries = group.getSeries("Charges").parseInts();
       const paymentSeries = group.getSeries("Payments").parseInts();
+      const positivePaymentSeries = paymentSeries.after(0).select(value => Math.abs(value));
+
       const chargeStats = computeBoxplotStats(chargeSeries.toArray());
-      const paymentStats = computeBoxplotStats(paymentSeries.toArray());
+      const paymentStats = computeBoxplotStats(positivePaymentSeries.toArray());
       var maxOfTwo = Math.max(chargeStats.whiskerHigh, paymentStats.whiskerHigh);
       max = Math.max(maxOfTwo, max);
       var minOfTwo = Math.min(chargeStats.whiskerLow, paymentStats.whiskerLow);
@@ -420,9 +420,16 @@ class ChartByProvider extends React.Component {
       const chargeSeries = group.getSeries("Charges").parseInts();
       const paymentSeries = group.getSeries("Payments").parseInts();
 
+      const positivePaymentSeries = paymentSeries.after(0).select(value => Math.abs(value));
+
+
+
       // console.log("a group payment  "+ paymentSeries);
       const chargeStats = computeBoxplotStats(chargeSeries.toArray());
-      const paymentStats = computeBoxplotStats(paymentSeries.toArray());
+      const paymentStats = computeBoxplotStats(positivePaymentSeries.toArray());
+
+
+
 
       // min = chargeSeries.min();
       // max = chargeSeries.max();
@@ -513,6 +520,9 @@ class ChartByProvider extends React.Component {
     * */
     function drawOneBoxPlot(stats, xPosition, max, min ,color) {
 
+      // console.log("stats per group " + JSON.stringify(stats));
+
+
       // console.log(color);
       // // const anchor = d3.select(node);
       //
@@ -580,6 +590,39 @@ class ChartByProvider extends React.Component {
         return "value:" + d.toString();
       });
       graph.call(tip);
+
+
+
+      // console.log("stats " + JSON.stringify(stats));
+
+
+      var data_sorted = stats.outliers.length>0 ? stats.outliers: [NaN];
+
+      console.log("stats " + data_sorted);
+
+      // append dots
+      anchor.select("g").selectAll("dot")
+        .data(data_sorted)
+        .enter()
+
+        .each(function (d,i) {
+          if(d){
+            d3.select(this).append('circle')
+              .attr("r", xScale.bandwidth() / 25)
+              .attr("cx", (d,i) => xPosition + xScale.bandwidth() / 4)
+              .attr("cy", (d,i ) => yScale(d))
+              .attr("fill", "black")
+              .on('mouseover', tip.show)
+              .on('mouseout', tip.hide);
+          }else{
+            d3.select(this).remove();
+          }
+        });
+
+
+
+
+
 
 
 

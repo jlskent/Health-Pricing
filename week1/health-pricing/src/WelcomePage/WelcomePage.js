@@ -150,7 +150,7 @@ class WelcomePage extends React.Component {
           <h5 className="texts">{this.state.text}</h5>
 
           <Link to="/upload">
-            <button className="btn btn-primary btn-lg">Start Exploring</button>
+            <button className="btn btn-primary btn-lg" id = "rounded_btn">Start Exploring</button>
           </Link>
         </div>
 

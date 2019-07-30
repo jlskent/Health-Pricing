@@ -50,18 +50,24 @@ class Upload extends React.Component {
     this.sendRequest = this.sendRequest.bind(this);
     this.renderActions = this.renderActions.bind(this);
     this.updateData = this.updateData.bind(this);
-    // this.jumpToStep = this.jumpToStep.bind(this);
-
-
-
-    const handleClick = () => {
-
-      console.log("passing func")
-
-    }
-
-
+    this.updateFunction = this.updateFunction.bind(this);
   }
+
+
+
+
+
+  updateFunction = (someValue) => {
+    this.setState({
+      df: someValue
+    });
+    console.log("passing func")
+
+  };
+
+
+
+
 
   componentDidMount() {
 
@@ -183,7 +189,7 @@ class Upload extends React.Component {
         </div>
         {/*<div><ListOfVariables {...this.state _onChange={this.onChange}} /></div>*/}
         <div>
-          <ListOfVariables {...this.state}  />
+          <ListOfVariables {...this.state}  updateFunction={this.updateFunction}/>
 
         </div>
 

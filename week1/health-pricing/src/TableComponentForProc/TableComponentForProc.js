@@ -1,5 +1,5 @@
 import React from 'react';
-import './TableComponent.css';
+import './TableComponentForProc.css';
 import BootstrapTable from 'react-bootstrap-table-next';
 import * as dataForge from "data-forge";
 import paginationFactory from 'react-bootstrap-table2-paginator';
@@ -9,7 +9,7 @@ import paginationFactory from 'react-bootstrap-table2-paginator';
 //
 
 // here we actually get a list of dataframes
-class TableComponent extends React.Component {
+class TableComponentForProc extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
@@ -173,9 +173,9 @@ class TableComponent extends React.Component {
 
         return (
           <div>
-            <h5>CPT CODE: {arr[0].CPT_CODE} </h5>
-            <div>
-              <button className="list-group-item list-group-item-action" value = {this.state.tableData.indexOf(x)} onClick={(e)=>this.removeItem(e)}>remove</button>
+            <h5>Provider: {arr[0].BILLING_PROV_NM} </h5>
+            <div className="text-right">
+              <button className="btn btn-outline-primary btn-sm" value = {this.state.tableData.indexOf(x)} onClick={(e)=>this.removeItem(e)}>remove</button>
             </div>
             <BootstrapTable
               data={ arr }
@@ -265,4 +265,4 @@ class TableComponent extends React.Component {
 
 }
 
-export default TableComponent;
+export default TableComponentForProc;

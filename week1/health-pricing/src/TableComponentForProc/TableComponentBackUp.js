@@ -1,5 +1,5 @@
 import React from 'react';
-import './TableComponent.css';
+import './TableComponentForProc.css';
 import BootstrapTable from 'react-bootstrap-table-next';
 import * as dataForge from "data-forge";
 import PriceComponent from "../PriceComponent/PriceComponent";
