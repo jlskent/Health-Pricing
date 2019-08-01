@@ -120,7 +120,7 @@ class WelcomePage extends React.Component {
     return (
       <div id="main">
         <div className="mainBlock">
-          <svg className='container' width="400px" height="200px" viewBox="30 27 529 286" version="1.1">
+          <svg className='' width="400px" height="200px" viewBox="30 27 529 286" version="1.1">
             <g id="graph-copy" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd" transform="translate(30.000000, 27.000000)">
               <g id="GRAPHS" transform="translate(64.000000, 16.000000)" stroke-linecap="round" stroke-width="8" stroke-linejoin="round">
                 <polyline id="Banks" stroke="#5BCAC1"
@@ -130,7 +130,6 @@ class WelcomePage extends React.Component {
                 <polyline id="PayPal" stroke="#F6F5A6"
                           points="2.04739336 180 53.273159 180 99.2985782 91 137.175355 47 219.077488 47 256.947867 90 301.990521 47 349.080569 137 398.228672 137 432 91"></polyline>
               </g>
-
               <g id="grid" transform="translate(46.618321, 4.750000)" stroke="#FFFFFF" stroke-linecap="square"
                  opacity="0.0800000057">
                 <path d="M0.396183206,1.1875 L478.991396,1.1875" id="Line"></path>

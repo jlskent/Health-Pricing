@@ -211,7 +211,12 @@ class ListOfVariables extends React.Component {
               };
             }).inflate().after(0).orderByDescending(row => row.Average);
 
-          this.setState( {dataAfterSorting: df_sorted_by_adjustments},
+
+          const formatted_adjustments = df_sorted_by_adjustments.transformSeries({
+            Average: value => (value != null) ? value.toFixed(3) : "DataPoint not enough"
+          });
+
+          this.setState( {dataAfterSorting: formatted_adjustments},
             () => this.renderListOfVariables(this.state.varChosen)
           );
           break;
@@ -307,8 +312,9 @@ class ListOfVariables extends React.Component {
     //console.log("checked" + this.state.filterZeroChecked);
     // if checked, backup whole data and update parent prop
     if(this.props.df) {
+      // this actually means checked
       if (!this.state.filterZeroChecked) {
-        var theDf= this.props.df;
+        var theDf= this.state.KeepProcedureIsOneChecked ? this.state.filteredData : this.props.df;
         const filtered = theDf.where(row => row.Charges != "0");
         this.setState({
           filteredData : filtered
@@ -334,9 +340,8 @@ class ListOfVariables extends React.Component {
     // if checked, backup whole data and update parent prop
     if(this.props.df){
       console.log("have df");
-
       if (!this.state.KeepProcedureIsOneChecked) {
-        var theDf= this.props.df;
+        var theDf= this.state.filterZeroChecked ? this.state.filteredData : this.props.df;
         const filtered = theDf.where(row => row.PROCQTY === '1');
         this.setState({
           filteredData : filtered
@@ -386,7 +391,12 @@ class ListOfVariables extends React.Component {
       // console.log("currentVariable "+ this.state.currentSelection.toString());
       // eg filter row[some cpt code 33999] = 33999
 
-      const filtered = this.props.df.where(row => row[currentVar] === currentItem);
+      var filtered = this.props.df.where(row => row[currentVar] === currentItem);
+
+      if( this.state.filteredData ){
+        filtered = this.state.filteredData.where(row => row[currentVar] === currentItem);
+      }
+
       this.setState({  cpt_Graph_Data: filtered  });
       if (currentVar === "BILLING_PROV_NM" ){
         // pass all the rows have the current provider name
@@ -469,16 +479,19 @@ class ListOfVariables extends React.Component {
   renderFilterDataOption(){
     return (
       <div id = "theDiv">
-        <h5>Filter data</h5>
+        {/*<i className="material-icons">filter_1</i>*/}
+        <h5 className="inline_h5">Filter data</h5>
+        <div>
         <ButtonGroup toggle className = "btn-group">
-          <ToggleButton type="checkbox" variant="outline-secondary" className = "toggle_btn" checked={this.state.filterZeroChecked} onChange ={(e) => this.handleCheckboxFilterZero(e)}>
+          <ToggleButton type="checkbox" variant="light" size = "sm" className = "toggle_btn" checked={this.state.filterZeroChecked} onChange ={(e) => this.handleCheckboxFilterZero(e)}>
             Ignore rows with 0 Charge
           </ToggleButton>
 
-          <ToggleButton type="checkbox" variant="outline-secondary" className = "toggle_btn"  checked={this.state.KeepProcedureIsOneChecked} onChange ={(e) => this.handleCheckboxKeepProcedureIsOne(e)}>
+          <ToggleButton type="checkbox" variant="light" size = "sm" className = "toggle_btn"  checked={this.state.KeepProcedureIsOneChecked} onChange ={(e) => this.handleCheckboxKeepProcedureIsOne(e)}>
             Only keep rows whose procedure quantity is one
           </ToggleButton>
         </ButtonGroup>
+        </div>
       </div>
     )
   }
@@ -542,7 +555,7 @@ class ListOfVariables extends React.Component {
         const result_list = grouped.toRows().map(x => {
           //console.log("list " + x);
           return(
-            <div>
+            <div className="">
               <button className="list-group-item list-group-item-action" value={x[0]} onClick={(e)=>this.selectItem(e)}>{x[0]}
                 <span className="badge badge-secondary float-right mt-2">frequency {x[1]}</span>
               </button>
@@ -650,9 +663,7 @@ class ListOfVariables extends React.Component {
             <h4>Step 2. Start with a variable</h4>
             {this.renderFilterDataOption()}
             <h5>browse by</h5>
-
             <div className = "row">
-
               <div className="col-4">
                 <div>{this.renderSelection()}</div>
               </div>
@@ -685,10 +696,12 @@ class ListOfVariables extends React.Component {
               </div>
             </div>
             <div>
-              <h5>Sort By</h5>
+              {/*<i className="material-icons">sort</i>*/}
+              <h5 className="inline_h5">Sort By</h5>
               <div className="input-group mb-3">
                 <div className="input-group-prepend">
                   <label className="input-group-text" htmlFor="inputGroupSelect01">Sorting Options</label>
+
                 </div>
                 <select className="custom-select" id="inputGroupSelect01" onChange={(e) => this.sortByProvider(e)}>
                   <option selected>Choose a way of sorting doctors</option>

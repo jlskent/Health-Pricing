@@ -1,6 +1,7 @@
 // import { scaleLinear } from 'd3-scale';
 // import { scaleBand } from 'd3-scale';
 // import data from '../Data/sample_data.csv';
+// import TableComponent from "../TableComponent/TableComponent";
 
 import React from 'react';
 import './ChartByProcedure.css';
@@ -9,7 +10,6 @@ import * as dataForge from 'data-forge';
 import { Boxplot, computeBoxplotStats } from 'react-boxplot';
 import d3Tip from 'd3-tip';
 import { sliderBottom } from 'd3-simple-slider';
-import TableComponent from "../TableComponent/TableComponent";
 import TableComponentForProc from "../TableComponentForProc/TableComponentForProc";
 
 
@@ -279,7 +279,7 @@ class ChartByProcedure extends React.Component {
       .attr('width', 300)
       .attr('height', 100)
       .append('g')
-      .attr('transform', 'translate(30,30)');
+      .attr('transform', 'translate(60,20)');
     gRange.call(sliderFill);
 
     // create new zoom behavior

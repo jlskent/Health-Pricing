@@ -262,20 +262,25 @@ class ChartByProvider extends React.Component {
     // console.log("ticks "+y_axis.scale().ticks());
 
 
+    var textSize = Math.min(xScale.bandwidth()/5,10);
+    var textSizeY = Math.max(xScale.bandwidth()/5,10);
+    if (textSizeY < 10 || textSizeY > 20) textSizeY = 10;
 
     // continue to draw axis
     graph.append("g")
       .attr("class", "axis")
       .attr("transform", "translate(0," + dimensions.height +")")
-      .style("font-size", function(d) { return ( `${xScale.bandwidth()/5}px`); })
-      .style("font-size", function(d) { return ( "font-min-size: 10px"); })
+      // .style("font-size", function(d) { return ( `${xScale.bandwidth()/5}px`); })
+      .style("font-size", function(d) { return ( `${textSize}px`); })
+      // .style("font-size", function(d) { return ( "font-max-size: 15px"); })
       .call(x_axis);
 
 
     graph.append("g")
       .attr("class", "axis")
-      .attr("transform", "translate(40, 0)").style("font-size", function(d) { return ( `${xScale.bandwidth()/5}px`); })
-      .style("font-size", function(d) { return ( "font-min-size: 30px"); })
+      .attr("transform", "translate(40, 0)")
+      .style("font-size", function(d) { return ( `${textSizeY}px`); })
+      // .style("style", function(d) { return ( "font-min-size: 20px"); })
       .call(y_axis);
 
 
@@ -307,7 +312,7 @@ class ChartByProvider extends React.Component {
       .attr('width', 300)
       .attr('height', 100)
       .append('g')
-      .attr('transform', 'translate(30,30)');
+      .attr('transform', 'translate(60,20)');
     gRange.call(sliderFill);
 
     // create new zoom behavior
@@ -412,9 +417,6 @@ class ChartByProvider extends React.Component {
       // console.log("a group\n "+ group);
       //console.log("group name  "+ groupName);
       //console.log("max value  "+ max);
-
-
-
 
 
       const chargeSeries = group.getSeries("Charges").parseInts();
@@ -608,7 +610,7 @@ class ChartByProvider extends React.Component {
         .each(function (d,i) {
           if(d){
             d3.select(this).append('circle')
-              .attr("r", xScale.bandwidth() / 25)
+              .attr("r", Math.min(xScale.bandwidth() / 25, 4))
               .attr("cx", (d,i) => xPosition + xScale.bandwidth() / 4)
               .attr("cy", (d,i ) => yScale(d))
               .attr("fill", "black")

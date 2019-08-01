@@ -13,6 +13,11 @@
     -webkit-overflow-scrolling: touch;
 }
 
+.inline_h5{
+    display: inline-block;
+    /*color: #6b89ba;*/
+}
+
 
 /*#toggle_btn:hover {*/
 
@@ -21,11 +26,21 @@
 /*}*/
 
 
-/*#toggle_btn.active {*/
+.toggle_btn.active {
+    font-weight: bold;
 
-    /*background-color: green !important;*/
+    color: white !important;
+    background-color: #6c757d !important;
+    /*background-color: #6b89ba !important;*/
 
-/*}*/
+}
+
+
+.list-group .list-group-item .list-group-item-action{
+    font-weight: bold !important;
+    color: white !important;
+
+}
 
 /*.btn-group { display: inline-block; }*/
 

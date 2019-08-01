@@ -254,7 +254,6 @@ class TableComponent extends React.Component {
 
       <div className="container">
         {this.renderTable()}
-
         {/*<ul className="collection">*/}
           {/*<li>{this.props.result.price}</li>*/}
           {/*<li>{this.props.result.description}</li>*/}
