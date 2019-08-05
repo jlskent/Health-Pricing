@@ -47,7 +47,7 @@ class ChartByProcedure extends React.Component {
       const procedureNameReceived = nextProps.procedure_Graph_Data.toArray()[0].PROC_NAME;
       this.setState({currentProcedureName: procedureNameReceived});
       this.setState({currentProcedureCode: procedureCodeReceived});
-
+      // this.props.setCurrentStep('generateGraph');
     }
   }
 
@@ -88,7 +88,7 @@ class ChartByProcedure extends React.Component {
     // console.log(this.node);
     var node = this.node;
     const defaultTransform = d3.zoomIdentity;
-    console.log(defaultTransform);
+    // console.log(defaultTransform);
     d3.select(node).attr("transform", defaultTransform);
     this.createBarChart(this.state.data)
   }
@@ -453,7 +453,7 @@ class ChartByProcedure extends React.Component {
 
 
     function drawOneBoxPlot(stats, xPosition, max, min ,color) {
-      console.log("stats per group " + JSON.stringify(stats));
+      // console.log("stats per group " + JSON.stringify(stats));
 
       // console.log(color);
       // const anchor = d3.select(node);
@@ -581,7 +581,8 @@ class ChartByProcedure extends React.Component {
 
     if (!this.state.receivedData){
       return (
-        <p className="h4" id = "header">BoxPlot Visualization </p>
+        <div>        {/*<p className="h4" id = "header">BoxPlot Visualization </p>*/}
+        </div>
       )
     }
 
@@ -605,7 +606,7 @@ class ChartByProcedure extends React.Component {
       {this.renderTitle()}
       {this.renderButtons()}
       <div className="scaling-svg-container">
-        <svg ref={ node => this.node = node } width="100%" height="auto" class="svg-content"  ></svg>
+        <svg ref={ node => this.node = node } width="100%" height="100%" class="svg-content"  ></svg>
       </div>
       <div className="">
         <TableComponentForProc tableData = {this.state.tableData}></TableComponentForProc>

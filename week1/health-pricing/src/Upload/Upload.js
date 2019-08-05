@@ -145,7 +145,7 @@ class Upload extends React.Component {
   renderNavigationSteps(){
     return (
       <div>
-        <p>Step Navigation</p>
+        {/*<p>Step Navigation</p>*/}
         <Navigation newStep = {this.state.currentStep} setCurrentStep={this.setCurrentStep}> </Navigation>
       </div>
 
@@ -169,30 +169,24 @@ class Upload extends React.Component {
           {/*<div className='step-progress'>*/}
           {/*<StepZilla steps={this.state.steps} showSteps = {true} showNavigation = {false} stepsNavigation = {true} stepsNavigation={false} />*/}
           {/*</div>*/}
-          <div className="row py-md-4">
-            <div className="col-6">
+          <div id = "main">
+            <h4>Step 1. Upload a file</h4>
+            <div>
               <DropZone onFilesAdded = {this.onFilesAdded} disabled= {this.state.uploading || this.state.uploadSuccess} />
             </div>
             {/*show a list of files*/}
-            <div className="col-6">
-              <div className="row h-100">
-                <div className="col">
-                  {this.state.files.map(file => {
-                    return (
-                      <div key={file.name} className="Row">
-                        <span className="Filename">{file.name}</span>
-                        {/*{this.renderProgress(file)}*/}
-                      </div>
-                    );
-                  })}
-                </div>
-                <div className="col align-self-end">
-                  <div className = "">
-                    {this.renderActions()}
+            <div>
+              {this.state.files.map(file => {
+                return (
+                  <div key={file.name} className="Row" id = "fileName">
+                    <span className="Filename">{file.name}</span>
+                    {/*{this.renderProgress(file)}*/}
                   </div>
-                </div>
-              </div>
+                );
+              })}
             </div>
+            <div id = "button">{this.renderActions()}</div>
+
           </div>
           {/*<div>*/}
             {/*<ListOfVariables {...this.state}  setCurrentStep={this.setCurrentStep}/>*/}

@@ -5,20 +5,16 @@
 // import * as dataForge from 'data-forge';
 // import { readFile, Series, DataFrame } from 'Data-forge';
 // import { BootstrapTable, TableHeaderColumn } from 'react-bootstrap-table';
-
-
-import React from 'react';
-import './Navigation.css';
 // import 'data-forge-fs';
 // import Stepper from 'react-stepper-horizontal';
 // import StepZilla from "react-stepzilla";
-
-
-import * as d3 from "d3";
+// import * as d3 from "d3";
 // import Data from "../Data/sample_data.csv";
-import Step from "./Step"
+// import Step from "./Step"
 // import { MDBContainer, MDBStepper, MDBStep, MDBIcon } from "mdbreact";
 
+import React from 'react';
+import './Navigation.css';
 import Stepper from 'bs-stepper'
 import 'bs-stepper/dist/css/bs-stepper.min.css';
 
@@ -34,7 +30,7 @@ class Navigation extends React.Component {
     //     uploadFile : "uploadFile",
     //     "choosingVariableStep" : "choosingVariableStep",
     //     "visualizationStep" : "visualizationStep",
-      }
+      };
     this.step = this.step.bind(this);
 
   };
@@ -67,40 +63,8 @@ class Navigation extends React.Component {
 
 
 
-  // componentDidUpdate() {
-    // if (this.state.currentStep){
-    //   this.handleClick(this.state.currentStep);
-    // }
-
-  // }
-
-
   // called before render, do not access dom
   componentWillMount() {
-    // for plug in but not using anymore
-
-
-
-    //
-    // const theSteps =
-    // [
-    // {title: 'Upload',
-    //   number: '1',
-    // },
-    // {title: 'Choose Variable',
-    //   number: '2',
-    //   },
-    // {title: 'Visualization',
-    //   number: '3',
-    //
-    // }
-    //
-    // ];
-    // this.setState({ steps : theSteps});
-
-
-
-    // set default currentStep
   }
 
 
@@ -150,7 +114,6 @@ class Navigation extends React.Component {
     return (
       <div>
 
-
         <div id="stepper1" className="bs-stepper">
           <div className="bs-stepper-header">
             <div className="step" data-target="#test-l-1">
@@ -188,26 +151,6 @@ class Navigation extends React.Component {
             </form>
           </div>
         </div>
-
-
-
-          {/*<nav aria-label="Page navigation example">*/}
-          {/*<ul className="pagination justify-content-center">*/}
-            {/*<li className="page-item">*/}
-              {/*<Step currentStep = {this.props.currentStep} label = 'uploadFile' id ='0'/>*/}
-              {/*<button className="list-group-item list-group-item-action" value="uploadFile" onClick={(e)=>this.handleClick(e)}>Upload a file</button>*/}
-            {/*</li>*/}
-            {/*<li className="page-item">*/}
-              {/*<Step currentStep = {this.props.currentStep} label = 'chooseVariable' id ='1'/>*/}
-              {/*<button className="list-group-item list-group-item-action" value="chooseVariable" onClick={(e)=>this.handleClick(e)}>Choose variable</button>*/}
-            {/*</li>*/}
-            {/*<li className="page-item">*/}
-              {/*<Step currentStep = {this.props.currentStep} label = 'generateGraph' id ='2'/>*/}
-              {/*<button className="list-group-item list-group-item-action" value="generateGraph" onClick={(e)=>this.handleClick(e)}>Visualization & compare</button>*/}
-            {/*</li>*/}
-          {/*</ul>*/}
-        {/*</nav>*/}
-
       </div>
     );
   }

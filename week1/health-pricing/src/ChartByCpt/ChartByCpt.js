@@ -46,6 +46,10 @@ class ChartByCpt extends React.Component {
 
   createBarChart(data) {
 
+
+
+
+
     console.log(data);
     d3.select("g").remove();
 
@@ -53,7 +57,19 @@ class ChartByCpt extends React.Component {
     var theData = new dataForge.DataFrame(data);
     console.log("create bar chart "+ theData);
     const chargeSeries = theData.getSeries("Charges").parseInts();
-    const dimensions = { width: 900, height: 300, half: 150, halfBarWidth : 50, tailLength: 30};
+
+
+    const clientWidth = this.node.parentNode.clientWidth;
+    var dimensions =
+      {
+        client: clientWidth,
+        width: clientWidth,
+        height: 500,
+        half: 250,
+        halfBarWidth : 50,
+        tailLength: 30,
+        margin: 40
+      };
     var data_sorted = chargeSeries.orderBy(value => value).toArray();
     //console.log("before sorted " + chargeSeries.toArray());
     //console.log("sorted \n" + chargeSeries.orderBy(value => value));
@@ -98,14 +114,13 @@ class ChartByCpt extends React.Component {
       .domain([stats.whiskerLow < 0 ? stats.whiskerLow*1.5 :stats.whiskerLow/1.5, max*1.1])
       .range([0, dimensions.width]);
     const yScale = d3.scaleLinear()
-      .range([dimensions.height/2, 0])
+      .range([dimensions.height, 0])
       .domain([0, 100]);
 
     //create axis
     const x_axis = d3.axisBottom()
       .scale(xScale);
     // anchor.append("g").attr("transform", "translate(20," + dimensions.height/2 +")").call(x_axis);
-    anchor.append("g").attr("transform", "translate(0," + dimensions.height +")").call(x_axis);
 
     const y_axis = d3.axisLeft()
       .scale(yScale);
@@ -123,8 +138,40 @@ class ChartByCpt extends React.Component {
     //   .attr("class", function(d) { console.log(d); });
 
 
+    //add grid
+    var graph = anchor.append("g").attr("id", "graph");
+    graph.append("g")
+      .attr("class", "grid")
+      .selectAll("line")
+      .data(x_axis.scale().ticks().map( (d) => xScale(d)))
+      .enter().append("line")
+      .attr("x1", function(d) { return d; })
+      .attr("y1", 0)
+      .attr("x2", function(d) { return d; })
+      .attr("y2", dimensions.height)
+      .attr("class", "gridLine");
+
+    // horizontal
+    graph.append("g")
+      .attr("class", "grid")
+      .selectAll("line")
+      .data(y_axis.scale().ticks().map( (d) => yScale(d)))
+      .enter().append("line")
+      .attr("x1", 0)
+      .attr("y1", function(d) { return d; })
+      .attr("x2", dimensions.width)
+      .attr("y2", function(d) { return d; })
+      .attr("class", "gridLine");
+
+
+
+
+    anchor.append("g").attr("transform", "translate(0," + dimensions.height +")").attr("id", "drawing").call(x_axis);
+
+
+
     // draw the center line
-    anchor.select("g").append("line")
+    anchor.select("g#drawing").append("line")
       .attr("x1", xScale(stats.whiskerLow))
       .attr("x2", xScale(stats.whiskerHigh))
       .attr("y1", -dimensions.half)
@@ -133,7 +180,7 @@ class ChartByCpt extends React.Component {
 
     // draw the rect
     // xScale(stats.quartile3) is the x coordinate of q3
-    anchor.select("g").append("rect")
+    anchor.select("g#drawing").append("rect")
       .attr("x", xScale(stats.quartile1))
       .attr("y", - dimensions.half- dimensions.halfBarWidth)
       .attr("width", xScale(stats.quartile3)- xScale(stats.quartile1))
@@ -144,14 +191,14 @@ class ChartByCpt extends React.Component {
 
 
     // draw text for q1 q3
-    anchor.select("g").append("text")
+    anchor.select("g#drawing").append("text")
       .attr("x", xScale(stats.quartile1))
       .attr("y", -dimensions.half - dimensions.tailLength)
       .attr("dy", "-5em")
       .attr("font-size", "15px")
       .attr("fill", "black")
       .text((d) => "q1");
-    anchor.select("g").append("text")
+    anchor.select("g#drawing").append("text")
       .attr("x", xScale(stats.quartile3))
       .attr("y", -dimensions.half - dimensions.tailLength)
       .attr("dy", "-5em")
@@ -161,7 +208,7 @@ class ChartByCpt extends React.Component {
 
 
     // draw the low line
-    anchor.select("g").append("line").attr('class', 'lines')
+    anchor.select("g#drawing").append("line").attr('class', 'lines')
       .attr("x1", xScale(stats.whiskerLow))
       .attr("x2", xScale(stats.whiskerLow))
       .attr("y1", -dimensions.half - dimensions.tailLength)
@@ -169,7 +216,7 @@ class ChartByCpt extends React.Component {
       .attr("stroke", "black");
 
     // append text
-    anchor.select("g").append("text")
+    anchor.select("g#drawing").append("text")
       .attr("x", xScale(stats.whiskerLow))
       .attr("y", -dimensions.half - dimensions.tailLength)
       .attr("dy", "-5em")
@@ -178,14 +225,14 @@ class ChartByCpt extends React.Component {
       .text((d) => "low");
 
     // draw the high line
-    anchor.select("g").append("line").attr('class', 'lines')
+    anchor.select("g#drawing").append("line").attr('class', 'lines')
       .attr("x1", xScale(stats.whiskerHigh))
       .attr("x2", xScale(stats.whiskerHigh))
       .attr("y1", -dimensions.half - dimensions.tailLength)
       .attr("y2", -dimensions.half + dimensions.tailLength)
       .attr("stroke", "black");
 
-    anchor.select("g").append("text")
+    anchor.select("g#drawing").append("text")
       .attr("x", xScale(stats.whiskerHigh))
       .attr("y", -dimensions.half - dimensions.tailLength)
       .attr("dy", "-5em")
@@ -196,7 +243,7 @@ class ChartByCpt extends React.Component {
 
 
     // draw the median line
-    anchor.select("g").append("line").attr('class', 'medianLine')
+    anchor.select("g#drawing").append("line").attr('class', 'medianLine')
       .attr("x1", xScale(stats.quartile2))
       .attr("x2", xScale(stats.quartile2))
       .attr("y1", -dimensions.half - dimensions.halfBarWidth)
@@ -208,7 +255,7 @@ class ChartByCpt extends React.Component {
 
 
     //draw iteractive lines
-    anchor.select("g").selectAll("dashLines")
+    anchor.select("g#drawing").selectAll("dashLines")
         .style("display", "none")
         .append("line").attr('class', 'dashLine')
         .attr("x1", "x1")
@@ -235,14 +282,14 @@ class ChartByCpt extends React.Component {
     // }
 
     // draw some dots
-    anchor.select("g").selectAll("dot")
+    anchor.select("g#drawing").selectAll("dot")
       .data(data_sorted)
       .enter()
       .append("circle")
       .attr("r", 3)
       .attr("cx", (d) => xScale(d))
       .attr("cy", -dimensions.half)
-      .attr("fill", "red")
+      .attr("fill", "black")
       .on('mouseover', tip.show)
 
       // .on('mouseover', function () {

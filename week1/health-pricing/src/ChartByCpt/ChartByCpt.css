@@ -1,23 +1,51 @@
-.chart text {
-    fill: cyan;
-    font: 10px sans-serif;
-    text-anchor: middle;
-}
+/*.chart text {*/
+    /*fill: cyan;*/
+    /*font: 10px sans-serif;*/
+    /*text-anchor: middle;*/
+/*}*/
 
 
-.svg-container {
-    display: inline-block;
-    position: relative;
-    width: 100%;
-    padding-bottom: 100%; /* aspect ratio */
-    vertical-align: top;
-    overflow: hidden;
+/*.svg-container {*/
+    /*display: inline-block;*/
+    /*position: relative;*/
+    /*width: 100%;*/
+    /*padding-bottom: 100%; !* aspect ratio *!*/
+    /*vertical-align: top;*/
+    /*overflow: hidden;*/
+/*}*/
+/*.svg-content-responsive {*/
+    /*display: inline-block;*/
+    /*position: absolute;*/
+    /*top: 10px;*/
+    /*left: 0;*/
+/*}*/
+
+
+/*grid*/
+/*.grid line {*/
+    /*fill: #ddd;*/
+    /*stroke: red;*/
+    /*shape-rendering: crispEdges;*/
+    /*vector-effect: non-scaling-stroke;*/
+    /*z-index: -1;*/
+/**/
+/*}*/
+
+.gridLine {
+    /*fill: #ddd;*/
+    stroke: #ddd;
+    /*shape-rendering: crispEdges;*/
+    /*vector-effect: non-scaling-stroke;*/
+    z-index: -1;
+
 }
-.svg-content-responsive {
-    display: inline-block;
-    position: absolute;
-    top: 10px;
-    left: 0;
+
+#graph {
+    /*fill: #ddd;*/
+    /*stroke: #ddd;*/
+    /*shape-rendering: crispEdges;*/
+    /*vector-effect: non-scaling-stroke;*/
+    z-index: -1;
 }
 
 
@@ -66,3 +94,5 @@
     /*position: absolute;*/
     /*text-align: center;*/
 /*}*/
+
+
