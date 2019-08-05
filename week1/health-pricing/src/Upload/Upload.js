@@ -1,3 +1,8 @@
+// import ChartByProvider from '../ChartByProvider/ChartByProvider';
+// import ChartByCpt from '../ChartByCpt/ChartByCpt';
+// import TableComponent from '../TableComponent/TableComponent';
+// import StepZilla from "react-stepzilla";
+
 import React from 'react';
 import './Upload.css';
 import DropZone from '../DropZone/DropZone'
@@ -6,14 +11,10 @@ import Papa from 'papaparse';
 import 'data-forge-fs';
 import * as dataForge from 'data-forge';
 import Navigation from '../Navigation/Navigation'
-import StepZilla from "react-stepzilla";
 
 
 import ChartByProcedure from '../ChartByProcedure/ChartByProcedure';
-import ChartByProvider from '../ChartByProvider/ChartByProvider';
-import ChartByCpt from '../ChartByCpt/ChartByCpt';
 
-import TableComponent from '../TableComponent/TableComponent';
 
 
 // parent component of since we receive data here
@@ -40,7 +41,18 @@ class Upload extends React.Component {
       uploading: false,
       uploadProgress: {},
       uploadSuccess: false,
-      // currentStep : null,
+
+      // this is used for step navigation
+      currentStep: {
+        uploadFile: 'uploadFile',
+        chooseVariable: 'chooseVariable',
+        generateGraph: 'generateGraph'
+
+      },
+
+      procedure_Graph_Data: null
+
+    // currentStep : null,
       // steps: null
 
     };
@@ -56,10 +68,18 @@ class Upload extends React.Component {
 
 
 
+  setCurrentStep = (someValue) => {
+    this.setState({
+      currentStep: someValue
+    });
+  };
 
+
+  // pass this function to child component so child can modify parent
+  // but in the end did not use it, but it it good to keep a code stub in case of use
   updateFunction = (someValue) => {
     this.setState({
-      df: someValue
+      procedure_Graph_Data: someValue
     });
     console.log("passing func")
 
@@ -74,35 +94,28 @@ class Upload extends React.Component {
 
   }
 
+
+
   // called before render, do not access dom
   componentWillMount() {
-    const theSteps =
-      [
-        {name: 'Upload', component: <DropZone onFilesAdded = {this.onFilesAdded} disabled= {this.state.uploading || this.state.uploadSuccess} />},
-        {name: 'Choose Variable', component: < ListOfVariables/>},
-        {name: 'Visualization', component: < ChartByProcedure/>},
-        {name: 'Compare', component: < TableComponent/>},
-
+    // for plug in but not using anymore
+    // const theSteps =
+      // [
+        // {name: 'Upload', component: <DropZone onFilesAdded = {this.onFilesAdded} disabled= {this.state.uploading || this.state.uploadSuccess} />},
+        // {name: 'Choose Variable', component: < ListOfVariables/>},
+        // {name: 'Visualization', component: < ChartByProcedure/>},
+        // {name: 'Compare', component: < TableComponent/>},
         // {name: 'Step 4', component: < />},
         // {name: 'Step 5', component: < />}
-      ];
-
-    this.setState({ steps : theSteps});
-
+      // ];
+    // this.setState({ steps : theSteps});
 
 
+
+    // set default currentStep
+    this.setState({ currentStep : 'uploadFile'});
   }
 
-  // take current state and parse csv
-  // parseData() {
-  //   const file = this.files[0];
-  //   console.log("list of variable " + file);
-  //   Papa.parse(file, {
-  //     download: true,
-  //     header: false,
-  //     complete: this.updateData
-  //   });
-  // }
 
 
   // helper function for parseData
@@ -121,33 +134,23 @@ class Upload extends React.Component {
       rows: data
     });
     //console.log("rightdf "+ rightDf);
-    //console.log("rightdf "+ rightDf.getColumnNames());
     this.setState({df: rightDf});
     //console.log("update Data "+ this.state.df);
-    // var columnSubset = rightDf.subset(["CPT_CODE", "ORIG_SERVICE_DATE"]);
-    //console.log("columnSubset "+ columnSubset);
 
-
-    // Data forge
-    // const df = new dataForge.DataFrame(Data);
-    // var columnNames = df.getColumnNames();
-    // console.log("columnNames "+ columnNames)
-    // console.log("df "+ df)
-    // var columnSubset = df.subset(["0", "1", "2", "3"]);
-    // console.log("columnSubset "+ columnSubset)
-    // columnSubset['index'] = range(1, len(df) + 1)
-    // const index = columnSubset.getIndex();
-    // console.log("index "+ columnSubset.getIndex());
-    // const indexedDf = columnSubset.resetIndex();
-    // console.log("indexedDf "+ indexedDf);
-    // const filteredDf = df.where(row => row['4'] = 0);
-    // console.log("filteredDf "+ filteredDf)
   }
 
 
 
 
+  renderNavigationSteps(){
+    return (
+      <div>
+        <p>Step Navigation</p>
+        <Navigation newStep = {this.state.currentStep} setCurrentStep={this.setCurrentStep}> </Navigation>
+      </div>
 
+    );
+  }
 
 
 
@@ -156,45 +159,78 @@ class Upload extends React.Component {
 
   render() {
 
-    return (
-      <div className="">
-        <Navigation currentStep = {this.props.currentStep}> </Navigation>
-        <div className='step-progress'>
-          <StepZilla steps={this.state.steps} showSteps = {true} showNavigation = {false} stepsNavigation = {true} stepsNavigation={false} />
-        </div>
-        <div className="row py-md-4">
+
+    if(this.state.currentStep === 'uploadFile'){
+      return (
+        <div className="">
+          {this.renderNavigationSteps()}
+
+          {/*maybe not use this*/}
+          {/*<div className='step-progress'>*/}
+          {/*<StepZilla steps={this.state.steps} showSteps = {true} showNavigation = {false} stepsNavigation = {true} stepsNavigation={false} />*/}
+          {/*</div>*/}
+          <div className="row py-md-4">
             <div className="col-6">
-              {/*<DropZone onFilesAdded = {this.onFilesAdded} disabled= {this.state.uploading || this.state.uploadSuccess} />*/}
+              <DropZone onFilesAdded = {this.onFilesAdded} disabled= {this.state.uploading || this.state.uploadSuccess} />
             </div>
             {/*show a list of files*/}
             <div className="col-6">
               <div className="row h-100">
                 <div className="col">
-                    {this.state.files.map(file => {
-                      return (
-                        <div key={file.name} className="Row">
-                          <span className="Filename">{file.name}</span>
-                          {/*{this.renderProgress(file)}*/}
-                        </div>
-                      );
-                    })}
+                  {this.state.files.map(file => {
+                    return (
+                      <div key={file.name} className="Row">
+                        <span className="Filename">{file.name}</span>
+                        {/*{this.renderProgress(file)}*/}
+                      </div>
+                    );
+                  })}
                 </div>
                 <div className="col align-self-end">
                   <div className = "">
-                  {this.renderActions()}
+                    {this.renderActions()}
                   </div>
                 </div>
               </div>
             </div>
+          </div>
+          {/*<div>*/}
+            {/*<ListOfVariables {...this.state}  setCurrentStep={this.setCurrentStep}/>*/}
+          {/*</div>*/}
+
         </div>
-        {/*<div><ListOfVariables {...this.state _onChange={this.onChange}} /></div>*/}
+      );
+
+
+
+    }
+
+
+
+
+
+
+    else if (this.state.currentStep === 'chooseVariable'){
+      return (
         <div>
-          <ListOfVariables {...this.state}  updateFunction={this.updateFunction}/>
-
+          {this.renderNavigationSteps()}
+          <ListOfVariables {...this.state}  setCurrentStep={this.setCurrentStep}/>
         </div>
+      );
+    }
 
-      </div>
-    );
+
+    else{
+    return (
+        <div>
+          {this.renderNavigationSteps()}
+          <ListOfVariables {...this.state}  setCurrentStep={this.setCurrentStep}/>
+          <ChartByProcedure procedure_Graph_Data = {this.state.procedure_Graph_Data}></ChartByProcedure>
+        </div>
+      );
+    }
+
+
   }
 
 
@@ -230,26 +266,6 @@ class Upload extends React.Component {
   }
 
 
-  // loadData() {
-  //   var Data = this.files;
-  //   d3.csv(Data, function(d) {
-  //     return {
-  //       // provider : d['BILLING_PROV_NM'],
-  //       // charge : d['Charges'],
-  //       // cptCode : d['CPT_CODE'],
-  //     };
-  //   }).then(function(Data) {
-  //     Data.forEach(function (row) {
-  //       // console.log(row);
-  //       // we got a row object
-  //       // providerArray.push(row.provider);
-  //       // chargeArray.push(row.charge);
-  //       Data.push(row);
-  //       // console.log(Data);
-  //     });
-  //     // nowDrawTheChart();
-  //   });
-  // }
 
   async uploadFiles() {
     this.setState({ uploadProgress: {}, uploading: true });
@@ -266,6 +282,8 @@ class Upload extends React.Component {
 
       });
 
+      this.setState({  currentStep : 'chooseVariable'})
+
     } catch (e) {
       // Not Production ready! Do some error handling here instead...
     }
@@ -280,53 +298,6 @@ class Upload extends React.Component {
     });
   }
 
-
-
-
-  //
-  // async uploadFiles() {
-  //   this.setState({ uploadProgress: {}, uploading: true });
-  //   const promises = [];
-  //   this.state.files.forEach(file => {
-  //     promises.push(this.sendRequest(file));
-  //   });
-  //   try {
-  //     await Promise.all(promises);
-  //     this.setState({ uploadSuccess: true, uploading: false });
-  //   } catch (e) {
-  //     // Not Production ready! Do some error handling here instead...
-  //     this.setState({ uploadSuccess: true, uploading: false });
-  //   }
-  // }
-
-
-  // sendRequest(file) {
-  //   return new Promise((resolve, reject) => {
-  //     const req = new XMLHttpRequest();
-  //     const formData = new FormData();
-  //     formData.append("file", file, file.name);
-  //     req.open("POST", "http://localhost:8000/upload");
-  //     req.send(formData);
-  //   });
-  // }
-  // //
-  // renderActions() {
-  //   if (this.state.uploadSuccess) {
-  //     console.log('uploadSuccess');
-  //     return (
-  //       <div>
-  //       <button onClick={() => this.setState({ files: [], uploadSuccess: false })}>Clear</button>
-  //         {/*pass state to child component*/}
-  //       </div>
-  //     );
-  //   } else {
-  //     return (
-  //       <button disabled={this.state.files.length < 0 || this.state.uploading} onClick={this.uploadFiles}>
-  //         Navigation
-  //       </button>
-  //     );
-  //   }
-  // }
 
 
 

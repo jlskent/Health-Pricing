@@ -70,17 +70,34 @@ class ListOfVariables extends React.Component {
 
   }
 
+
+
+  // async componentWillReceiveProps(nextProps) {
+    // if ( this.props !== nextProps) {
+      // this.props.setCurrentStep('chooseVariable');
+      // console.log('setting step')
+
+    // }
+  // }
+
   componentDidMount() {
+
     // this.loadData();
     // console.log("from parent "+this.props.columns);
   }
 
   componentWillMount() {
+
+
     // this.setState({  filterZeroChecked: false  });
     // this.setState({wholeData: this.props.df});
   }
 
   componentDidUpdate() {
+    // if(this.state.wholeData) {
+    //   this.props.setCurrentStep('chooseVariable');
+    // }
+
     // this.renderListOfVariables(this.state.currentSelection);
   }
 
@@ -401,15 +418,21 @@ class ListOfVariables extends React.Component {
       if (currentVar === "BILLING_PROV_NM" ){
         // pass all the rows have the current provider name
         this.setState({  provider_Graph_Data: filtered  })
+
       }
       if (currentVar === "PROC_NAME" ){
         // pass all the rows have the current procedure name
         this.setState({  procedure_Graph_Data: filtered  })
+        // this.props.setCurrentStep('generateGraph');
+
       }
 
 
 
     });
+
+    this.props.setCurrentStep('generateGraph');
+
   }
 
 
@@ -652,123 +675,137 @@ class ListOfVariables extends React.Component {
 
 
 
-
   render() {
-    if (this.props.df && this.props.uploadSuccess && this.state.varChosen === "CPT_CODE") {
-
-
-      return (
-        <div>
-          <div className="jumbotron">
-            <h4>Step 2. Start with a variable</h4>
-            {this.renderFilterDataOption()}
-            <h5>browse by</h5>
-            <div className = "row">
-              <div className="col-4">
-                <div>{this.renderSelection()}</div>
-              </div>
-              <div className="col-8">
-                {this.renderListOfVariables(this.state.varChosen)}
-              </div>
-            </div>
-          </div>
-          <ChartByCpt cpt_Graph_Data = {this.state.cpt_Graph_Data}></ChartByCpt>
-        </div>
-
-      );
-
-    }
-    else if (this.props.df && this.props.uploadSuccess && this.state.varChosen === "BILLING_PROV_NM") {
-      return (
-        <div>
-          <div className="jumbotron">
-            <h4>Step 2. Start with a variable</h4>
-            {this.renderFilterDataOption()}
-            <h5>browse by</h5>
-
-            <div className="row">
-
-              <div className="col-4">
-                <div>{this.renderSelection()}</div>
-              </div>
-              <div className="col-8">
-                {this.renderListOfVariables(this.state.varChosen)}
-              </div>
-            </div>
-            <div>
-              {/*<i className="material-icons">sort</i>*/}
-              <h5 className="inline_h5">Sort By</h5>
-              <div className="input-group mb-3">
-                <div className="input-group-prepend">
-                  <label className="input-group-text" htmlFor="inputGroupSelect01">Sorting Options</label>
-
-                </div>
-                <select className="custom-select" id="inputGroupSelect01" onChange={(e) => this.sortByProvider(e)}>
-                  <option selected>Choose a way of sorting doctors</option>
-                  <option value="sort_by_name">by names</option>
-                  <option value="sort_by_avg_bill">by amount of bill</option>
-                  <option value="sort_by_num_procedures">by number of procedures</option>
-                </select>
-              </div>
-            </div>
-
-          </div>
-          <ChartByProvider wholeData={this.state.provider_Graph_Data}></ChartByProvider>
-        </div>
-      )
-    }
-
-    else if (this.props.df && this.props.uploadSuccess && this.state.varChosen === "PROC_NAME") {
-      return (
-        <div>
-          <div className="jumbotron">
-            <h4>Step 2. Start with a variable</h4>
-            {this.renderFilterDataOption()}
-            <h5>browse by</h5>
-            <div className = "row">
-              <div className="col-4">
-                <div>{this.renderSelection()}</div>
-              </div>
-              <div className="col-8">
-                {this.renderListOfVariables(this.state.varChosen)}
-              </div>
-            </div>
-            <div>
-              <h5>Sort By</h5>
-
-              <div className="input-group mb-3">
-                <div className="input-group-prepend">
-                  <label className="input-group-text" htmlFor="inputGroupSelect01">Sorting Options</label>
-                </div>
-                <select className="custom-select" id="inputGroupSelect01" onChange={(e) => this.sortByProcedure(e)}>
-                  <option selected>Choose a way of sorting procedures</option>
-                  <option value="procedure_sort_by_payments_variance">by payment standard deviation</option>
-                  <option value="procedure_sort_by_charges_variance">by charges standard deviation</option>
-                  <option value="procedure_sort_by_adjustments">by adjustments</option>
-                  <option value="procedure_sort_by_avg_bill">by average amount of bill</option>
-                  <option value="procedure_sort_by_num_procedures">by number of procedures</option>
-                </select>
-              </div>
-
-
-            </div>
-          </div>
-          <ChartByProcedure procedure_Graph_Data = {this.state.procedure_Graph_Data}></ChartByProcedure>
-        </div>
-      );
-
-
-    }
-
-    else{
+    if (!this.props.df || !this.props.uploadSuccess ) {
       return(
         <div>
-
           <h4>Step 2. Start with a variable</h4>
           <p>no content yet</p>
         </div>
       );
     }
+
+    else if (this.props.currentStep === 'chooseVariable'){
+      if (this.state.varChosen === "CPT_CODE") {
+        return (
+          <div>
+            <div className="jumbotron">
+              <h4>Step 2. Start with a variable</h4>
+              {this.renderFilterDataOption()}
+              <h5>browse by</h5>
+              <div className = "row">
+                <div className="col-4">
+                  <div>{this.renderSelection()}</div>
+                </div>
+                <div className="col-8">
+                  {this.renderListOfVariables(this.state.varChosen)}
+                </div>
+              </div>
+            </div>
+            <ChartByCpt cpt_Graph_Data = {this.state.cpt_Graph_Data}></ChartByCpt>
+          </div>
+
+        );
+
+      }
+      else if (this.state.varChosen === "BILLING_PROV_NM") {
+        return (
+          <div>
+            <div className="jumbotron">
+              <h4>Step 2. Start with a variable</h4>
+              {this.renderFilterDataOption()}
+              <h5>browse by</h5>
+
+              <div className="row">
+
+                <div className="col-4">
+                  <div>{this.renderSelection()}</div>
+                </div>
+                <div className="col-8">
+                  {this.renderListOfVariables(this.state.varChosen)}
+                </div>
+              </div>
+              <div>
+                {/*<i className="material-icons">sort</i>*/}
+                <h5 className="inline_h5">Sort By</h5>
+                <div className="input-group mb-3">
+                  <div className="input-group-prepend">
+                    <label className="input-group-text" htmlFor="inputGroupSelect01">Sorting Options</label>
+
+                  </div>
+                  <select className="custom-select" id="inputGroupSelect01" onChange={(e) => this.sortByProvider(e)}>
+                    <option selected>Choose a way of sorting doctors</option>
+                    <option value="sort_by_name">by names</option>
+                    <option value="sort_by_avg_bill">by amount of bill</option>
+                    <option value="sort_by_num_procedures">by number of procedures</option>
+                  </select>
+                </div>
+              </div>
+
+            </div>
+            <ChartByProvider wholeData={this.state.provider_Graph_Data}></ChartByProvider>
+          </div>
+        )
+      }
+
+      else if (this.state.varChosen === "PROC_NAME") {
+        if (this.props.currentStep === 'chooseVariable') {
+          return (
+            <div>
+              <div className="jumbotron">
+                <h4>Step 2. Start with a variable</h4>
+                {this.renderFilterDataOption()}
+                <h5>browse by</h5>
+                <div className="row">
+                  <div className="col-4">
+                    <div>{this.renderSelection()}</div>
+                  </div>
+                  <div className="col-8">
+                    {this.renderListOfVariables(this.state.varChosen)}
+                  </div>
+                </div>
+                <div>
+                  <h5>Sort By</h5>
+
+                  <div className="input-group mb-3">
+                    <div className="input-group-prepend">
+                      <label className="input-group-text" htmlFor="inputGroupSelect01">Sorting Options</label>
+                    </div>
+                    <select className="custom-select" id="inputGroupSelect01" onChange={(e) => this.sortByProcedure(e)}>
+                      <option selected>Choose a way of sorting procedures</option>
+                      <option value="procedure_sort_by_payments_variance">by payment standard deviation</option>
+                      <option value="procedure_sort_by_charges_variance">by charges standard deviation</option>
+                      <option value="procedure_sort_by_adjustments">by adjustments</option>
+                      <option value="procedure_sort_by_avg_bill">by average amount of bill</option>
+                      <option value="procedure_sort_by_num_procedures">by number of procedures</option>
+                    </select>
+                  </div>
+                  {/*{this.props.currentStep === 'generateGraph' && <ChartByProcedure procedure_Graph_Data = {this.state.procedure_Graph_Data}></ChartByProcedure>}*/}
+                </div>
+              </div>
+              {/*<ChartByProcedure procedure_Graph_Data = {this.state.procedure_Graph_Data}></ChartByProcedure>*/}
+            </div>
+          );
+        }
+      }
+    }
+    // end of df/does not have df
+
+    else{
+      // if (this.props.currentStep === 'generateGraph' && this.state.procedure_Graph_Data) {
+        return (<div>
+            <ChartByProcedure procedure_Graph_Data = {this.state.procedure_Graph_Data}></ChartByProcedure>
+          </div>
+        );
+
+      // }
+
+
+    }
+
+
+
+
   }
 
 

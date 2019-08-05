@@ -1,12 +1,14 @@
-import React from 'react';
-import './App.css';
+
 // import 'materialize-css/dist/css/materialize.min.css';
-import 'bootstrap/dist/css/bootstrap.min.css';
 // import WelcomePage from './WelcomePage/WelcomePage';
 // import SearchBar from  './SearchBar/SearchBar';
+// import Visualization from './Visualization/Visualization';
+// import Footer from './Footer/Footer';
+import React from 'react';
+import './App.css';
+import 'bootstrap/dist/css/bootstrap.min.css';
 import Guide from './Guide/Guide';
-import Visualization from './Visualization/Visualization';
-import Footer from './Footer/Footer';
+
 import UploadFile from './UploadFile/UploadFile';
 import {Nav,Navbar,NavDropdown} from 'react-bootstrap';
 import WelcomePage from './WelcomePage/WelcomePage';
@@ -50,7 +52,7 @@ class App extends React.Component {
                   {/*<Route path="/" component={App} />*/}
                   <Route exact path="/" component={WelcomePage} />
                   <Route path="/guide" component={Guide} />
-                  <Route path="/hospitals" component={Visualization} />
+                  {/*<Route path="/hospitals" component={Visualization} />*/}
                   <Route path="/upload" component={UploadFile} />
                 </Switch>
               </div>

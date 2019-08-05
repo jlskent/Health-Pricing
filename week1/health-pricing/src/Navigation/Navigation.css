@@ -37,3 +37,27 @@
     color: #555;
 }
 
+
+
+
+/**/
+
+.list-group-item{
+    /*font-size: 200px;*/
+    /*font-family: Helvetica, Arial;*/
+    /*color: #444;*/
+    border:0px solid transparent; /* this was 1px earlier */
+
+}
+
+/*svg {*/
+    /*display: block;*/
+/*}*/
+
+/*.close-x {*/
+    /*stroke: green;*/
+    /*fill: transparent;*/
+    /*stroke-linecap: round;*/
+    /*stroke-width: 5;*/
+/*}*/
+

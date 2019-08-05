@@ -2,14 +2,20 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="7c67dac7-4af2-4d20-9cdf-c094623a4eb7" name="Default Changelist" comment="">
+      <change afterPath="$PROJECT_DIR$/week1/health-pricing/public/index_back_up.html" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/week1/health-pricing/src/Navigation/Step.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/week1/health-pricing/src/Navigation/Stepper.js" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/week1/health-pricing/src/ChartByProcedure/ChartByProcedure.js" beforeDir="false" afterPath="$PROJECT_DIR$/week1/health-pricing/src/ChartByProcedure/ChartByProcedure.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/week1/health-pricing/src/ChartByProvider/ChartByProvider.js" beforeDir="false" afterPath="$PROJECT_DIR$/week1/health-pricing/src/ChartByProvider/ChartByProvider.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/week1/health-pricing/src/ListOfVariables/ListOfVariables.css" beforeDir="false" afterPath="$PROJECT_DIR$/week1/health-pricing/src/ListOfVariables/ListOfVariables.css" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/package-lock.json" beforeDir="false" afterPath="$PROJECT_DIR$/package-lock.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/week1/health-pricing/package-lock.json" beforeDir="false" afterPath="$PROJECT_DIR$/week1/health-pricing/package-lock.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/week1/health-pricing/package.json" beforeDir="false" afterPath="$PROJECT_DIR$/week1/health-pricing/package.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/week1/health-pricing/public/index.html" beforeDir="false" afterPath="$PROJECT_DIR$/week1/health-pricing/public/index.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/week1/health-pricing/src/App.js" beforeDir="false" afterPath="$PROJECT_DIR$/week1/health-pricing/src/App.js" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/week1/health-pricing/src/ListOfVariables/ListOfVariables.js" beforeDir="false" afterPath="$PROJECT_DIR$/week1/health-pricing/src/ListOfVariables/ListOfVariables.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/week1/health-pricing/src/TableComponent/TableComponent.js" beforeDir="false" afterPath="$PROJECT_DIR$/week1/health-pricing/src/TableComponent/TableComponent.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/week1/health-pricing/src/WelcomePage/WelcomePage.css" beforeDir="false" afterPath="$PROJECT_DIR$/week1/health-pricing/src/WelcomePage/WelcomePage.css" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/week1/health-pricing/src/WelcomePage/WelcomePage.js" beforeDir="false" afterPath="$PROJECT_DIR$/week1/health-pricing/src/WelcomePage/WelcomePage.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/week1/health-pricing/src/Navigation/Navigation.css" beforeDir="false" afterPath="$PROJECT_DIR$/week1/health-pricing/src/Navigation/Navigation.css" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/week1/health-pricing/src/Navigation/Navigation.js" beforeDir="false" afterPath="$PROJECT_DIR$/week1/health-pricing/src/Navigation/Navigation.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/week1/health-pricing/src/Upload/Upload.js" beforeDir="false" afterPath="$PROJECT_DIR$/week1/health-pricing/src/Upload/Upload.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/week1/health-pricing/src/Visualization/Visualization.js" beforeDir="false" afterPath="$PROJECT_DIR$/week1/health-pricing/src/Visualization/Visualization.js" afterDir="false" />
     </list>
     <ignored path="$PROJECT_DIR$/.tmp/" />
     <ignored path="$PROJECT_DIR$/temp/" />
@@ -36,38 +42,40 @@
       </usages-collector>
       <usages-collector id="statistics.file.extensions.open">
         <counts>
-          <entry key="css" value="104" />
-          <entry key="html" value="8" />
-          <entry key="js" value="343" />
-          <entry key="json" value="12" />
+          <entry key="css" value="109" />
+          <entry key="html" value="10" />
+          <entry key="js" value="369" />
+          <entry key="json" value="13" />
           <entry key="md" value="1" />
           <entry key="py" value="2" />
-          <entry key="ts" value="2" />
+          <entry key="ts" value="3" />
         </counts>
       </usages-collector>
       <usages-collector id="statistics.file.types.open">
         <counts>
-          <entry key="CSS" value="104" />
-          <entry key="HTML" value="8" />
-          <entry key="JSON" value="12" />
-          <entry key="JavaScript" value="343" />
+          <entry key="CSS" value="109" />
+          <entry key="HTML" value="10" />
+          <entry key="JSON" value="13" />
+          <entry key="JavaScript" value="369" />
           <entry key="PLAIN_TEXT" value="3" />
-          <entry key="TypeScript" value="2" />
+          <entry key="TypeScript" value="3" />
         </counts>
       </usages-collector>
       <usages-collector id="statistics.file.extensions.edit">
         <counts>
-          <entry key="css" value="1355" />
-          <entry key="html" value="24" />
-          <entry key="js" value="40778" />
+          <entry key="css" value="1381" />
+          <entry key="html" value="26" />
+          <entry key="js" value="44379" />
+          <entry key="json" value="6" />
           <entry key="py" value="34" />
         </counts>
       </usages-collector>
       <usages-collector id="statistics.file.types.edit">
         <counts>
-          <entry key="CSS" value="1355" />
-          <entry key="HTML" value="24" />
-          <entry key="JavaScript" value="40778" />
+          <entry key="CSS" value="1381" />
+          <entry key="HTML" value="26" />
+          <entry key="JSON" value="6" />
+          <entry key="JavaScript" value="44379" />
           <entry key="PLAIN_TEXT" value="34" />
         </counts>
       </usages-collector>
@@ -81,10 +89,48 @@
   <component name="FileEditorManager">
     <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
       <file pinned="false" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/week1/health-pricing/src/Navigation/Navigation.js">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="282">
+              <caret line="38" lean-forward="true" selection-start-line="38" selection-end-line="38" />
+              <folding>
+                <element signature="e#334#360#0" expanded="true" />
+                <element signature="e#683#715#0" expanded="true" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/week1/health-pricing/src/Upload/Upload.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="249">
-              <caret line="86" column="44" lean-forward="true" selection-start-line="86" selection-start-column="44" selection-end-line="86" selection-end-column="44" />
+            <state relative-caret-position="-85">
+              <caret line="33" column="22" selection-start-line="33" selection-start-column="22" selection-end-line="33" selection-end-column="22" />
+              <folding>
+                <element signature="n#!!doc" expanded="true" />
+                <element signature="e#234#260#0" expanded="true" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/week1/health-pricing/src/Navigation/Navigation.css">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="424">
+              <caret line="49" lean-forward="true" selection-start-line="49" selection-end-line="49" />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/week1/health-pricing/src/Navigation/Step.js">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="200">
+              <caret line="36" lean-forward="true" selection-start-line="36" selection-end-line="36" />
+              <folding>
+                <element signature="e#0#25#0" expanded="true" />
+              </folding>
             </state>
           </provider>
         </entry>
@@ -94,43 +140,43 @@
   <component name="FileTemplateManagerImpl">
     <option name="RECENT_TEMPLATES">
       <list>
-        <option value="JavaScript File" />
         <option value="HTML File" />
+        <option value="JavaScript File" />
       </list>
     </option>
   </component>
   <component name="FindInProjectRecents">
     <findStrings>
-      <find>CPT</find>
-      <find>sort</find>
-      <find>checked</find>
-      <find>prop</find>
-      <find>zoom</find>
-      <find>30</find>
-      <find>adjus</find>
-      <find>adjust</find>
-      <find>handle</find>
-      <find>secon</find>
-      <find>dot</find>
-      <find>transform</find>
-      <find>appen</find>
-      <find>text</find>
-      <find>draw</find>
-      <find>xaxis</find>
-      <find>axis</find>
-      <find>sorting</find>
-      <find>src</find>
-      <find>img</find>
-      <find>i</find>
-      <find>options</find>
-      <find>filter data</find>
-      <find>bro</find>
-      <find>filter</find>
-      <find>i</find>
-      <find>toggle</find>
-      <find>color</find>
-      <find>ap</find>
-      <find>span</find>
+      <find>graph_data</find>
+      <find>proc</find>
+      <find>procedure</find>
+      <find>procedure_gr</find>
+      <find>procedure_graph</find>
+      <find>setCurrentStep</find>
+      <find>listof</find>
+      <find>this.props</find>
+      <find>return</find>
+      <find>generate</find>
+      <find>current</find>
+      <find>visual</find>
+      <find>u</find>
+      <find>onclick</find>
+      <find>update</find>
+      <find>updateData</find>
+      <find>promise</find>
+      <find>send</find>
+      <find>s</find>
+      <find>hihi</find>
+      <find>selectitem</find>
+      <find>stepzi</find>
+      <find>circle</find>
+      <find>svg</find>
+      <find>$</find>
+      <find>...</find>
+      <find>render</find>
+      <find>set</find>
+      <find>navigation</find>
+      <find>wholeData</find>
     </findStrings>
   </component>
   <component name="Git.Settings">
@@ -158,32 +204,36 @@
         <option value="$PROJECT_DIR$/week1/health-pricing/src/About/UploadFile.js" />
         <option value="$PROJECT_DIR$/week1/health-pricing/src/DropZone/DropZone.css" />
         <option value="$PROJECT_DIR$/week1/health-pricing/src/ListOfVariables/CopyListOfVariables.js" />
-        <option value="$PROJECT_DIR$/week1/health-pricing/src/Visualization/Visualization.js" />
         <option value="$PROJECT_DIR$/week1/health-pricing/src/ChartA/COPYChartA.js" />
-        <option value="$PROJECT_DIR$/week1/health-pricing/public/index.html" />
         <option value="$PROJECT_DIR$/week1/health-pricing/src/ChartA/ChartA.css" />
         <option value="$PROJECT_DIR$/week1/health-pricing/src/ChartA/ChartA.js" />
         <option value="$PROJECT_DIR$/week1/health-pricing/src/Footer/Footer.css" />
         <option value="$PROJECT_DIR$/week1/health-pricing/src/Footer/Footer.js" />
         <option value="$PROJECT_DIR$/week1/health-pricing/src/WelcomePage/PricePanel.js" />
         <option value="$PROJECT_DIR$/week1/health-pricing/src/App.css" />
-        <option value="$PROJECT_DIR$/week1/health-pricing/src/App.js" />
         <option value="$PROJECT_DIR$/week1/health-pricing/src/TableComponent/TableComponent.css" />
         <option value="$PROJECT_DIR$/week1/health-pricing/src/ChartByProvider/ChartByProvider.css" />
         <option value="$PROJECT_DIR$/week1/health-pricing/src/UploadFile/UploadFile.js" />
         <option value="$PROJECT_DIR$/week1/health-pricing/src/Upload/Upload.css" />
-        <option value="$PROJECT_DIR$/week1/health-pricing/src/Navigation/Navigation.js" />
         <option value="$PROJECT_DIR$/week1/health-pricing/src/ChartByProcedure/ChartByProcedure.css" />
-        <option value="$PROJECT_DIR$/week1/health-pricing/src/Upload/Upload.js" />
         <option value="$PROJECT_DIR$/week1/health-pricing/src/TableComponentForProc/TableComponentForProc.js" />
         <option value="$PROJECT_DIR$/week1/health-pricing/src/ChartByProcedure/ChartByProcedure.js" />
         <option value="$PROJECT_DIR$/week1/health-pricing/src/ChartByProvider/ChartByProvider.js" />
         <option value="$PROJECT_DIR$/week1/health-pricing/src/DropZone/DropZone.js" />
-        <option value="$PROJECT_DIR$/week1/health-pricing/src/ListOfVariables/ListOfVariables.js" />
         <option value="$PROJECT_DIR$/week1/health-pricing/src/ListOfVariables/ListOfVariables.css" />
         <option value="$PROJECT_DIR$/week1/health-pricing/src/TableComponent/TableComponent.js" />
         <option value="$PROJECT_DIR$/week1/health-pricing/src/WelcomePage/WelcomePage.js" />
         <option value="$PROJECT_DIR$/week1/health-pricing/src/WelcomePage/WelcomePage.css" />
+        <option value="$PROJECT_DIR$/week1/health-pricing/src/Visualization/Visualization.js" />
+        <option value="$PROJECT_DIR$/week1/health-pricing/public/index.html" />
+        <option value="$PROJECT_DIR$/week1/health-pricing/firebase.json" />
+        <option value="$PROJECT_DIR$/week1/health-pricing/src/ListOfVariables/ListOfVariables.js" />
+        <option value="$PROJECT_DIR$/week1/health-pricing/src/App.js" />
+        <option value="$PROJECT_DIR$/week1/health-pricing/src/Navigation/Stepper.js" />
+        <option value="$PROJECT_DIR$/week1/health-pricing/src/Navigation/Navigation.css" />
+        <option value="$PROJECT_DIR$/week1/health-pricing/src/Navigation/Step.js" />
+        <option value="$PROJECT_DIR$/week1/health-pricing/src/Upload/Upload.js" />
+        <option value="$PROJECT_DIR$/week1/health-pricing/src/Navigation/Navigation.js" />
       </list>
     </option>
   </component>
@@ -297,6 +347,13 @@
               <item name="Health-Pricing" type="462c0819:PsiDirectoryNode" />
               <item name="week1" type="462c0819:PsiDirectoryNode" />
               <item name="health-pricing" type="462c0819:PsiDirectoryNode" />
+              <item name=".firebase" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="Health-Pricing" type="b2602c69:ProjectViewProjectNode" />
+              <item name="Health-Pricing" type="462c0819:PsiDirectoryNode" />
+              <item name="week1" type="462c0819:PsiDirectoryNode" />
+              <item name="health-pricing" type="462c0819:PsiDirectoryNode" />
               <item name="public" type="462c0819:PsiDirectoryNode" />
             </path>
             <path>
@@ -312,7 +369,23 @@
               <item name="week1" type="462c0819:PsiDirectoryNode" />
               <item name="health-pricing" type="462c0819:PsiDirectoryNode" />
               <item name="src" type="462c0819:PsiDirectoryNode" />
-              <item name="ChartByCpt" type="462c0819:PsiDirectoryNode" />
+              <item name="ChartByProvider" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="Health-Pricing" type="b2602c69:ProjectViewProjectNode" />
+              <item name="Health-Pricing" type="462c0819:PsiDirectoryNode" />
+              <item name="week1" type="462c0819:PsiDirectoryNode" />
+              <item name="health-pricing" type="462c0819:PsiDirectoryNode" />
+              <item name="src" type="462c0819:PsiDirectoryNode" />
+              <item name="ListOfVariables" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="Health-Pricing" type="b2602c69:ProjectViewProjectNode" />
+              <item name="Health-Pricing" type="462c0819:PsiDirectoryNode" />
+              <item name="week1" type="462c0819:PsiDirectoryNode" />
+              <item name="health-pricing" type="462c0819:PsiDirectoryNode" />
+              <item name="src" type="462c0819:PsiDirectoryNode" />
+              <item name="Navigation" type="462c0819:PsiDirectoryNode" />
             </path>
             <path>
               <item name="Health-Pricing" type="b2602c69:ProjectViewProjectNode" />
@@ -321,6 +394,22 @@
               <item name="health-pricing" type="462c0819:PsiDirectoryNode" />
               <item name="src" type="462c0819:PsiDirectoryNode" />
               <item name="Upload" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="Health-Pricing" type="b2602c69:ProjectViewProjectNode" />
+              <item name="Health-Pricing" type="462c0819:PsiDirectoryNode" />
+              <item name="week1" type="462c0819:PsiDirectoryNode" />
+              <item name="health-pricing" type="462c0819:PsiDirectoryNode" />
+              <item name="src" type="462c0819:PsiDirectoryNode" />
+              <item name="Visualization" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="Health-Pricing" type="b2602c69:ProjectViewProjectNode" />
+              <item name="Health-Pricing" type="462c0819:PsiDirectoryNode" />
+              <item name="week1" type="462c0819:PsiDirectoryNode" />
+              <item name="health-pricing" type="462c0819:PsiDirectoryNode" />
+              <item name="src" type="462c0819:PsiDirectoryNode" />
+              <item name="WelcomePage" type="462c0819:PsiDirectoryNode" />
             </path>
           </expand>
           <select />
@@ -331,7 +420,7 @@
   </component>
   <component name="PropertiesComponent">
     <property name="DefaultHtmlFileTemplate" value="HTML File" />
-    <property name="SearchEverywhereHistoryKey" value="&#9;FILE&#9;file:///Users/yangfolder/Documents/sling_health/Health-Pricing/week1/health-pricing/src/WelcomePage/WelcomePage.css&#10;javascript debug&#9;null&#9;null" />
+    <property name="SearchEverywhereHistoryKey" value="&#9;FILE&#9;file:///Users/yangfolder/Documents/sling_health/Health-Pricing/week1/health-pricing/src/Navigation/Navigation.css&#10;javascript debug&#9;null&#9;null" />
     <property name="WebServerToolWindowFactoryState" value="false" />
     <property name="last_opened_file_path" value="$PROJECT_DIR$" />
     <property name="nodejs_interpreter_path.stuck_in_default_project" value="undefined stuck path" />
@@ -342,11 +431,11 @@
   </component>
   <component name="RecentsManager">
     <key name="CopyFile.RECENT_KEYS">
+      <recent name="$PROJECT_DIR$/week1/health-pricing/public" />
       <recent name="$PROJECT_DIR$/week1/health-pricing/src" />
       <recent name="$PROJECT_DIR$/week1/health-pricing/src/TableComponent" />
       <recent name="$PROJECT_DIR$/week1/health-pricing/src/Guide" />
       <recent name="$PROJECT_DIR$/week1/health-pricing/src/ChartA" />
-      <recent name="$PROJECT_DIR$/week1/health-pricing/src/ListOfVariables" />
     </key>
     <key name="MoveFile.RECENT_KEYS">
       <recent name="$PROJECT_DIR$/week1/health-pricing/src/" />
@@ -389,12 +478,12 @@
       <workItem from="1561181694793" duration="22522000" />
       <workItem from="1561993418726" duration="148791000" />
       <workItem from="1564260145724" duration="582000" />
-      <workItem from="1564408787013" duration="31163000" />
+      <workItem from="1564408787013" duration="57172000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="394153000" />
+    <option name="totallyTimeSpent" value="420162000" />
   </component>
   <component name="TodoView">
     <todo-panel id="selected-file">
@@ -436,51 +525,6 @@
     <option name="myLimit" value="2678400000" />
   </component>
   <component name="editorHistoryManager">
-    <entry file="file://$PROJECT_DIR$/week1/health-pricing/src/DropZone/DropZone.css">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="111">
-          <caret line="9" column="28" lean-forward="true" selection-start-line="9" selection-start-column="28" selection-end-line="9" selection-end-column="28" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/node_modules/react-router-dom/esm/react-router-dom.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="15">
-          <caret line="112" column="4" selection-start-line="112" selection-start-column="4" selection-end-line="112" selection-end-column="4" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/week1/health-pricing/src/Visualization/Visualization.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="166">
-          <caret line="17" column="20" selection-start-line="17" selection-start-column="20" selection-end-line="17" selection-end-column="20" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/week1/health-pricing/src/ListOfVariables/CopyListOfVariables.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="257">
-          <caret line="114" column="6" lean-forward="true" selection-start-line="81" selection-start-column="4" selection-end-line="114" selection-end-column="6" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/week1/health-pricing/public/manifest.json">
-      <provider selected="true" editor-type-id="text-editor" />
-    </entry>
-    <entry file="file://$PROJECT_DIR$/week1/health-pricing/node_modules/data-forge/build/lib/dataframe.d.ts">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="310">
-          <caret line="3526" column="4" selection-start-line="3526" selection-start-column="4" selection-end-line="3526" selection-end-column="4" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/week1/health-pricing/node_modules/d3/dist/d3.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="239">
-          <caret line="16917" column="2" selection-start-line="16917" selection-start-column="2" selection-end-line="16917" selection-end-column="2" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/node_modules/d3-tip/index.js">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="255">
@@ -579,13 +623,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/week1/health-pricing/src/Navigation/Navigation.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="373">
-          <caret line="74" column="17" lean-forward="true" selection-start-line="74" selection-start-column="17" selection-end-line="74" selection-end-column="17" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/node_modules/mathjs/src/entry/impureFunctionsAny.generated.js">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="90">
@@ -654,16 +691,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/week1/health-pricing/src/ChartByProvider/ChartByProvider.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="289">
-          <caret line="272" column="61" selection-start-line="272" selection-start-column="61" selection-end-line="272" selection-end-column="61" />
-          <folding>
-            <element signature="e#85#111#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/week1/health-pricing/src/DropZone/DropZone.js">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="289">
@@ -722,27 +749,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/week1/health-pricing/src/ListOfVariables/ListOfVariables.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="1319">
-          <caret line="625" lean-forward="true" selection-start-line="625" selection-end-line="625" />
-          <folding>
-            <element signature="e#274#300#0" expanded="true" />
-            <element signature="n#!!block;n#sortByProvider#0;n#ListOfVariables#0" />
-            <element signature="n#!!block;n#selectVariable#0;n#ListOfVariables#0" />
-            <element signature="n#!!block;n#renderSelection#0;n#ListOfVariables#0" />
-            <marker date="1564465860266" expanded="true" signature="18459:18971" ph="..." />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/week1/health-pricing/public/index.html">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="245">
-          <caret line="32" column="18" lean-forward="true" selection-start-line="32" selection-end-line="33" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/week1/health-pricing/src/TableComponent/TableComponent.js">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="169">
@@ -767,17 +773,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/week1/health-pricing/src/App.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="679">
-          <caret line="63" column="14" lean-forward="true" selection-start-line="63" selection-start-column="14" selection-end-line="63" selection-end-column="14" />
-          <folding>
-            <element signature="e#0#26#0" expanded="true" />
-            <element signature="e#259#293#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/week1/health-pricing/src/WelcomePage/WelcomePage.js">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="1268">
@@ -795,10 +790,113 @@
         </state>
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/week1/health-pricing/firebase.json">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="225">
+          <caret line="15" column="1" lean-forward="true" selection-start-line="15" selection-start-column="1" selection-end-line="15" selection-end-column="1" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/week1/health-pricing/public/index_back_up.html">
+      <provider selected="true" editor-type-id="text-editor" />
+    </entry>
+    <entry file="file://$PROJECT_DIR$/week1/health-pricing/public/index.html">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="90">
+          <caret line="6" selection-start-line="6" selection-end-line="6" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/week1/health-pricing/src/Visualization/Visualization.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="199">
+          <caret line="28" column="2" selection-start-line="28" selection-start-column="2" selection-end-line="28" selection-end-column="2" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$APPLICATION_HOME_DIR$/plugins/JavaScriptLanguage/jsLanguageServicesImpl/external/react.d.ts">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="173">
+          <caret line="1968" column="11" lean-forward="true" selection-start-line="1968" selection-start-column="11" selection-end-line="1968" selection-end-column="11" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/week1/health-pricing/src/App.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="-245">
+          <caret line="8" column="46" selection-start-line="8" selection-start-column="46" selection-end-line="8" selection-end-column="46" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/week1/health-pricing/src/Navigation/Stepper.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="225">
+          <caret line="18" column="18" lean-forward="true" selection-start-line="18" selection-start-column="18" selection-end-line="18" selection-end-column="18" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/week1/health-pricing/src/Navigation/Step.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="200">
+          <caret line="36" lean-forward="true" selection-start-line="36" selection-end-line="36" />
+          <folding>
+            <element signature="e#0#25#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/week1/health-pricing/src/ChartByProvider/ChartByProvider.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="111">
+          <caret line="35" lean-forward="true" selection-start-line="35" selection-end-line="35" />
+          <folding>
+            <element signature="e#85#111#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/week1/health-pricing/src/ListOfVariables/ListOfVariables.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="185">
+          <caret line="464" column="33" selection-start-line="464" selection-start-column="33" selection-end-line="464" selection-end-column="33" />
+          <folding>
+            <element signature="n#!!doc" expanded="true" />
+            <element signature="e#274#300#0" expanded="true" />
+            <element signature="n#!!block;n#sortByProcedure#0;n#ListOfVariables#0" />
+            <element signature="n#!!block;n#renderFilterDataOption#0;n#ListOfVariables#0" />
+            <element signature="n#!!block;n#renderSelection#0;n#ListOfVariables#0" />
+            <element signature="n#!!block;n#renderListOfVariables#0;n#ListOfVariables#0" />
+            <marker date="1564950624456" expanded="true" signature="18868:19380" ph="..." />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/week1/health-pricing/src/Navigation/Navigation.css">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="424">
+          <caret line="49" lean-forward="true" selection-start-line="49" selection-end-line="49" />
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/week1/health-pricing/src/Upload/Upload.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="249">
-          <caret line="86" column="44" lean-forward="true" selection-start-line="86" selection-start-column="44" selection-end-line="86" selection-end-column="44" />
+        <state relative-caret-position="-85">
+          <caret line="33" column="22" selection-start-line="33" selection-start-column="22" selection-end-line="33" selection-end-column="22" />
+          <folding>
+            <element signature="n#!!doc" expanded="true" />
+            <element signature="e#234#260#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/week1/health-pricing/src/Navigation/Navigation.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="282">
+          <caret line="38" lean-forward="true" selection-start-line="38" selection-end-line="38" />
+          <folding>
+            <element signature="e#334#360#0" expanded="true" />
+            <element signature="e#683#715#0" expanded="true" />
+          </folding>
         </state>
       </provider>
     </entry>
