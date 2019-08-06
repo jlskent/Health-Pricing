@@ -32,6 +32,7 @@ class TableComponent extends React.Component {
       //   tableData: [...prevState.tableData, nextProps.tableData]
       // }));
 
+      // this.clearData();
 
       this.setState({tableData: nextProps.tableData});
 
@@ -53,6 +54,8 @@ class TableComponent extends React.Component {
 
     // Typical usage (don't forget to compare props):
     if (this.props.tableData !== prevProps.tableData) {
+      // this.clearData();
+
       this.renderTable();
     }
   }
@@ -68,61 +71,10 @@ class TableComponent extends React.Component {
 
     if (this.state.tableData) {
 
+      // console.log("table data len"+this.state.tableData.length)
+
       // so this.state.tableData is an array of dataframes(each ele is a group), for each we will create a table
       // iterate each dataframe
-      // var theDataList = this.state.tableData;
-      // for (var i = 0; i < theDataList.length; i++)
-      // {
-      //   const theData = theDataList[i];
-      //
-      //   // console.log(theData);
-      //   // actually array?
-      //   const df  = new dataForge.DataFrame(theData);
-      //   const arr = df.toArray();
-      //   // const rows = df.toJSON();
-      //
-      //   // console.log(arr);
-      //   const colNames = df.getColumnNames();
-      //
-      //   //prepare for react-bootstrap-table columns
-      //   const col_list = colNames.map(
-      //     function(el) {
-      //       var o = Object.assign({}, el);
-      //       o.dataField = el;
-      //       o.text = el;
-      //       return o;
-      //     }
-      //   ).map(
-      //     function(el) {
-      //       let unwrap = ({dataField, text}) => ({dataField, text});
-      //       const picked = unwrap(el);
-      //       console.log("picked" + JSON.stringify(picked));
-      //       return picked;
-      //     }
-      //   );
-
-
-
-        // const picked = (({ fieldName, text }) => ({ fieldName, text }))(col_list);
-
-        // console.log("res" + JSON.stringify(col_list));
-        // console.log("arr" + JSON.stringify(arr));
-
-
-
-      //   return (
-      //
-      //     <BootstrapTable data={ arr } keyField="Payments" columns={col_list}>
-      //     </BootstrapTable>
-      //
-      //   );
-      //
-      // }
-
-
-
-
-
 
 
       // console.log("res" + col_list);
@@ -223,23 +175,21 @@ class TableComponent extends React.Component {
   clearData(){
     this.setState({
       tableData : null
-    });  }
+    });
+  }
 
 
   removeItem(e) {
-    console.log(e.target.value);
+    // console.log(e.target.value);
     const item = parseInt(e.target.value);
-    console.log(this.state.tableData.length);
+    // console.log(this.state.tableData.length);
+    //
+    // this.setState((prevState) => ({
+    //   tableData: prevState.tableData.filter((_, i) => i !== item)
+    // }));
 
-    this.setState((prevState) => ({
-      tableData: prevState.tableData.filter((_, i) => i !== item)
-    }));
+    this.props.removeTableData(item);
 
-
-    // const deletedItem = this.state.tableData.filter((this.state.tableData, e.target.value) => {
-    //   return this.state.tableData[0] !== index
-    // });
-    // this.setState({ tableData[item]: null })
 
     // this.renderTable();
 

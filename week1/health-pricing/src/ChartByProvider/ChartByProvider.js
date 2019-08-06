@@ -600,7 +600,7 @@ class ChartByProvider extends React.Component {
 
       var data_sorted = stats.outliers.length>0 ? stats.outliers: [NaN];
 
-      console.log("stats " + data_sorted);
+      // console.log("stats " + data_sorted);
 
       // append dots
       anchor.select("g").selectAll("dot")
@@ -649,6 +649,15 @@ class ChartByProvider extends React.Component {
     )
   }
 
+
+  removeTableData = (index) =>{
+    this.setState((prevState) => ({
+      tableData: prevState.tableData.filter((_, i) => i !== index)
+    }));
+  };
+
+
+
   render() {
   // console.log(this.props.cpt_Graph_Data);
 
@@ -666,7 +675,7 @@ class ChartByProvider extends React.Component {
 
 
         <div className="">
-          <TableComponent tableData = {this.state.tableData}></TableComponent>
+          <TableComponent tableData = {this.state.tableData} removeTableData = {this.removeTableData}></TableComponent>
         </div>
       </div>
     );

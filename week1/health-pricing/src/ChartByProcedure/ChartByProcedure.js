@@ -58,6 +58,11 @@ class ChartByProcedure extends React.Component {
 
 
 
+  componentWillMount() {
+    this.clearTableData()
+
+  }
+
   renderButtons() {
     if (this.state.receivedData){
       return(
@@ -596,6 +601,14 @@ class ChartByProcedure extends React.Component {
   }
 
 
+
+
+  removeTableData = (index) =>{
+    this.setState((prevState) => ({
+      tableData: prevState.tableData.filter((_, i) => i !== index)
+    }));
+  };
+
   render() {
 
 
@@ -609,7 +622,7 @@ class ChartByProcedure extends React.Component {
         <svg ref={ node => this.node = node } width="100%" height="100%" class="svg-content"  ></svg>
       </div>
       <div className="">
-        <TableComponentForProc tableData = {this.state.tableData}></TableComponentForProc>
+        <TableComponentForProc tableData = {this.state.tableData} removeTableData = {this.removeTableData}></TableComponentForProc>
       </div>
     </div>
     );

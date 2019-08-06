@@ -10,7 +10,7 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 import Guide from './Guide/Guide';
 
 import UploadFile from './UploadFile/UploadFile';
-import {Nav,Navbar,NavDropdown} from 'react-bootstrap';
+import {Nav,Navbar} from 'react-bootstrap';
 import WelcomePage from './WelcomePage/WelcomePage';
 
 
@@ -20,6 +20,9 @@ import {
   Route,
   Switch
 } from "react-router-dom";
+import Form from "react-bootstrap/Form";
+import Button from "react-bootstrap/Button";
+import FormControl from "react-bootstrap/es/FormControl";
 
 
 
@@ -30,19 +33,36 @@ class App extends React.Component {
       <div className="App">
           {/*<div className="row">*/}
             <Router>
-              <Navbar collapseOnSelect expand="lg" bg="dark" variant="dark">
-                <Navbar.Brand href="/">React-Bootstrap</Navbar.Brand>
+              <Navbar collapseOnSelect expand="lg" bg="dark" variant="dark" >
+                <Navbar.Brand href="/" id = "brand">
+                  <img
+                    alt=""
+                    // src="https://img.icons8.com/ultraviolet/40/000000/pill.png"
+
+                    src="https://img.icons8.com/doodle/48/000000/alligator.png"
+
+                    width="30"
+                    height="30"
+                    className="d-inline-block align-top"
+                  />
+                    {' Health Pricing'}
+                    </Navbar.Brand>
                 <Navbar.Toggle aria-controls="responsive-navbar-nav" />
                 <Navbar.Collapse id="responsive-navbar-nav">
                   <Nav className="mr-auto">
-                    <Nav.Link><Link to="/guide" className = "link">Guide</Link></Nav.Link>
-                    <Nav.Link><Link to="/hospitals" className = "link">Visualization</Link></Nav.Link>
-                    <Nav.Link><Link to="/upload" className = "link">Upload File</Link></Nav.Link>
+                    <Nav.Link activeClassName="selectedLink"><Link to="/" className = "link" >Home</Link></Nav.Link>
+                    <Nav.Link><Link to="/upload" className = "link" >Quick Start</Link></Nav.Link>
+                    <Nav.Link><Link to="/pricing" className = "link">Pricing</Link></Nav.Link>
+                    <Nav.Link><Link to="/about" className = "link">About</Link></Nav.Link>
                   </Nav>
-                  <Nav>
-                    <Nav.Link href="#deets"><Link to="/login" className = "link">LogIn</Link></Nav.Link>
-                    <Nav.Link href="#deets"><Link to="/signup" className = "link">SignUp</Link></Nav.Link>
 
+                  {/*<Form inline>*/}
+                    {/*<FormControl type="text" placeholder="Search" className="mr-sm-2" />*/}
+                    {/*<Button variant="outline-light">Search</Button>*/}
+                  {/*</Form>*/}
+                  <Nav>
+                    <Nav.Link href="#deets"><Link to="/login" className = "link">Log In</Link></Nav.Link>
+                    <Nav.Link href="#deets"><Link to="/signup" className = "link">Sign Up</Link></Nav.Link>
                   </Nav>
                 </Navbar.Collapse>
               </Navbar>

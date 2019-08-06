@@ -226,15 +226,13 @@ class TableComponentForProc extends React.Component {
     const item = parseInt(e.target.value);
     console.log(this.state.tableData.length);
 
-    this.setState((prevState) => ({
-      tableData: prevState.tableData.filter((_, i) => i !== item)
-    }));
+    // this.setState((prevState) => ({
+    //   tableData: prevState.tableData.filter((_, i) => i !== item)
+    // }));
+
+    this.props.removeTableData(item);
 
 
-    // const deletedItem = this.state.tableData.filter((this.state.tableData, e.target.value) => {
-    //   return this.state.tableData[0] !== index
-    // });
-    // this.setState({ tableData[item]: null })
 
     // this.renderTable();
 

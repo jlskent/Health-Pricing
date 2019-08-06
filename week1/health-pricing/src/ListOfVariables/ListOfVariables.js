@@ -695,8 +695,8 @@ class ListOfVariables extends React.Component {
     if (!this.props.df || !this.props.uploadSuccess ) {
       return(
         <div>
-          <h4>Step 2. Start with a variable</h4>
-          <p>no content yet</p>
+          {/*<h4>Step 2. Start with a variable</h4>*/}
+          {/*<p>no content yet</p>*/}
         </div>
       );
     }
@@ -704,8 +704,8 @@ class ListOfVariables extends React.Component {
     if (this.props.currentStep === 'uploadFile') {
       return(
         <div>
-          <h4>Step 2. Start with a variable</h4>
-          <p>no content yet</p>
+          {/*<h4>Step 2. Start with a variable</h4>*/}
+          {/*<p>no content yet</p>*/}
         </div>
       );
     }

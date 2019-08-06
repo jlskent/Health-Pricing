@@ -23,25 +23,43 @@
   /*color: white;*/
 /*}*/
 
+
+
+/*nav bar*/
 .link {
-    color: #FFF;
+    color: honeydew;
+    font-family : Geneva;
+    /*font-weight: bold;*/
 }
 
 .link:hover {
     color: #6b89ba;
 }
 
-/*@keyframes App-logo-spin {*/
-  /*from {*/
-    /*transform: rotate(0deg);*/
-  /*}*/
-  /*to {*/
-    /*transform: rotate(360deg);*/
-  /*}*/
+
+.link:active {
+    /*background-color: #666 !important;*/
+
+    /*color: red !important;*/
+}
+
+.selectedLink:active{
+    color: red !important;
+
+}
 
 
 
-/*}*/
+#brand{
+    color: whitesmoke;
+    font-weight: bold;
+}
+
+
+
+
+
+
 
 
 
