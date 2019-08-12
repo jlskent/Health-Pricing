@@ -11,6 +11,7 @@ import { Boxplot, computeBoxplotStats } from 'react-boxplot';
 import d3Tip from 'd3-tip';
 import { sliderBottom } from 'd3-simple-slider';
 import TableComponentForProc from "../TableComponentForProc/TableComponentForProc";
+import Dropdown from "react-bootstrap/Dropdown";
 
 
 
@@ -21,26 +22,34 @@ class ChartByProcedure extends React.Component {
     this.state = {
       // dataSorted : [],
       data:null,
+      data_list:[],
       tableData : [],
-      receivedData: false
+      receivedData: false,
+      files: []
+
     };
 
     this.createBarChart = this.createBarChart.bind(this);
     this.resetZoom = this.resetZoom.bind(this);
     this.renderTitle = this.renderTitle.bind(this);
     this.updateTableData = this.updateTableData.bind(this);
+    this.switchTime = this.switchTime.bind(this);
 
   }
 
 
   componentDidMount() {
+    console.log("chart mounted")
   }
 
   async componentWillReceiveProps(nextProps) {
-    if ( this.props !== nextProps && nextProps.procedure_Graph_Data) {
+    // console.log("receiving data inside chart component");
+
+    if ( this.props !== nextProps && nextProps.procedure_Graph_Data ) {
       // console.log("receiving props in chartByProvider "+ nextProps.procedure_Graph_Data);
       this.createBarChart(nextProps.procedure_Graph_Data);
       this.setState({data: nextProps.procedure_Graph_Data});
+
       this.setState({receivedData: true});
 
       const procedureCodeReceived = nextProps.procedure_Graph_Data.toArray()[0].PROC_CODE;
@@ -49,11 +58,33 @@ class ChartByProcedure extends React.Component {
       this.setState({currentProcedureCode: procedureCodeReceived});
       // this.props.setCurrentStep('generateGraph');
     }
+
+
+
+
+    if ( this.props !== nextProps && nextProps.procedure_Graph_Data_List ) {
+      if (this.state.data_list.length === 3) return;
+      if ( nextProps.procedure_Graph_Data_List.length===2  ){
+        this.setState({receivedData: true});
+
+        console.log("receiving props in procedure "+ nextProps.procedure_Graph_Data_List.length);
+        this.setState({files: nextProps.files});
+
+        this.setState({data_list: nextProps.procedure_Graph_Data_List} , () =>{
+          this.createBarChart(this.state.data_list[0]);
+          const procedureCodeReceived = this.state.data_list[0].toArray()[0].PROC_CODE;
+          const procedureNameReceived = this.state.data_list[0].toArray()[0].PROC_NAME;
+          this.setState({currentProcedureName: procedureNameReceived});
+          this.setState({currentProcedureCode: procedureCodeReceived});
+
+        });
+        console.log("Chart Component receiving  "+nextProps.procedure_Graph_Data_List.length);
+      }
+    }
   }
 
   componentDidUpdate() {
     this.renderTitle()
-
   }
 
 
@@ -70,6 +101,66 @@ class ChartByProcedure extends React.Component {
       );
     }
   }
+
+
+
+
+  switchTime(e){
+    const index = parseInt(e.target.value);
+    console.log("switching time" + e.target.value);
+    console.log("data" + this.state.data_list[index]);
+    if (this.state.data_list.length > 1) {
+      console.log("len >1" );
+
+      this.setState({data: this.state.data_list[index]});
+      this.createBarChart(this.state.data_list[index]);
+    }
+  }
+
+
+
+
+
+  renderTimeList(){
+    // console.log(this.props.files);
+    // console.log(this.props.files.length);
+
+    if (this.state.files && this.state.files.length >1){
+      var index = 0;
+      const fileList = this.state.files.map(x => {
+
+        const name = x.name;
+        // console.log("the name "+name);
+
+        return (
+          <Dropdown.Item as="button" value = {index++} onClick={(e) => this.switchTime(e)}>{name}</Dropdown.Item>
+        );
+      });
+
+
+      return(
+        <div  class="dropdown d-inline-block">
+          <Dropdown>
+            <Dropdown.Toggle variant="success" id="dropdown-basic">Compare Over Time</Dropdown.Toggle>
+            <Dropdown.Menu>
+              {fileList}
+            </Dropdown.Menu>
+          </Dropdown>
+        </div>
+      );
+    } else{
+      return (
+        <div className="dropdown d-inline-block">
+          <Dropdown>
+            <Dropdown.Toggle variant="success" id="dropdown-basic" disabled>Compare Over Time</Dropdown.Toggle>
+            <Dropdown.Menu>
+            </Dropdown.Menu>
+          </Dropdown>
+        </div>
+      );
+    }
+  }
+
 
 
   clearTableData(){
@@ -164,8 +255,13 @@ class ChartByProcedure extends React.Component {
     for (const group of theGroups) {
       const chargeSeries = group.getSeries("Charges").parseInts();
       const paymentSeries = group.getSeries("Payments").parseInts();
-      const chargeStats = computeBoxplotStats(chargeSeries.toArray());
-      const paymentStats = computeBoxplotStats(paymentSeries.toArray());
+
+      const positiveChargeSeries = chargeSeries.after(0).select(value => Math.abs(value));
+      const positivePaymentSeries = paymentSeries.after(0).select(value => Math.abs(value));
+
+
+      const chargeStats = computeBoxplotStats(positiveChargeSeries.toArray());
+      const paymentStats = computeBoxplotStats(positivePaymentSeries.toArray());
       var maxOfTwo = Math.max(chargeStats.whiskerHigh, paymentStats.whiskerHigh);
       max = Math.max(maxOfTwo, max);
       // console.log("hihihihi" + maxOfTwo);
@@ -262,8 +358,8 @@ class ChartByProcedure extends React.Component {
     const sliderFill = sliderBottom()
       .min(d3.min(data))
       .max(d3.max(data))
-      .width(300)
-      .tickFormat(d3.format('.2%'))
+      .width(200)
+      .tickFormat(d3.format('.0%'))
       .ticks(5)
       .default(1)
       .fill('#2196f3')
@@ -370,14 +466,17 @@ class ChartByProcedure extends React.Component {
       const paymentSeries = group.getSeries("Payments").parseInts();
 
 
-      const positive = paymentSeries.forEach(value => {
-        Math.abs(value);
-        // ... do something with value ...
-      });
+      const positive = paymentSeries.forEach(value => {Math.abs(value);});
 
       // console.log("a group payment  "+ paymentSeries);
-      const chargeStats = computeBoxplotStats(chargeSeries.toArray());
-      const paymentStats = computeBoxplotStats(positive.toArray());
+
+
+      const positiveChargeSeries = chargeSeries.after(0).select(value => Math.abs(value));
+      const positivePaymentSeries = paymentSeries.after(0).select(value => Math.abs(value));
+
+
+      const chargeStats = computeBoxplotStats(positiveChargeSeries.toArray());
+      const paymentStats = computeBoxplotStats(positivePaymentSeries.toArray());
 
       // min = chargeSeries.min();
       // max = chargeSeries.max();
@@ -538,7 +637,7 @@ class ChartByProcedure extends React.Component {
 
       var data_sorted = stats.outliers.length>0 ? stats.outliers: [NaN];
 
-      console.log("stats " + data_sorted);
+      // console.log("stats " + data_sorted);
 
       // append dots
       anchor.select("g").selectAll("dot")
@@ -602,7 +701,7 @@ class ChartByProcedure extends React.Component {
 
 
 
-
+  //used to remove table data (which is a list), the function is passed to child component
   removeTableData = (index) =>{
     this.setState((prevState) => ({
       tableData: prevState.tableData.filter((_, i) => i !== index)
@@ -610,6 +709,7 @@ class ChartByProcedure extends React.Component {
   };
 
   render() {
+    console.log("rendering from chart")
 
 
 
@@ -618,8 +718,10 @@ class ChartByProcedure extends React.Component {
     <div>
       {this.renderTitle()}
       {this.renderButtons()}
+      {this.renderTimeList()}
+
       <div className="scaling-svg-container">
-        <svg ref={ node => this.node = node } width="100%" height="100%" class="svg-content"  ></svg>
+        <svg ref={ node => this.node = node } width="100%" height="100%" className="svg-content"  ></svg>
       </div>
       <div className="">
         <TableComponentForProc tableData = {this.state.tableData} removeTableData = {this.removeTableData}></TableComponentForProc>

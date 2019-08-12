@@ -47,7 +47,7 @@ class Navigation extends React.Component {
       this.setState({currentStep: nextProps.newStep});
 
       this.step(nextProps.newStep);
-      console.log(nextProps.newStep)
+      // console.log(nextProps.newStep)
 
     }
   }

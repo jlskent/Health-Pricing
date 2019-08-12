@@ -2,7 +2,8 @@ import React from 'react';
 import './TableComponent.css';
 import BootstrapTable from 'react-bootstrap-table-next';
 import * as dataForge from "data-forge";
-// import paginationFactory from 'react-bootstrap-table2-paginator';
+import paginationFactory from 'react-bootstrap-table2-paginator';
+import 'react-bootstrap-table2-paginator/dist/react-bootstrap-table2-paginator.min.css';
 
 // import PriceComponent from "../PriceComponent/PriceComponent";
 // import 'react-bootstrap-table-next/dist/react-bootstrap-table2.min.css';
@@ -140,7 +141,7 @@ class TableComponent extends React.Component {
               columns={col_list}
               tableStyle={ { background: 'black' } }
               headerStyle={ { background: '#00ff00' } }
-              // pagination={ paginationFactory()}
+              pagination={ paginationFactory()}
               striped
               hover
               condensed

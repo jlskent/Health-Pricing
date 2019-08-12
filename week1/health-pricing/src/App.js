@@ -7,8 +7,8 @@
 import React from 'react';
 import './App.css';
 import 'bootstrap/dist/css/bootstrap.min.css';
-import Guide from './Guide/Guide';
-
+import Pricing from './Pricing/Pricing';
+import About from './About/About';
 import UploadFile from './UploadFile/UploadFile';
 import {Nav,Navbar} from 'react-bootstrap';
 import WelcomePage from './WelcomePage/WelcomePage';
@@ -45,7 +45,7 @@ class App extends React.Component {
                     height="30"
                     className="d-inline-block align-top"
                   />
-                    {' Health Pricing'}
+                    {' Health About'}
                     </Navbar.Brand>
                 <Navbar.Toggle aria-controls="responsive-navbar-nav" />
                 <Navbar.Collapse id="responsive-navbar-nav">
@@ -71,9 +71,12 @@ class App extends React.Component {
                 <Switch>
                   {/*<Route path="/" component={App} />*/}
                   <Route exact path="/" component={WelcomePage} />
-                  <Route path="/guide" component={Guide} />
-                  {/*<Route path="/hospitals" component={Visualization} />*/}
+                  {/*<Route path="/guide" component={Guide} />*/}
                   <Route path="/upload" component={UploadFile} />
+                  <Route path="/about" component={About} />
+                  <Route path="/pricing" component={Pricing} />
+
+
                 </Switch>
               </div>
             </Router>

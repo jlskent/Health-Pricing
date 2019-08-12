@@ -37,8 +37,6 @@ class Upload extends React.Component {
       theData: [],
       columns: [],
       df: null,
-      dfToCompare:null,
-      dfList: [],
       files: [],
       uploading: false,
       uploadProgress: {},
@@ -52,14 +50,12 @@ class Upload extends React.Component {
 
       },
 
-      procedure_Graph_Data: null,
-
+      procedure_Graph_Data: null
 
     // currentStep : null,
       // steps: null
 
     };
-    this.baseState = this.state;
 
     this.onFilesAdded = this.onFilesAdded.bind(this);
     this.uploadFiles = this.uploadFiles.bind(this);
@@ -90,11 +86,7 @@ class Upload extends React.Component {
   };
 
 
-  clearData(){
-    this.setState(this.baseState);
-    this.setState({ currentStep : 'uploadFile'});
 
-  }
 
 
   componentDidMount() {
@@ -106,7 +98,7 @@ class Upload extends React.Component {
 
   // called before render, do not access dom
   componentWillMount() {
-
+    
 
     // set default currentStep
     this.setState({ currentStep : 'uploadFile'});
@@ -116,48 +108,21 @@ class Upload extends React.Component {
 
   // helper function for parseData
   updateData(result) {
-
-
-
-    // console.log("result list " );
     //all the Data uploaded in array
+    const data = result.data;
+    //all the columns uploaded
 
-    var data = result.data;
-    var cols = result.data[0];
+    const cols = result.data[0];
     this.setState({theData: data});
     this.setState({columns: cols});
-    var rightDf = new dataForge.DataFrame({
+
+    // specify column names
+    const rightDf = new dataForge.DataFrame({
       columnNames: cols,
       rows: data
     });
-    this.setState({df: rightDf});
-
-    //if we have multiple file, we push it to dfList
-    this.setState(prevState => ({
-      dfList: [...prevState.dfList, rightDf]
-    }));
-
-
-    console.log("*Upload component df list len" + this.state.dfList.length)
-    // var data2 = result[1].data;
-    // var cols2 = result[1].data[0];
-    // this.setState({theData: data2});
-    // this.setState({columns: cols2});
-    // var rightDf2 = new dataForge.DataFrame({
-    //   columnNames: cols2,
-    //   rows: data2
-    // });
-    // this.setState({dfToCompare: rightDf2});
-
-
-
-    //all the columns uploaded
-
-
-    // specify column names
-
     //console.log("rightdf "+ rightDf);
-
+    this.setState({df: rightDf});
     //console.log("update Data "+ this.state.df);
 
   }
@@ -226,9 +191,7 @@ class Upload extends React.Component {
       return (
         <div>
           {this.renderNavigationSteps()}
-          <ListOfVariables {...this.state}  setCurrentStep={this.setCurrentStep} dfToUse = {this.state.dfList[0]}/>
-          {/*<ListOfVariables {...this.state}  setCurrentStep={this.setCurrentStep} dfToUse = {this.state.dfList[1]}/>*/}
-
+          <ListOfVariables {...this.state}  setCurrentStep={this.setCurrentStep}/>
         </div>
       );
     }
@@ -239,7 +202,7 @@ class Upload extends React.Component {
         <div>
           {this.renderNavigationSteps()}
           <ListOfVariables {...this.state}  setCurrentStep={this.setCurrentStep}/>
-          {/*<ChartByProcedure procedure_Graph_Data = {this.state.procedure_Graph_Data}></ChartByProcedure>*/}
+          <ChartByProcedure procedure_Graph_Data = {this.state.procedure_Graph_Data}></ChartByProcedure>
         </div>
       );
     }
@@ -249,15 +212,12 @@ class Upload extends React.Component {
 
 
 
-
-
-
   renderActions() {
     if (this.state.uploadSuccess) {
       // console.log('uploadSuccess');
       return (
         <div>
-          <button className="btn btn-outline-primary btn-lg btn-block" onClick={() => this.clearData()}>Clear</button>
+          <button className="btn btn-outline-primary btn-lg btn-block" onClick={() => this.setState({ files: [], uploadSuccess: false })}>Clear</button>
           {/*pass state to child component*/}
         </div>
       );
@@ -276,10 +236,10 @@ class Upload extends React.Component {
     }));
 
 
-    // if (this.state.files!=null){
-    //   this.setState({theFile: this.state.files[0]});
-    //
-    // }
+    if (this.state.files!=null){
+      this.setState({theFile: this.state.files[0]});
+
+    }
   }
 
 
@@ -299,14 +259,7 @@ class Upload extends React.Component {
 
       });
 
-
-
       this.setState({  currentStep : 'chooseVariable'})
-      // Papa.parse(file, {
-      //   download: true,
-      //   complete: this.updateData
-      // });
-
 
     } catch (e) {
       // Not Production ready! Do some error handling here instead...

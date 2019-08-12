@@ -10,6 +10,7 @@ import d3Tip from 'd3-tip';
 import BootstrapTable from 'react-bootstrap-table-next';
 import {sliderBottom} from "d3-simple-slider";
 import TableComponent from "../TableComponent/TableComponent";
+import Dropdown from "react-bootstrap/Dropdown";
 
 
 
@@ -38,12 +39,12 @@ class ChartByProvider extends React.Component {
   }
 
   async componentWillReceiveProps(nextProps) {
-    if ( this.props !== nextProps && nextProps.wholeData) {
+    if ( this.props !== nextProps && nextProps.provider_Graph_Data) {
       // console.log("receiving props in chartByProvider "+ nextProps);
-      this.createBarChart(nextProps.wholeData);
-      this.setState({data: nextProps.wholeData});
+      this.createBarChart(nextProps.provider_Graph_Data);
+      this.setState({data: nextProps.provider_Graph_Data});
       this.setState({receivedData: true});
-      const providerNameReceived = nextProps.wholeData.toArray()[0].BILLING_PROV_NM;
+      const providerNameReceived = nextProps.provider_Graph_Data.toArray()[0].BILLING_PROV_NM;
       this.setState({currentProvider: providerNameReceived});
     }
   }
@@ -170,9 +171,12 @@ class ChartByProvider extends React.Component {
     for (const group of theGroups) {
       const chargeSeries = group.getSeries("Charges").parseInts();
       const paymentSeries = group.getSeries("Payments").parseInts();
+      const positiveChargeSeries = chargeSeries.after(0).select(value => Math.abs(value));
       const positivePaymentSeries = paymentSeries.after(0).select(value => Math.abs(value));
 
-      const chargeStats = computeBoxplotStats(chargeSeries.toArray());
+
+
+      const chargeStats = computeBoxplotStats(positiveChargeSeries.toArray());
       const paymentStats = computeBoxplotStats(positivePaymentSeries.toArray());
       var maxOfTwo = Math.max(chargeStats.whiskerHigh, paymentStats.whiskerHigh);
       max = Math.max(maxOfTwo, max);
@@ -290,8 +294,8 @@ class ChartByProvider extends React.Component {
     const sliderFill = sliderBottom()
       .min(d3.min(data))
       .max(d3.max(data))
-      .width(300)
-      .tickFormat(d3.format('.2%'))
+      .width(200)
+      .tickFormat(d3.format('.0%'))
       .ticks(5)
       .default(1)
       .fill('#2196f3')
@@ -422,12 +426,15 @@ class ChartByProvider extends React.Component {
       const chargeSeries = group.getSeries("Charges").parseInts();
       const paymentSeries = group.getSeries("Payments").parseInts();
 
+
+
+      const positiveChargeSeries = chargeSeries.after(0).select(value => Math.abs(value));
       const positivePaymentSeries = paymentSeries.after(0).select(value => Math.abs(value));
 
 
 
       // console.log("a group payment  "+ paymentSeries);
-      const chargeStats = computeBoxplotStats(chargeSeries.toArray());
+      const chargeStats = computeBoxplotStats(positiveChargeSeries.toArray());
       const paymentStats = computeBoxplotStats(positivePaymentSeries.toArray());
 
 
@@ -657,9 +664,45 @@ class ChartByProvider extends React.Component {
   };
 
 
+  renderTimeList(){
+
+    if (this.props.files && this.props.files.length > 1){
+      var index = 0;
+      const fileList = this.state.files.map(x => {
+        const name = x.name;
+        return (
+          <Dropdown.Item as="button" value = {index++} onClick={(e) => this.switchTime(e)}>{name}</Dropdown.Item>
+        );
+      });
+
+
+      return(
+        <div  class="dropdown d-inline-block">
+          <Dropdown>
+            <Dropdown.Toggle variant="success" id="dropdown-basic">Compare Over Time</Dropdown.Toggle>
+            <Dropdown.Menu>
+              {fileList}
+            </Dropdown.Menu>
+          </Dropdown>
+        </div>
+      );
+    } else{
+      return (
+        <div className="dropdown d-inline-block">
+          <Dropdown>
+            <Dropdown.Toggle variant="success" id="dropdown-basic" disabled>Compare Over Time</Dropdown.Toggle>
+            <Dropdown.Menu>
+            </Dropdown.Menu>
+          </Dropdown>
+        </div>
+      );
+    }
+  }
+
+
 
   render() {
-  // console.log(this.props.cpt_Graph_Data);
+  // console.log("do i have it " + this.props.uploadSuccess);
 
 
 
@@ -667,6 +710,8 @@ class ChartByProvider extends React.Component {
       <div className="">
         {this.renderTitle()}
         {this.renderButtons()}
+        {this.renderTimeList()}
+
         <div className="scaling-svg-container">
         <svg ref={ node => this.node = node } width="100%" height="auto" class="svg-content"  ></svg>
         {/*<svg ref={node => this.node = node}  width ="3000" height= "1000" className="svg-content" overflow="auto" ></svg>*/}

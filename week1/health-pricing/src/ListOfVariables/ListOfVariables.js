@@ -13,6 +13,7 @@ import ToggleButton from 'react-bootstrap/ToggleButton';
 
 import { Button, ButtonGroup } from 'react-bootstrap';
 
+import update from 'immutability-helper';
 
 
 class ListOfVariables extends React.Component {
@@ -33,11 +34,22 @@ class ListOfVariables extends React.Component {
       filterZeroChecked: false,
       KeepProcedureIsOneChecked: false,
 
+
+      wholeDataList: [],
+      cpt_Graph_Data_List: [],
+      provider_Graph_Data_List: [],
+      procedure_Graph_Data_List: [],
+      filteredData_List: [],
+
+
+
+
       sortBy : {
         sort_by_cpt_freq: 'sort_by_cpt_freq',
         sort_by_avg_bill: 'sort_by_avg_bill',
         sort_by_num_procedures: 'sort_by_num_procedures',
         sort_by_name: 'sort_by_name',
+        procedure_sort_by_name : 'procedure_sort_by_name',
         procedure_sort_by_payments_variance : 'procedure_sort_by_payments_variance',
         procedure_sort_by_charges_variance : 'procedure_sort_by_charges_variance',
         procedure_sort_by_adjustments : 'procedure_sort_by_adjustments',
@@ -114,7 +126,7 @@ class ListOfVariables extends React.Component {
 
   // if selected provider name and sort option, we update the dataframe and then call re-render
   sortByProvider(e){
-    // e.preventDefault();
+    e.preventDefault();
 
     const currentSortBy = e.target.value;
     this.setState({  sortBy: currentSortBy  });
@@ -178,13 +190,19 @@ class ListOfVariables extends React.Component {
     const currentSortBy = e.target.value;
 
     this.setState({  sortBy: currentSortBy  });
-    // console.log("e  " + currentSortBy);
+    console.log("e  " + currentSortBy);
     // const theDf = this.props.df;
     // console.log("child df " + theDf);
     if (currentSortBy) {
       var df = this.state.filteredData ? this.state.filteredData: this.props.df;
       // var sortedDf;
       switch(currentSortBy) {
+        case "procedure_sort_by_name":
+          const dfSortedByName = df.orderBy(row => row.PROC_NAME);
+          this.setState( {dataAfterSorting: dfSortedByName},
+            () => this.renderListOfVariables(this.state.varChosen)
+          );
+          break;
         case "procedure_sort_by_payments_variance":
           const config = { };
           const math = create(all, config);
@@ -348,6 +366,41 @@ class ListOfVariables extends React.Component {
         // this.props.updateFunction(this.state.wholeData);
       }
     }
+
+
+
+    // if (this.props.dfList){
+    //   // this actually means checked
+    //   if (!this.state.filterZeroChecked) {
+    //
+    //     this.props.dfList.forEach((element) => {
+    //       // this actually means checked
+    //       if (!this.state.filterZeroChecked) {
+    //         var theDf= this.state.KeepProcedureIsOneChecked ? this.state.filteredData : this.props.df;
+    //         const filtered = theDf.where(row => row.Charges != "0");
+    //         this.setState({
+    //           filteredData : filtered
+    //         }, () => {
+    //           // this.props.updateFunction(filtered);
+    //         })
+    //       }
+    //       else {
+    //         // update parent prop with wholeData
+    //         this.setState({filteredData : this.props.df}, () => {})
+    //       }
+    //
+    //       console.log(element);
+    //     });
+    //
+    //   }
+    //
+    //
+    // }
+
+
+
+
+
   };
 
 
@@ -396,51 +449,58 @@ class ListOfVariables extends React.Component {
   selectItem(e){
     e.preventDefault();
     // console.log("target value " + typeof e.target.value);
-
+    // comment back to use
     this.props.setCurrentStep('generateGraph');
+
+
 
     this.setState({
       currentItem: e.target.value.toString()
 
   }, () => {
-      // now that we have specific cpt code, query the dataframe, and pass cpt_Graph_Data to draw chart
-      const currentItem = this.state.currentItem;
-      const currentVar = this.state.currentSelection;
-      console.log("currentItem "+ currentItem.toString());
-      // console.log("currentVariable "+ this.state.currentSelection.toString());
-      // eg filter row[some cpt code 33999] = 33999
 
-      var filtered = this.props.df.where(row => row[currentVar] === currentItem);
-
-      if( this.state.filteredData ){
-        filtered = this.state.filteredData.where(row => row[currentVar] === currentItem);
+      if (this.props.dfList.length === 2)
+      {
+        this.processMultipleDf();
       }
+      else
+      {
 
+        // now that we have specific cpt code, query the dataframe, and pass cpt_Graph_Data to draw chart
+        const currentItem = this.state.currentItem;
+        const currentVar = this.state.currentSelection;
 
-      this.setState({  cpt_Graph_Data: filtered  },
-        () =>{
-          // this.props.setCurrentStep('generateGraph');
-        });
+        console.log("currentItem "+ currentItem.toString());
+        // console.log("currentVariable "+ this.state.currentSelection.toString());
+        // eg filter row[some cpt code 33999] = 33999
 
-      if (currentVar === "BILLING_PROV_NM" ){
-        // pass all the rows have the current provider name
-        this.setState({  provider_Graph_Data: filtered  },
-        () =>{
-          // this.props.setCurrentStep('generateGraph');
-        })
+        var filtered = this.props.df.where(row => row[currentVar] === currentItem);
+        if( this.state.filteredData ){
+          filtered = this.state.filteredData.where(row => row[currentVar] === currentItem);
+        }
 
-
-
-      }
-      if (currentVar === "PROC_NAME" ){
-        // pass all the rows have the current procedure name
-        this.setState({  procedure_Graph_Data: filtered  },
+        this.setState({  cpt_Graph_Data: filtered  },
           () =>{
-            this.props.setCurrentStep('generateGraph');
-          })
+            // this.props.setCurrentStep('generateGraph');
+          });
 
+        if (currentVar === "BILLING_PROV_NM" ){
+          // pass all the rows have the current provider name
+          this.setState({  provider_Graph_Data: filtered  },
+            () =>{
+              // this.props.setCurrentStep('generateGraph');
+            })
+
+        }
+        if (currentVar === "PROC_NAME" ){
+          // pass all the rows have the current procedure name
+          this.setState({  procedure_Graph_Data: filtered  },
+            () =>{
+              // this.props.setCurrentStep('generateGraph');
+            })
+        }
       }
-      // this.props.setCurrentStep('generateGraph');
+
 
 
 
@@ -477,7 +537,18 @@ class ListOfVariables extends React.Component {
     }, () => {
         // this.state.varChosen = this.state.currentSelection;
         this.setState({ wholeData: this.props.df });
-        this.renderListOfVariables(this.state.currentSelection);
+
+
+        // if (this.props.dfList){
+        //   // now store wholeData in an array and push every df
+        //   this.props.dfList.forEach((element) => {
+        //     this.setState(prevState => ({
+        //       wholeData: [...prevState.wholeData, element]
+        //     }));
+        //   });
+        // }
+
+      this.renderListOfVariables(this.state.currentSelection);
         this.state.editing = false;
       });
     });
@@ -634,14 +705,14 @@ class ListOfVariables extends React.Component {
 
 
 
-      else if (varChosen === "PROC_NAME" && this.state.sortBy) {
+      else if (varChosen === "PROC_NAME" && this.state.sortBy && this.state.sortBy !='procedure_sort_by_name') {
         var text = "";
+        // if (this.state.sortBy === 'procedure_sort_by_name') {  text = "Name "  }
         if (this.state.sortBy === 'procedure_sort_by_payments_variance') {  text = "Payment Standard deviation: "  }
         if (this.state.sortBy === 'procedure_sort_by_charges_variance') {  text = "Charges Standard deviation: "  }
         if (this.state.sortBy === 'procedure_sort_by_adjustments') {  text = "Average adjustment "  }
-
         if (this.state.sortBy === 'procedure_sort_by_avg_bill') {  text = "Average Bill: "  }
-        if (this.state.sortBy === 'procedure_sort_by_num_procedures') {  text = "procedures: "  }
+        if (this.state.sortBy === 'procedure_sort_by_num_procedures') {  text = "Number of procedures: "  }
 
         // console.log(theDf.toString());
         const variable_array = theDf.toRows();
@@ -687,16 +758,139 @@ class ListOfVariables extends React.Component {
 
 
 
+  /*
+  * code for multiple df
+  *
+  * */
+
+
+  processMultipleDf(){
+
+    console.log("** processing multiple df, len " + this.props.dfList.length);
+
+    if (this.props.dfList.length < 2){
+      console.log("!!!len smaller thant two, return");
+
+      return;
+    }
+    else {
+
+      // filter every df in list first
+      const filter = () =>
+        {
+          var i;
+            for (i = 0; i<this.props.dfList.length;i++){
+              // this actually means checked
+              if (this.state.filterZeroChecked) {
+                const theDf= this.state.KeepProcedureIsOneChecked ? this.state.filteredData[i] : this.props.dfList[i];
+                const filtered = theDf.where(row => row.Charges != "0");
+                // console.log("filtered "+filtered);
+                var joined = this.state.filteredData_List.concat(filtered);
+                this.setState({ filteredData_List: joined });
+                // console.log(this.state.filteredData_List[i]);
+              }
+              else {
+                this.setState({filteredData_List : this.props.dfList } , () => {});
+              }
+              // console.log(element);
+          }
+        };
+
+
+
+        const selectItem = () =>
+        {
+          if (this.state.varChosen && this.state.currentItem)
+          {
+            const currentItem = this.state.currentItem;
+            const currentVar = this.state.currentSelection;
+            // console.log("**select items for multiple df");
+            // console.log(currentVar);
+            // console.log(currentItem);
+
+
+            // might be a good way to do setState in array
+            let finalList = [];
+            // console.log("**constructing list of data with element "+filtered)
+            if (currentVar === 'CPT_CODE')
+            {
+              for (let i = 0; i < this.props.dfList.length; i++)
+              {
+                const filtered = this.props.dfList[i].where(row => row[currentVar] === currentItem);
+              }
+              this.setState({cpt_Graph_Data_List: finalList}, () => {
+              });
+            }
+
+
+            if (currentVar === 'BILLING_PROV_NM')
+            {
+              for (let i = 0; i < this.props.dfList.length; i++)
+              {
+                const filtered = this.props.dfList[i].where(row => row[currentVar] === currentItem);
+                finalList.push(filtered);
+              }
+              this.setState({provider_Graph_Data_List: finalList}, () => {
+              });
+            }
+
+            if (currentVar === 'PROC_NAME')
+            {
+              for (let i = 0; i < this.props.dfList.length;i++)
+              {
+                const filtered = this.props.dfList[i].where(row => row[currentVar] === currentItem);
+                finalList.push(filtered);
+              }
+              this.setState({procedure_Graph_Data_List: finalList}, () => {
+                // console.log("**len inside loop " + this.state.procedure_Graph_Data_List.length)
+              });
+
+
+            }
+            console.log("**constructing list of data of len " + this.state.procedure_Graph_Data_List.length)
+
+          }
+
+
+        };
+
+
+
+        filter();
+        selectItem();
+
+
+
+
+
+    }
+
+
+  }
+
+
+
+
+  renderTestButton(){
+    return(
+      <div>
+        {/*<button className="list-group-item list-group-item-action" value="" onClick={()=>this.processMultipleDf()}>test</button>*/}
+      </div>
+    );
+  }
+
+
+
 
 
   render() {
-
-
+    // console.log("df" + this.props.dfList[0]);
+    // console.log("df2" + this.props.dfList[1]);
     if (!this.props.df || !this.props.uploadSuccess ) {
       return(
         <div>
+          {this.renderTestButton()}
           {/*<h4>Step 2. Start with a variable</h4>*/}
-          {/*<p>no content yet</p>*/}
         </div>
       );
     }
@@ -716,6 +910,8 @@ class ListOfVariables extends React.Component {
         return (
           <div>
             <div className="jumbotron">
+              {this.renderTestButton()}
+
               <h4>Step 2. Start with a variable</h4>
               {this.renderFilterDataOption()}
               <h5>browse by</h5>
@@ -734,7 +930,7 @@ class ListOfVariables extends React.Component {
       } else
         {
         return(
-          <ChartByCpt cpt_Graph_Data={this.state.cpt_Graph_Data}></ChartByCpt>
+          <ChartByCpt cpt_Graph_Data={this.state.cpt_Graph_Data} cpt_Graph_Data_List = {this.state.cpt_Graph_Data_List} files = {this.props.files}></ChartByCpt>
         );
       }
 
@@ -745,6 +941,8 @@ class ListOfVariables extends React.Component {
         return (
           <div>
             <div className="jumbotron">
+              {this.renderTestButton()}
+
               <h4>Step 2. Start with a variable</h4>
               {this.renderFilterDataOption()}
               <h5>browse by</h5>
@@ -781,7 +979,7 @@ class ListOfVariables extends React.Component {
         )
       } else{
           return(
-            <ChartByProvider wholeData={this.state.provider_Graph_Data}></ChartByProvider>
+            <ChartByProvider provider_Graph_Data={this.state.provider_Graph_Data} provider_Graph_Data_List = {this.state.provider_Graph_Data_List} files = {this.props.files}></ChartByProvider>
           );
         }
 
@@ -793,6 +991,8 @@ class ListOfVariables extends React.Component {
         return (
           <div>
             <div className="jumbotron">
+              {this.renderTestButton()}
+
               <h4>Step 2. Start with a variable</h4>
               {this.renderFilterDataOption()}
               <h5>browse by</h5>
@@ -813,6 +1013,7 @@ class ListOfVariables extends React.Component {
                   </div>
                   <select className="custom-select" id="inputGroupSelect01" onChange={(e) => this.sortByProcedure(e)}>
                     <option selected>Choose a way of sorting procedures</option>
+                    <option value="procedure_sort_by_name">by name</option>
                     <option value="procedure_sort_by_payments_variance">by payment standard deviation</option>
                     <option value="procedure_sort_by_charges_variance">by charges standard deviation</option>
                     <option value="procedure_sort_by_adjustments">by adjustments</option>
@@ -829,7 +1030,7 @@ class ListOfVariables extends React.Component {
       }
       else{
         return(
-          <ChartByProcedure procedure_Graph_Data = {this.state.procedure_Graph_Data}></ChartByProcedure>
+          <ChartByProcedure procedure_Graph_Data = {this.state.procedure_Graph_Data} procedure_Graph_Data_List = {this.state.procedure_Graph_Data_List} files = {this.props.files}></ChartByProcedure>
         );
       }
     }
