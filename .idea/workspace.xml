@@ -3,22 +3,7 @@
   <component name="ChangeListManager">
     <list default="true" id="7c67dac7-4af2-4d20-9cdf-c094623a4eb7" name="Default Changelist" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/week1/health-pricing/src/About/About.js" beforeDir="false" afterPath="$PROJECT_DIR$/week1/health-pricing/src/About/About.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/week1/health-pricing/src/App.js" beforeDir="false" afterPath="$PROJECT_DIR$/week1/health-pricing/src/App.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/week1/health-pricing/src/ChartByCpt/ChartByCpt.js" beforeDir="false" afterPath="$PROJECT_DIR$/week1/health-pricing/src/ChartByCpt/ChartByCpt.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/week1/health-pricing/src/ChartByProcedure/ChartByProcedure.css" beforeDir="false" afterPath="$PROJECT_DIR$/week1/health-pricing/src/ChartByProcedure/ChartByProcedure.css" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/week1/health-pricing/src/ChartByProcedure/ChartByProcedure.js" beforeDir="false" afterPath="$PROJECT_DIR$/week1/health-pricing/src/ChartByProcedure/ChartByProcedure.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/week1/health-pricing/src/ChartByProvider/ChartByProvider.css" beforeDir="false" afterPath="$PROJECT_DIR$/week1/health-pricing/src/ChartByProvider/ChartByProvider.css" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/week1/health-pricing/src/ChartByProvider/ChartByProvider.js" beforeDir="false" afterPath="$PROJECT_DIR$/week1/health-pricing/src/ChartByProvider/ChartByProvider.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/week1/health-pricing/src/DropZone/DropZone.css" beforeDir="false" afterPath="$PROJECT_DIR$/week1/health-pricing/src/DropZone/DropZone.css" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/week1/health-pricing/src/ListOfVariables/ListOfVariables.js" beforeDir="false" afterPath="$PROJECT_DIR$/week1/health-pricing/src/ListOfVariables/ListOfVariables.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/week1/health-pricing/src/TableComponent/TableComponent.css" beforeDir="false" afterPath="$PROJECT_DIR$/week1/health-pricing/src/TableComponent/TableComponent.css" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/week1/health-pricing/src/TableComponent/TableComponent.js" beforeDir="false" afterPath="$PROJECT_DIR$/week1/health-pricing/src/TableComponent/TableComponent.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/week1/health-pricing/src/TableComponentForProc/TableComponentForProc.js" beforeDir="false" afterPath="$PROJECT_DIR$/week1/health-pricing/src/TableComponentForProc/TableComponentForProc.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/week1/health-pricing/src/Upload/Upload.css" beforeDir="false" afterPath="$PROJECT_DIR$/week1/health-pricing/src/Upload/Upload.css" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/week1/health-pricing/src/Upload/Upload.js" beforeDir="false" afterPath="$PROJECT_DIR$/week1/health-pricing/src/Upload/Upload.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/week1/health-pricing/src/UploadFile/UploadFile.js" beforeDir="false" afterPath="$PROJECT_DIR$/week1/health-pricing/src/UploadFile/UploadFile.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/week1/health-pricing/src/WelcomePage/WelcomePage.js" beforeDir="false" afterPath="$PROJECT_DIR$/week1/health-pricing/src/WelcomePage/WelcomePage.js" afterDir="false" />
     </list>
     <ignored path="$PROJECT_DIR$/.tmp/" />
     <ignored path="$PROJECT_DIR$/temp/" />
@@ -33,15 +18,15 @@
     <session id="-2038111451">
       <usages-collector id="statistics.lifecycle.project">
         <counts>
-          <entry key="project.closed" value="4" />
+          <entry key="project.closed" value="5" />
           <entry key="project.open.time.18" value="1" />
           <entry key="project.open.time.2" value="1" />
           <entry key="project.open.time.20" value="1" />
           <entry key="project.open.time.24" value="1" />
-          <entry key="project.open.time.3" value="1" />
+          <entry key="project.open.time.3" value="2" />
           <entry key="project.open.time.44" value="1" />
           <entry key="project.open.time.8" value="2" />
-          <entry key="project.opened" value="8" />
+          <entry key="project.opened" value="9" />
         </counts>
       </usages-collector>
       <usages-collector id="statistics.file.extensions.open">
@@ -69,7 +54,7 @@
         <counts>
           <entry key="css" value="1894" />
           <entry key="html" value="26" />
-          <entry key="js" value="54396" />
+          <entry key="js" value="54415" />
           <entry key="json" value="11" />
           <entry key="py" value="34" />
         </counts>
@@ -79,7 +64,7 @@
           <entry key="CSS" value="1894" />
           <entry key="HTML" value="26" />
           <entry key="JSON" value="11" />
-          <entry key="JavaScript" value="54396" />
+          <entry key="JavaScript" value="54415" />
           <entry key="PLAIN_TEXT" value="34" />
         </counts>
       </usages-collector>
@@ -95,8 +80,8 @@
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/week1/health-pricing/src/ListOfVariables/ListOfVariables.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="2371">
-              <caret line="204" column="16" lean-forward="true" selection-start-line="204" selection-start-column="16" selection-end-line="204" selection-end-column="16" />
+            <state relative-caret-position="103">
+              <caret line="414" column="55" selection-start-line="414" selection-start-column="48" selection-end-line="414" selection-end-column="55" />
               <folding>
                 <element signature="n#!!doc" expanded="true" />
                 <element signature="e#274#300#0" expanded="true" />
@@ -111,8 +96,8 @@
       <file pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/week1/health-pricing/src/Upload/Upload.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="211">
-              <caret line="157" column="56" selection-start-line="157" selection-start-column="56" selection-end-line="157" selection-end-column="56" />
+            <state relative-caret-position="271">
+              <caret line="149" column="51" selection-start-line="149" selection-start-column="51" selection-end-line="149" selection-end-column="51" />
               <folding>
                 <element signature="n#!!doc" expanded="true" />
                 <element signature="e#234#260#0" expanded="true" />
@@ -133,7 +118,6 @@
   </component>
   <component name="FindInProjectRecents">
     <findStrings>
-      <find>dropZoe</find>
       <find>height</find>
       <find>charge</find>
       <find>contains</find>
@@ -163,6 +147,7 @@
       <find>col</find>
       <find>updateData</find>
       <find>updatae</find>
+      <find>HAVE</find>
     </findStrings>
   </component>
   <component name="Git.Settings">
@@ -300,9 +285,8 @@
       <path value="$PROJECT_DIR$/week1/health-pricing/package.json" />
     </packageJsonPaths>
   </component>
-  <component name="ProjectFrameBounds" extendedState="6">
-    <option name="x" value="1" />
-    <option name="y" value="40" />
+  <component name="ProjectFrameBounds">
+    <option name="y" value="23" />
     <option name="width" value="1440" />
     <option name="height" value="830" />
   </component>
@@ -311,6 +295,7 @@
       <foldersAlwaysOnTop value="true" />
     </navigator>
     <panes>
+      <pane id="Scope" />
       <pane id="ProjectPane">
         <subPane>
           <expand>
@@ -420,7 +405,6 @@
           <select />
         </subPane>
       </pane>
-      <pane id="Scope" />
     </panes>
   </component>
   <component name="PropertiesComponent">
@@ -485,12 +469,13 @@
       <workItem from="1564260145724" duration="582000" />
       <workItem from="1564408787013" duration="81182000" />
       <workItem from="1565102019189" duration="35144000" />
-      <workItem from="1565628969975" duration="27782000" />
+      <workItem from="1565628969975" duration="28091000" />
+      <workItem from="1565825418367" duration="774000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="507098000" />
+    <option name="totallyTimeSpent" value="508181000" />
   </component>
   <component name="TodoView">
     <todo-panel id="selected-file">
@@ -502,10 +487,10 @@
     </todo-panel>
   </component>
   <component name="ToolWindowManager">
-    <frame x="2" y="23" width="1440" height="830" extended-state="6" />
+    <frame x="0" y="23" width="1440" height="830" extended-state="6" />
     <editor active="true" />
     <layout>
-      <window_info active="true" content_ui="combo" id="Project" order="0" visible="true" weight="0.21564482" />
+      <window_info content_ui="combo" id="Project" order="0" visible="true" weight="0.21564482" />
       <window_info id="Structure" order="1" side_tool="true" weight="0.25" />
       <window_info id="Favorites" order="2" side_tool="true" />
       <window_info anchor="bottom" id="Message" order="0" />
@@ -517,7 +502,7 @@
       <window_info anchor="bottom" id="TODO" order="6" weight="0.32890856" />
       <window_info anchor="bottom" id="Docker" order="7" show_stripe_button="false" />
       <window_info anchor="bottom" id="Version Control" order="8" show_stripe_button="false" />
-      <window_info anchor="bottom" id="Terminal" order="9" sideWeight="0.49964765" visible="true" weight="0.32307693" />
+      <window_info active="true" anchor="bottom" id="Terminal" order="9" sideWeight="0.49964765" visible="true" weight="0.32307693" />
       <window_info anchor="bottom" id="Event Log" order="10" sideWeight="0.5003524" side_tool="true" weight="0.23156342" />
       <window_info anchor="bottom" id="TypeScript" order="11" />
       <window_info anchor="right" id="Commander" internal_type="SLIDING" order="0" type="SLIDING" weight="0.4" />
@@ -865,8 +850,8 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/week1/health-pricing/src/ListOfVariables/ListOfVariables.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="2371">
-          <caret line="204" column="16" lean-forward="true" selection-start-line="204" selection-start-column="16" selection-end-line="204" selection-end-column="16" />
+        <state relative-caret-position="103">
+          <caret line="414" column="55" selection-start-line="414" selection-start-column="48" selection-end-line="414" selection-end-column="55" />
           <folding>
             <element signature="n#!!doc" expanded="true" />
             <element signature="e#274#300#0" expanded="true" />
@@ -879,8 +864,8 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/week1/health-pricing/src/Upload/Upload.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="211">
-          <caret line="157" column="56" selection-start-line="157" selection-start-column="56" selection-end-line="157" selection-end-column="56" />
+        <state relative-caret-position="271">
+          <caret line="149" column="51" selection-start-line="149" selection-start-column="51" selection-end-line="149" selection-end-column="51" />
           <folding>
             <element signature="n#!!doc" expanded="true" />
             <element signature="e#234#260#0" expanded="true" />

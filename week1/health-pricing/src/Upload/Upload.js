@@ -138,6 +138,23 @@ class Upload extends React.Component {
     // console.log("reading columns" + cols);
 
 
+    // console.log("reading columns" + cols);
+
+    for (let i = 0; i < cols.length; i++) {
+      if (cols[i] === "Provider"){  cols[i] = "BILLING_PROV_NM";  }
+      if (cols[i] === "Charge"){  cols[i] = "Charges";  }
+      if (cols[i] === "Pays"){  cols[i] = "Payments";  }
+      if (cols[i] === "Adjs"){  cols[i] = "Adjustments";  }
+      if (cols[i] === "CPT codes"){  cols[i] = "CPT_CODE";  }
+      if (cols[i] === "Description"){  cols[i] = "PROC_NAME";  }
+      if (cols[i] === "Units"){  cols[i] = "PROCQTY";  }
+
+      if (cols[i] === "Medicare Code"){  cols[i] = "CPT_CODE";  }
+
+    }
+
+
+
 
     this.setState({theData: data});
     this.setState({columns: cols});
@@ -148,17 +165,6 @@ class Upload extends React.Component {
     this.setState({df: rightDf});
 
 
-    // console.log("reading columns" + cols);
-
-    for (let i = 0; i < cols.length; i++) {
-      if (cols[i] === "Provider"){  cols[i] = "BILLING_PROV_NM";  }
-      if (cols[i] === "Charge"){  cols[i] = "Charges";  }
-      if (cols[i] === "Pays"){  cols[i] = "Payments";  }
-      if (cols[i] === "Adjs"){  cols[i] = "Adjustments";  }
-      if (cols[i] === "CPT codes"){  cols[i] = "CPT_CODE";  }
-      if (cols[i] === "CPT codes"){  cols[i] = "CPT_CODE";  }
-
-    }
 
 
 
