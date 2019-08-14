@@ -138,6 +138,10 @@ class Upload extends React.Component {
     // console.log("reading columns" + cols);
 
 
+
+    // conventions :
+    // ["FIN_DIV_DISPLAY_NAME","FIN_SUBDIV_DISPLAY_NAME","ORIG_SERVICE_DATE","BILLING_PROV_NM","CPT_CODE","PROC_CODE","PROC_NAME","PROCQTY","Charges","Payments","Adjustments","Balance","ORIG_FIN_CLASS","CURRENT_FIN_CLASS"]
+
     // console.log("reading columns" + cols);
 
     for (let i = 0; i < cols.length; i++) {
