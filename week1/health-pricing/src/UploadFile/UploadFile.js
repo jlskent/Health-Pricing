@@ -28,6 +28,7 @@ class UploadFile extends React.Component {
     return (
       <div className = "container">
         <Upload></Upload>
+
       </div>
     );
   }

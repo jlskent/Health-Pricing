@@ -8,6 +8,7 @@ import * as d3 from "d3";
 import * as dataForge from 'data-forge';
 import { Boxplot, computeBoxplotStats } from 'react-boxplot';
 import d3Tip from 'd3-tip';
+import Dropdown from "react-bootstrap/Dropdown";
 
 
 
@@ -17,9 +18,13 @@ class ChartByCpt extends React.Component {
     super(props);
     this.state = {
       dataSorted : [],
+      files: [],
+      data_list:[]
     };
 
-    this.createBarChart = this.createBarChart.bind(this)
+    this.createBarChart = this.createBarChart.bind(this);
+    this.switchTime = this.switchTime.bind(this);
+
   }
 
   componentDidMount() {
@@ -27,9 +32,32 @@ class ChartByCpt extends React.Component {
 
   async componentWillReceiveProps(nextProps) {
     if ( this.props !== nextProps && nextProps.cpt_Graph_Data) {
-      console.log("receiving props"+ nextProps);
+      console.log("receiving single"+ nextProps);
+      this.setState({receivedData: true});
       this.createBarChart(nextProps.cpt_Graph_Data);
     }
+    if ( this.props !== nextProps && nextProps.cpt_Graph_Data_List ) {
+      if (this.state.data_list.length === 3) return;
+      if ( nextProps.cpt_Graph_Data_List.length===2  ){
+        this.setState({receivedData: true});
+
+        console.log("receiving list  "+ nextProps.cpt_Graph_Data_List.length);
+        this.setState({files: nextProps.files});
+
+        this.setState({data_list: nextProps.cpt_Graph_Data_List} , () =>{
+          this.createBarChart(this.state.data_list[0]);
+        });
+        console.log("Chart Component receiving  "+nextProps.cpt_Graph_Data_List.length);
+      }
+    }
+
+
+
+
+
+
+
+
   }
 
   componentDidUpdate() {
@@ -164,14 +192,15 @@ class ChartByCpt extends React.Component {
       .attr("class", "gridLine");
 
 
+    graph.append("g").attr("transform", "translate(0," + dimensions.height +")").attr("id", "drawing").call(x_axis);
 
 
-    anchor.append("g").attr("transform", "translate(0," + dimensions.height +")").attr("id", "drawing").call(x_axis);
+    // anchor.append("g").attr("transform", "translate(0," + dimensions.height +")").attr("id", "drawing").call(x_axis);
 
 
 
     // draw the center line
-    anchor.select("g#drawing").append("line")
+    graph.select("g#drawing").append("line")
       .attr("x1", xScale(stats.whiskerLow))
       .attr("x2", xScale(stats.whiskerHigh))
       .attr("y1", -dimensions.half)
@@ -180,7 +209,7 @@ class ChartByCpt extends React.Component {
 
     // draw the rect
     // xScale(stats.quartile3) is the x coordinate of q3
-    anchor.select("g#drawing").append("rect")
+    graph.select("g#drawing").append("rect")
       .attr("x", xScale(stats.quartile1))
       .attr("y", - dimensions.half- dimensions.halfBarWidth)
       .attr("width", xScale(stats.quartile3)- xScale(stats.quartile1))
@@ -191,14 +220,14 @@ class ChartByCpt extends React.Component {
 
 
     // draw text for q1 q3
-    anchor.select("g#drawing").append("text")
+    graph.select("g#drawing").append("text")
       .attr("x", xScale(stats.quartile1))
       .attr("y", -dimensions.half - dimensions.tailLength)
       .attr("dy", "-5em")
       .attr("font-size", "15px")
       .attr("fill", "black")
       .text((d) => "q1");
-    anchor.select("g#drawing").append("text")
+    graph.select("g#drawing").append("text")
       .attr("x", xScale(stats.quartile3))
       .attr("y", -dimensions.half - dimensions.tailLength)
       .attr("dy", "-5em")
@@ -208,7 +237,7 @@ class ChartByCpt extends React.Component {
 
 
     // draw the low line
-    anchor.select("g#drawing").append("line").attr('class', 'lines')
+    graph.select("g#drawing").append("line").attr('class', 'lines')
       .attr("x1", xScale(stats.whiskerLow))
       .attr("x2", xScale(stats.whiskerLow))
       .attr("y1", -dimensions.half - dimensions.tailLength)
@@ -216,7 +245,7 @@ class ChartByCpt extends React.Component {
       .attr("stroke", "black");
 
     // append text
-    anchor.select("g#drawing").append("text")
+    graph.select("g#drawing").append("text")
       .attr("x", xScale(stats.whiskerLow))
       .attr("y", -dimensions.half - dimensions.tailLength)
       .attr("dy", "-5em")
@@ -225,14 +254,14 @@ class ChartByCpt extends React.Component {
       .text((d) => "low");
 
     // draw the high line
-    anchor.select("g#drawing").append("line").attr('class', 'lines')
+    graph.select("g#drawing").append("line").attr('class', 'lines')
       .attr("x1", xScale(stats.whiskerHigh))
       .attr("x2", xScale(stats.whiskerHigh))
       .attr("y1", -dimensions.half - dimensions.tailLength)
       .attr("y2", -dimensions.half + dimensions.tailLength)
       .attr("stroke", "black");
 
-    anchor.select("g#drawing").append("text")
+    graph.select("g#drawing").append("text")
       .attr("x", xScale(stats.whiskerHigh))
       .attr("y", -dimensions.half - dimensions.tailLength)
       .attr("dy", "-5em")
@@ -243,7 +272,7 @@ class ChartByCpt extends React.Component {
 
 
     // draw the median line
-    anchor.select("g#drawing").append("line").attr('class', 'medianLine')
+    graph.select("g#drawing").append("line").attr('class', 'medianLine')
       .attr("x1", xScale(stats.quartile2))
       .attr("x2", xScale(stats.quartile2))
       .attr("y1", -dimensions.half - dimensions.halfBarWidth)
@@ -255,14 +284,14 @@ class ChartByCpt extends React.Component {
 
 
     //draw iteractive lines
-    anchor.select("g#drawing").selectAll("dashLines")
-        .style("display", "none")
-        .append("line").attr('class', 'dashLine')
-        .attr("x1", "x1")
-        .attr("x2", "x2")
-        .attr("y1", -dimensions.height)
-        .attr("y2", 0)
-        .attr("stroke", "black");
+    // anchor.select("g#drawing").selectAll("dashLines")
+    //     .style("display", "none")
+    //     .append("line").attr('class', 'dashLine')
+    //     .attr("x1", "x1")
+    //     .attr("x2", "x2")
+    //     .attr("y1", -dimensions.height)
+    //     .attr("y2", 0)
+    //     .attr("stroke", "black");
 
 
 
@@ -272,7 +301,7 @@ class ChartByCpt extends React.Component {
       // lines.style("display",null);
       return "value:" + d.toString();
     });
-    anchor.call(tip);
+    graph.call(tip);
 
     // draw interactive line
 
@@ -282,7 +311,7 @@ class ChartByCpt extends React.Component {
     // }
 
     // draw some dots
-    anchor.select("g#drawing").selectAll("dot")
+    graph.select("g#drawing").selectAll("dot")
       .data(data_sorted)
       .enter()
       .append("circle")
@@ -326,12 +355,76 @@ class ChartByCpt extends React.Component {
 
 
 
+
+  switchTime(e){
+    const index = parseInt(e.target.value);
+    console.log("switching time" + e.target.value);
+    console.log("data" + this.state.data_list[index]);
+    if (this.state.data_list.length > 1) {
+      console.log("len >1" );
+
+      this.setState({data: this.state.data_list[index]});
+      this.createBarChart(this.state.data_list[index]);
+    }
+  }
+
+
+
+
+  renderTimeList(){
+    // console.log(this.props.files);
+    // console.log(this.props.files.length);
+
+    if (this.state.files && this.state.files.length >1){
+      var index = 0;
+      const fileList = this.state.files.map(x => {
+
+        const name = x.name;
+        // console.log("the name "+name);
+
+        return (
+          <Dropdown.Item as="button" value = {index++} onClick={(e) => this.switchTime(e)}>{name}</Dropdown.Item>
+        );
+      });
+
+
+      return(
+        <div  class="dropdown d-inline-block">
+          <Dropdown>
+            <Dropdown.Toggle variant="success" id="dropdown-basic">Compare Over Time</Dropdown.Toggle>
+            <Dropdown.Menu>
+              {fileList}
+            </Dropdown.Menu>
+          </Dropdown>
+        </div>
+      );
+    } else{
+      return (
+        <div className="dropdown d-inline-block">
+          <Dropdown>
+            <Dropdown.Toggle variant="success" id="dropdown-basic" disabled>Compare Over Time</Dropdown.Toggle>
+            <Dropdown.Menu>
+            </Dropdown.Menu>
+          </Dropdown>
+        </div>
+      );
+    }
+  }
+
+
+
+
   render() {
   // console.log(this.props.cpt_Graph_Data);
+
     return(
-      <div className="scaling-svg-container">
-        <svg ref={ node => this.node = node } width="100%" height={600} class="svg-content" ></svg>
+      <div>
+        {this.renderTimeList()}
+        <div className="scaling-svg-container">
+          <svg ref={ node => this.node = node } width="100%" height={600} class="svg-content" ></svg>
+        </div>
       </div>
+
     );
   }
 

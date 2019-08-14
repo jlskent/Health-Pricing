@@ -45,12 +45,13 @@ class ChartByProcedure extends React.Component {
   async componentWillReceiveProps(nextProps) {
     // console.log("receiving data inside chart component");
 
-    if ( this.props !== nextProps && nextProps.procedure_Graph_Data ) {
+    if ( this.props !== nextProps && nextProps.procedure_Graph_Data && !nextProps.procedure_Graph_Data.length < 2) {
       // console.log("receiving props in chartByProvider "+ nextProps.procedure_Graph_Data);
-      this.createBarChart(nextProps.procedure_Graph_Data);
-      this.setState({data: nextProps.procedure_Graph_Data});
+      this.setState({data: nextProps.procedure_Graph_Data}, () => {
+        this.setState({receivedData: true});
+        this.createBarChart(this.state.data);
+      });
 
-      this.setState({receivedData: true});
 
       const procedureCodeReceived = nextProps.procedure_Graph_Data.toArray()[0].PROC_CODE;
       const procedureNameReceived = nextProps.procedure_Graph_Data.toArray()[0].PROC_NAME;
@@ -63,19 +64,21 @@ class ChartByProcedure extends React.Component {
 
 
     if ( this.props !== nextProps && nextProps.procedure_Graph_Data_List ) {
-      if (this.state.data_list.length === 3) return;
+      // if (this.state.data_list.length === 3) return;
       if ( nextProps.procedure_Graph_Data_List.length===2  ){
         this.setState({receivedData: true});
-
-        console.log("receiving props in procedure "+ nextProps.procedure_Graph_Data_List.length);
         this.setState({files: nextProps.files});
 
+        console.log("receiving props in procedure "+ nextProps.procedure_Graph_Data_List.length);
+
         this.setState({data_list: nextProps.procedure_Graph_Data_List} , () =>{
-          this.createBarChart(this.state.data_list[0]);
           const procedureCodeReceived = this.state.data_list[0].toArray()[0].PROC_CODE;
           const procedureNameReceived = this.state.data_list[0].toArray()[0].PROC_NAME;
+          console.log("received name" + procedureCodeReceived)
+
           this.setState({currentProcedureName: procedureNameReceived});
           this.setState({currentProcedureCode: procedureCodeReceived});
+          this.createBarChart(this.state.data_list[0]);
 
         });
         console.log("Chart Component receiving  "+nextProps.procedure_Graph_Data_List.length);
@@ -83,8 +86,9 @@ class ChartByProcedure extends React.Component {
     }
   }
 
+
   componentDidUpdate() {
-    this.renderTitle()
+    // this.renderTitle()
   }
 
 
@@ -108,12 +112,14 @@ class ChartByProcedure extends React.Component {
   switchTime(e){
     const index = parseInt(e.target.value);
     console.log("switching time" + e.target.value);
-    console.log("data" + this.state.data_list[index]);
     if (this.state.data_list.length > 1) {
       console.log("len >1" );
-
-      this.setState({data: this.state.data_list[index]});
-      this.createBarChart(this.state.data_list[index]);
+      this.setState({data: this.state.data_list[index]}, () => {
+        console.log("data" + this.state.data);
+        this.setState({currentProcedureName: this.state.data.toArray()[0].PROC_NAME});
+        this.setState({currentProcedureCode: this.state.data.toArray()[0].PROC_CODE});
+        this.createBarChart(this.state.data);
+      });
     }
   }
 
@@ -126,6 +132,8 @@ class ChartByProcedure extends React.Component {
     // console.log(this.props.files.length);
 
     if (this.state.files && this.state.files.length >1){
+      // const reverse = this.state.files.reverse();
+      // this.setState({files: reverse})
       var index = 0;
       const fileList = this.state.files.map(x => {
 
@@ -228,7 +236,7 @@ class ChartByProcedure extends React.Component {
 
 
     // group by provider
-    const theGroups = theData.groupBy(row => row.BILLING_PROV_NM).after(0);
+    const theGroups = theData.groupBy(row => row.BILLING_PROV_NM);
       // .select(group => {
       //   return {
       //     BILLING_PROV_NM: group.first().BILLING_PROV_NM,
@@ -255,18 +263,21 @@ class ChartByProcedure extends React.Component {
     for (const group of theGroups) {
       const chargeSeries = group.getSeries("Charges").parseInts();
       const paymentSeries = group.getSeries("Payments").parseInts();
+      // console.log("hihihihi" + chargeSeries);
 
       const positiveChargeSeries = chargeSeries.after(0).select(value => Math.abs(value));
       const positivePaymentSeries = paymentSeries.after(0).select(value => Math.abs(value));
+      if (positiveChargeSeries.toArray().length <1) {return;}
+        const chargeStats = computeBoxplotStats(positiveChargeSeries.toArray());
+        const paymentStats = computeBoxplotStats(positivePaymentSeries.toArray());
+        var maxOfTwo = Math.max(chargeStats.whiskerHigh, paymentStats.whiskerHigh);
+        max = Math.max(maxOfTwo, max);
+        // console.log("hihihihi" + maxOfTwo);
+        var minOfTwo = Math.min(chargeStats.whiskerLow, paymentStats.whiskerLow);
+        min = Math.min(minOfTwo, min);
+      // }
 
 
-      const chargeStats = computeBoxplotStats(positiveChargeSeries.toArray());
-      const paymentStats = computeBoxplotStats(positivePaymentSeries.toArray());
-      var maxOfTwo = Math.max(chargeStats.whiskerHigh, paymentStats.whiskerHigh);
-      max = Math.max(maxOfTwo, max);
-      // console.log("hihihihi" + maxOfTwo);
-      var minOfTwo = Math.min(chargeStats.whiskerLow, paymentStats.whiskerLow);
-      min = Math.min(minOfTwo, min);
     }
 
 
@@ -466,7 +477,6 @@ class ChartByProcedure extends React.Component {
       const paymentSeries = group.getSeries("Payments").parseInts();
 
 
-      const positive = paymentSeries.forEach(value => {Math.abs(value);});
 
       // console.log("a group payment  "+ paymentSeries);
 
@@ -474,6 +484,10 @@ class ChartByProcedure extends React.Component {
       const positiveChargeSeries = chargeSeries.after(0).select(value => Math.abs(value));
       const positivePaymentSeries = paymentSeries.after(0).select(value => Math.abs(value));
 
+
+      // if (positiveChargeSeries.toArray().length < 1) {
+      //   return;
+      // }
 
       const chargeStats = computeBoxplotStats(positiveChargeSeries.toArray());
       const paymentStats = computeBoxplotStats(positivePaymentSeries.toArray());
@@ -487,6 +501,27 @@ class ChartByProcedure extends React.Component {
       const update = (group) => {
         this.updateTableData(group);
       };
+
+
+      // init tip for bar
+      const tipForBar = d3Tip().attr('class', 'd3-tip-for-bar').html(function(d) {
+        const chargeSeries = group.getSeries("Charges").parseInts();
+        const paymentSeries = group.getSeries("Payments").parseInts();
+        const positiveChargeSeries = chargeSeries.after(0).select(value => Math.abs(value));
+        const positivePaymentSeries = paymentSeries.after(0).select(value => Math.abs(value));
+        const chargeStats = computeBoxplotStats(positiveChargeSeries.toArray());
+        const paymentStats = computeBoxplotStats(positivePaymentSeries.toArray());
+        let res = "";
+        for (var p in paymentStats) {
+          if (paymentStats.hasOwnProperty(p)) {
+            res += p + ": " + paymentStats[p] + "<br/>";
+          }
+        }
+        return "Payments" + "<br/>" + res + "Click to pin"  ;
+      });
+      anchor.call(tipForBar);
+
+
 
 
       const drawBackGroundRect = (xPosition, max, min, group) => {
@@ -523,7 +558,12 @@ class ChartByProcedure extends React.Component {
             // console.log(d);
             this.updateTableData(d);
             update(d);
-          } );
+          })
+          .on('mouseover' , tipForBar.show)
+          .on('mouseout', tipForBar.hide);
+
+
+        ;
       };
 
 
@@ -535,18 +575,6 @@ class ChartByProcedure extends React.Component {
       drawOneBoxPlot(paymentStats, xPosition + xScale.bandwidth()/2, max, min, colors.red);
 
 
-      graph.selectAll(".back").data(chargeStats)
-        .enter().append("rect")
-        .attr("class", "back")
-        .attr("x", function(d) { return xPosition; })
-        .attr("width", xScale.bandwidth())
-        .attr("y", function(d) { return 0; })
-        .attr("height", function(d) { return yScale(max); })
-        .style("fill", "grey");
-
-      // anchor.addEventListener('scroll', function(evt) {
-        // label.node().setAttribute('y', 10 + this.scrollTop);
-      // }, false)
     }
 
 
@@ -557,26 +585,6 @@ class ChartByProcedure extends React.Component {
 
 
     function drawOneBoxPlot(stats, xPosition, max, min ,color) {
-      // console.log("stats per group " + JSON.stringify(stats));
-
-      // console.log(color);
-      // const anchor = d3.select(node);
-
-      // const yScale = d3.scaleLinear()
-      //   .range([dimensions.height, 0])
-      //   .domain([min< 0 ? min*1.2 :min*1.2, max*1.2]);
-      //
-      // const y_axis = d3.axisLeft()
-      //   .scale(yScale);
-
-      // console.log("max " + max + "min" + min);
-      // console.log("stats per group " + JSON.stringify(stats));
-      // console.log("yScale q3 " + yScale(stats.quartile3) + ",q1 " + yScale(stats.quartile1));
-      // console.log("yScale high " + yScale(stats.whiskerHigh) + ",low " + yScale(stats.whiskerLow));
-      // console.log("yScale 0 " + yScale(0) + ",q1 " + yScale(stats.quartile1));
-
-
-
       //draw center line
       graph.append("line")
         .attr("x1", xPosition + xScale.bandwidth() / 4)
@@ -658,18 +666,9 @@ class ChartByProcedure extends React.Component {
           }
         });
 
-
-
     }
     //end of draw
 
-
-    // function resetZoom(e){
-    //   // console.log(this.node);
-    //   var node = this.node;
-    //   // const currentTransform = d3.zoomIdentity;
-    //   // d3.select(node).attr("transform", currentTransform)
-    // }
 
 
 

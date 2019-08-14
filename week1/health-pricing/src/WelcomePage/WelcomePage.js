@@ -11,9 +11,8 @@ class WelcomePage extends React.Component {
 
     this.state = {
       header: "Data Explorer",
-      text: "A stub is an article deemed too short to provide encyclopedic coverage of a subject. " +
-        "This page provides a general guide for dealing with stubs: the first section, Basic information, " +
-        "contains information that is recommended for most users; and the second section, Creating stub types, " ,
+      text: "     Looking for a tool that is a flexible integration to health-billing system ? The webservice is developed to manipulate, visualize data that is related to health billing for research purposes.\n" +
+        "            It helps you to create domain-specific GUI on client side to manipulate data like Python pandas and more.  " ,
       data: []
     }
 

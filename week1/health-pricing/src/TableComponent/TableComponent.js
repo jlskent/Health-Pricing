@@ -127,6 +127,7 @@ class TableComponent extends React.Component {
         // var paymentsAverage = paymentsSeries.sum() / paymentsSeries.count();
         // console.log("avg "+chargesAverage);
 
+        var procedureQuantitySeries = df.getSeries('PROCQTY').parseInts();
 
 
         return (
@@ -147,9 +148,12 @@ class TableComponent extends React.Component {
               condensed
               id = "table"
             />
-            <p>charges Average: {chargesSeries.average()} </p>
-            <p>payments Average: {paymentsSeries.average()} </p>
-            <p>number of rows: {paymentsSeries.count()} </p>
+              <p><small>charges Average: {chargesSeries.average()}</small></p>
+              <p><small>payments Average: {paymentsSeries.average()}</small></p>
+              <p><small>charges std: {chargesSeries.std()}</small></p>
+              <p><small>payments std: {paymentsSeries.std()}</small></p>
+              <p><small>number of procedures: {procedureQuantitySeries.sum()}</small></p>
+
 
           </div>
 

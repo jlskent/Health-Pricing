@@ -11,11 +11,21 @@ import Papa from 'papaparse';
 import 'data-forge-fs';
 import * as dataForge from 'data-forge';
 import Navigation from '../Navigation/Navigation'
+import About from '../About/About';
 
+import {Nav,Navbar} from 'react-bootstrap';
 
 import ChartByProcedure from '../ChartByProcedure/ChartByProcedure';
+// import Nav from "react-bootstrap/es/Nav";
+// import {Link} from "react-router-dom";
+// import {Nav} from "react-bootstrap";
 
-
+import {
+  Link,
+  BrowserRouter as Router,
+  Route,
+  Switch
+} from "react-router-dom";
 
 // parent component of since we receive data here
 
@@ -124,6 +134,11 @@ class Upload extends React.Component {
 
     var data = result.data;
     var cols = result.data[0];
+    console.log("Provider" + JSON.stringify(cols));
+    // console.log("reading columns" + cols);
+
+
+
     this.setState({theData: data});
     this.setState({columns: cols});
     var rightDf = new dataForge.DataFrame({
@@ -132,9 +147,37 @@ class Upload extends React.Component {
     });
     this.setState({df: rightDf});
 
-    //if we have multiple file, we push it to dfList
+
+    // console.log("reading columns" + cols);
+
+    for (let i = 0; i < cols.length; i++) {
+      if (cols[i] === "Provider"){  cols[i] = "BILLING_PROV_NM";  }
+      if (cols[i] === "Charge"){  cols[i] = "Charges";  }
+      if (cols[i] === "Pays"){  cols[i] = "Payments";  }
+      if (cols[i] === "Adjs"){  cols[i] = "Adjustments";  }
+      if (cols[i] === "CPT codes"){  cols[i] = "CPT_CODE";  }
+      if (cols[i] === "CPT codes"){  cols[i] = "CPT_CODE";  }
+
+    }
+
+
+
+
+    console.log("res" + JSON.stringify(cols));
+
+    //if we have multiple file, we push it to dfList(same effect)
+
+    // this.setState(prevState => ({
+    //   dfList: [...prevState.dfList, rightDf]
+    // }));
+
+    // this.setState(prevState => ({
+    //   dfList: prevState.dfList.concat(rightDf)
+    // }));
+
+    //to the beginning
     this.setState(prevState => ({
-      dfList: [...prevState.dfList, rightDf]
+      dfList: [rightDf, ...prevState.dfList]
     }));
 
 
@@ -192,6 +235,10 @@ class Upload extends React.Component {
             <div>
               <DropZone onFilesAdded = {this.onFilesAdded} disabled= {this.state.uploading || this.state.uploadSuccess} />
             </div>
+
+
+
+
             {/*show a list of files*/}
             <div>
               {this.state.files.map(file => {
@@ -203,12 +250,27 @@ class Upload extends React.Component {
                 );
               })}
             </div>
+
+
             <div id = "button">{this.renderActions()}</div>
 
           </div>
-          {/*<div>*/}
-            {/*<ListOfVariables {...this.state}  setCurrentStep={this.setCurrentStep}/>*/}
-          {/*</div>*/}
+          <div className="pin-bottom">
+            <div>
+              <i className="small material-icons" >info_outline</i>
+              <p className= "small_text">To upload, click on the area and select file or simply drop file. To compare different data sets, upload multiple files.</p>
+            </div>
+            <div>
+              <i className="small material-icons">info_outline</i>
+              <p className= "small_text">After the file names show up, click continue button to proceed to next step.</p>
+            </div>
+            <div>
+              <i className="small material-icons">info_outline</i>
+              <p className= "small_text">Before start, please read disclaimer of data security in About page</p>
+
+
+            </div>
+          </div>
 
         </div>
       );
@@ -226,8 +288,8 @@ class Upload extends React.Component {
       return (
         <div>
           {this.renderNavigationSteps()}
-          <ListOfVariables {...this.state}  setCurrentStep={this.setCurrentStep} dfToUse = {this.state.dfList[0]}/>
-          {/*<ListOfVariables {...this.state}  setCurrentStep={this.setCurrentStep} dfToUse = {this.state.dfList[1]}/>*/}
+          {/*<ListOfVariables {...this.state}  setCurrentStep={this.setCurrentStep} dfToUse = {this.state.dfList[0]}/>*/}
+          <ListOfVariables {...this.state}  setCurrentStep={this.setCurrentStep} />
 
         </div>
       );
@@ -263,7 +325,7 @@ class Upload extends React.Component {
       );
     } else {
       return (
-        <button className="btn btn-outline-primary btn-lg btn-block" disabled={this.state.files.length < 0 || this.state.uploading} onClick={this.uploadFiles}>Upload</button>
+        <button className="btn btn-outline-primary btn-lg btn-block" disabled={this.state.files.length < 0 || this.state.uploading} onClick={this.uploadFiles}>Continue</button>
       );
     }
   }
@@ -271,6 +333,8 @@ class Upload extends React.Component {
 
 
   onFilesAdded(files) {
+    // if (this.state.files.length === 3) return;
+
     this.setState(prevState => ({
       files: prevState.files.concat(files)
     }));

@@ -588,7 +588,7 @@ class ListOfVariables extends React.Component {
     return (
       <div id = "theDiv">
         {/*<i className="material-icons">filter_1</i>*/}
-        <h5 className="inline_h5">Filter data</h5>
+        <h5 className="inline_h5">a. Filter data</h5>
         <div>
         <ButtonGroup toggle className = "btn-group">
           <ToggleButton type="checkbox" variant="light" size = "sm" className = "toggle_btn" checked={this.state.filterZeroChecked} onChange ={(e) => this.handleCheckboxFilterZero(e)}>
@@ -616,8 +616,14 @@ class ListOfVariables extends React.Component {
     //console.log(Object.keys(this.state.selections));
     const list = Object.keys(this.state.selections).map(x => {
       // console.log(x);
+      var text = "";
+      if (x === 'CPT_CODE') {  text = 'Cpt Code'};
+      if (x === 'BILLING_PROV_NM') {  text = 'Provider Name'};
+      if (x === 'PROC_NAME') {  text = 'Procedure Name'};
+
+
       return(
-          <button className="list-group-item list-group-item-action" value={x} onClick={(e)=>this.selectVariable(e)}>{x}</button>
+          <button className="list-group-item list-group-item-action" value={x} onClick={(e)=>this.selectVariable(e)}>{text}</button>
       );
     });
     return (
@@ -775,89 +781,126 @@ class ListOfVariables extends React.Component {
     }
     else {
 
+
+      // called after filter
+      const selectItem = () =>
+      {
+        if (this.state.varChosen && this.state.currentItem)
+        {
+          const currentItem = this.state.currentItem;
+          const currentVar = this.state.currentSelection;
+          // console.log("**select items for multiple df");
+          // console.log(currentVar);
+          // console.log(currentItem);
+
+          let ifFilterUseFilterElseUseDf = this.state.filteredData_List? this.state.filteredData_List : this.props.dfList;
+
+
+          // might be a good way to do setState in array, can not do for (set sestate)
+          let finalList = [];
+          // console.log("**constructing list of data with element "+filtered)
+          if (currentVar === 'CPT_CODE')
+          {
+            for (let i = 0; i < this.props.dfList.length; i++)
+            {
+              const contains = this.props.dfList[i].any(row => row[currentVar] === currentItem);
+              let filtered = ifFilterUseFilterElseUseDf[i].where(row => row[currentVar] === currentItem);
+              if (!contains) {  filtered = this.props.dfList[i];  }
+              finalList.push(filtered);
+            }
+            this.setState({cpt_Graph_Data_List: finalList}, () => {
+            });
+          }
+
+
+          if (currentVar === 'BILLING_PROV_NM')
+          {
+            for (let i = 0; i < this.props.dfList.length; i++)
+            {
+              const contains = this.props.dfList[i].any(row => row[currentVar] === currentItem);
+              let filtered = ifFilterUseFilterElseUseDf[i].where(row => row[currentVar] === currentItem);
+              if (!contains) {  filtered = this.props.dfList[i];  }
+              finalList.push(filtered);
+            }
+
+
+            this.setState({provider_Graph_Data_List: finalList}, () => {
+            });
+          }
+
+          if (currentVar === 'PROC_NAME')
+          {
+            for (let i = 0; i < this.props.dfList.length;i++)
+            {
+              const contains = this.props.dfList[i].any(row => row[currentVar] === currentItem);
+              let filtered = ifFilterUseFilterElseUseDf[i].where(row => row[currentVar] === currentItem);
+              if (!contains) {  filtered = this.props.dfList[i]  }
+              finalList.push(filtered);
+
+            }
+            this.setState({procedure_Graph_Data_List: finalList}, () => {
+              // console.log("**len inside loop " + this.state.procedure_Graph_Data_List.length)
+            });
+
+
+          }
+          // console.log("**constructing list of data of len " + this.state.procedure_Graph_Data_List.length)
+          console.log("**constructing list of data of len " + this.state.provider_Graph_Data_List.length)
+
+        }
+
+
+      };
+
+
+
+
       // filter every df in list first
       const filter = () =>
         {
-          var i;
-            for (i = 0; i<this.props.dfList.length;i++){
-              // this actually means checked
-              if (this.state.filterZeroChecked) {
-                const theDf= this.state.KeepProcedureIsOneChecked ? this.state.filteredData[i] : this.props.dfList[i];
-                const filtered = theDf.where(row => row.Charges != "0");
-                // console.log("filtered "+filtered);
-                var joined = this.state.filteredData_List.concat(filtered);
-                this.setState({ filteredData_List: joined });
-                // console.log(this.state.filteredData_List[i]);
-              }
-              else {
-                this.setState({filteredData_List : this.props.dfList } , () => {});
-              }
-              // console.log(element);
+
+          let finalList = [];
+          if (this.state.filterZeroChecked) {
+            console.log("filter 0 checked");
+            for (let i = 0; i < this.props.dfList.length; i++){
+              const theDf= this.props.dfList[i];
+              let filtered = theDf.where(row => row.Charges != "0");
+              finalList.push(filtered);
+            }
           }
+          else{
+            finalList = this.props.dfList;
+            // for (let i = 0; i < this.props.dfList.length; i++){
+            //   const theDf= this.props.dfList[i];
+            //   finalList[i] = theDf;
+            // }
+          }
+
+          if (this.state.KeepProcedureIsOneChecked) {
+            finalList.forEach(function(item, i) {  finalList[i] = finalList[i].where(row => row.PROCQTY === '1'); });
+
+            // for (let i = 0; i < this.props.dfList.length; i++){
+            //   const theDf= this.state.filterZeroChecked ? finalList[i] : this.props.dfList[i];
+            //   let filtered = theDf.where(row => row.PROCQTY === '1');
+            // }
+          }
+
+          console.log("finallist "+ finalList[0]);
+          console.log("finallist "+ finalList[1]);
+
+          this.setState({ filteredData_List: finalList } , () =>{
+            selectItem();
+          });
+
         };
 
 
 
-        const selectItem = () =>
-        {
-          if (this.state.varChosen && this.state.currentItem)
-          {
-            const currentItem = this.state.currentItem;
-            const currentVar = this.state.currentSelection;
-            // console.log("**select items for multiple df");
-            // console.log(currentVar);
-            // console.log(currentItem);
-
-
-            // might be a good way to do setState in array
-            let finalList = [];
-            // console.log("**constructing list of data with element "+filtered)
-            if (currentVar === 'CPT_CODE')
-            {
-              for (let i = 0; i < this.props.dfList.length; i++)
-              {
-                const filtered = this.props.dfList[i].where(row => row[currentVar] === currentItem);
-              }
-              this.setState({cpt_Graph_Data_List: finalList}, () => {
-              });
-            }
-
-
-            if (currentVar === 'BILLING_PROV_NM')
-            {
-              for (let i = 0; i < this.props.dfList.length; i++)
-              {
-                const filtered = this.props.dfList[i].where(row => row[currentVar] === currentItem);
-                finalList.push(filtered);
-              }
-              this.setState({provider_Graph_Data_List: finalList}, () => {
-              });
-            }
-
-            if (currentVar === 'PROC_NAME')
-            {
-              for (let i = 0; i < this.props.dfList.length;i++)
-              {
-                const filtered = this.props.dfList[i].where(row => row[currentVar] === currentItem);
-                finalList.push(filtered);
-              }
-              this.setState({procedure_Graph_Data_List: finalList}, () => {
-                // console.log("**len inside loop " + this.state.procedure_Graph_Data_List.length)
-              });
-
-
-            }
-            console.log("**constructing list of data of len " + this.state.procedure_Graph_Data_List.length)
-
-          }
-
-
-        };
 
 
 
         filter();
-        selectItem();
+        // selectItem();
 
 
 
@@ -914,7 +957,7 @@ class ListOfVariables extends React.Component {
 
               <h4>Step 2. Start with a variable</h4>
               {this.renderFilterDataOption()}
-              <h5>browse by</h5>
+              <h5>b. Browse by</h5>
               <div className="row">
                 <div className="col-4">
                   <div>{this.renderSelection()}</div>
@@ -945,7 +988,7 @@ class ListOfVariables extends React.Component {
 
               <h4>Step 2. Start with a variable</h4>
               {this.renderFilterDataOption()}
-              <h5>browse by</h5>
+              <h5>b. Browse by</h5>
 
               <div className="row">
 
@@ -958,7 +1001,7 @@ class ListOfVariables extends React.Component {
               </div>
               <div>
                 {/*<i className="material-icons">sort</i>*/}
-                <h5 className="inline_h5">Sort By</h5>
+                <h5 className="inline_h5">c. Sort By</h5>
                 <div className="input-group mb-3">
                   <div className="input-group-prepend">
                     <label className="input-group-text" htmlFor="inputGroupSelect01">Sorting Options</label>
@@ -995,7 +1038,7 @@ class ListOfVariables extends React.Component {
 
               <h4>Step 2. Start with a variable</h4>
               {this.renderFilterDataOption()}
-              <h5>browse by</h5>
+              <h5>b. Browse by</h5>
               <div className="row">
                 <div className="col-4">
                   <div>{this.renderSelection()}</div>
@@ -1005,7 +1048,7 @@ class ListOfVariables extends React.Component {
                 </div>
               </div>
               <div>
-                <h5>Sort By</h5>
+                <h5>c. Sort By</h5>
 
                 <div className="input-group mb-3">
                   <div className="input-group-prepend">

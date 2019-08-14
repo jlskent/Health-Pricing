@@ -19,15 +19,13 @@ class ChartByProvider extends React.Component {
     constructor(props) {
     super(props);
     this.state = {
-      // dataSorted : [],
       tableData : [],
       data: null,
+      data_list:[],
+      files: [],
       receivedData: false
 
     };
-
-    // this.xScale = scaleBand();
-    // this.yScale = scaleLinear();
     this.createBarChart = this.createBarChart.bind(this);
     this.updateTableData = this.updateTableData.bind(this);
     this.resetZoom = this.resetZoom.bind(this);
@@ -38,8 +36,10 @@ class ChartByProvider extends React.Component {
   componentDidMount() {
   }
 
+
+
   async componentWillReceiveProps(nextProps) {
-    if ( this.props !== nextProps && nextProps.provider_Graph_Data) {
+    if ( this.props !== nextProps && nextProps.provider_Graph_Data && nextProps.provider_Graph_Data_List.length < 2) {
       // console.log("receiving props in chartByProvider "+ nextProps);
       this.createBarChart(nextProps.provider_Graph_Data);
       this.setState({data: nextProps.provider_Graph_Data});
@@ -47,6 +47,25 @@ class ChartByProvider extends React.Component {
       const providerNameReceived = nextProps.provider_Graph_Data.toArray()[0].BILLING_PROV_NM;
       this.setState({currentProvider: providerNameReceived});
     }
+
+    if ( this.props !== nextProps && nextProps.provider_Graph_Data_List ) {
+      // if (this.state.data_list.length === 3) return;
+      if ( nextProps.provider_Graph_Data_List.length===2  ){
+        this.setState({receivedData: true});
+        console.log("receiving props in procedure "+ nextProps.provider_Graph_Data_List.length);
+        this.setState({files: nextProps.files});
+        this.setState({data_list: nextProps.provider_Graph_Data_List} , () =>{
+          this.createBarChart(this.state.data_list[0]);
+          const providerNameReceived = this.state.data_list[0].toArray()[0].BILLING_PROV_NM;
+          this.setState({currentProvider: providerNameReceived});
+        });
+        console.log("Chart Component receiving  "+nextProps.provider_Graph_Data_List.length);
+      }
+    }
+
+
+
+
   }
 
   componentDidUpdate() {
@@ -118,6 +137,8 @@ class ChartByProvider extends React.Component {
     d3.select("#value-fill").remove();
     d3.select("#legend").remove();
 
+
+    console.log("receiving data in fun" + data)
     // variables
     var theData = new dataForge.DataFrame(data);
     // console.log("create bar chart provider\n "+ theData);
@@ -142,7 +163,7 @@ class ChartByProvider extends React.Component {
 
 
     // group by provider
-    const theGroups = theData.groupBy(row => row.CPT_CODE).after(0);
+    const theGroups = theData.groupBy(row => row.CPT_CODE);
       // .select(group => {
       //   return {
       //     BILLING_PROV_NM: group.first().BILLING_PROV_NM,
@@ -153,7 +174,7 @@ class ChartByProvider extends React.Component {
 
 
 
-    // console.log("group by cpt\n "+ theGroups);
+    console.log("group by cpt\n "+ theGroups);
 
 
     const listOfGroupNames = theGroups
@@ -174,6 +195,7 @@ class ChartByProvider extends React.Component {
       const positiveChargeSeries = chargeSeries.after(0).select(value => Math.abs(value));
       const positivePaymentSeries = paymentSeries.after(0).select(value => Math.abs(value));
 
+      if (positiveChargeSeries.toArray().length <1) {return;}
 
 
       const chargeStats = computeBoxplotStats(positiveChargeSeries.toArray());
@@ -194,39 +216,6 @@ class ChartByProvider extends React.Component {
     const yScale = d3.scaleLinear().nice()
       .range([dimensions.height, 0])
       .domain([min< 0 ? min*1.2 :min*1.2, max*1.2]);
-      // .domain([0, max*1.2]);
-
-    // const x_axis = d3.axisBottom()
-    //   .scale(xScale);
-    // anchor.append("g").attr("transform", "translate(0," + dimensions.height +")").call(x_axis);
-
-    // anchor.append("g").attr("transform", "translate(0," + dimensions.height +")").style("font", "2px times").call(x_axis);
-    // anchor.append("g").attr("transform", "translate(40, 0)").style("font", "4px times").call(y_axis);
-
-    // const y_axis = d3.axisLeft()
-    //   .scale(yScale);
-    // anchor.select("g").attr("transform", "translate(40, 0)");
-    // anchor.append("p");
-
-
-    //
-    // var currentTransform = null;
-    // var zoom = d3.zoom()
-    //   .scaleExtent([0.5, 5])
-    //   .translateExtent([
-    //     [-dimensions.width * 2, -dimensions.height * 2],
-    //     [dimensions.width * 2, dimensions.height * 2]
-    //   ])
-    //   .on("zoom", zoomed);
-    //
-    // function zoomed() {
-    //   currentTransform = d3.event.transform;
-    //   anchor.attr("transform", currentTransform);
-    //   gX.call(xAxis.scale(d3.event.transform.rescaleX(xScale)));
-    //   gY.call(yAxis.scale(d3.event.transform.rescaleY(yScale)));
-    //   slider.property("value", d3.event.scale);
-    // }
-
 
 
     graph.append("rect")
@@ -449,7 +438,28 @@ class ChartByProvider extends React.Component {
         this.updateTableData(group);
       };
 
-      // update(group);
+
+
+      const tipForBar = d3Tip().attr('class', 'd3-tip-for-bar').html(function(d) {
+        const chargeSeries = group.getSeries("Charges").parseInts();
+        const paymentSeries = group.getSeries("Payments").parseInts();
+        const positiveChargeSeries = chargeSeries.after(0).select(value => Math.abs(value));
+        const positivePaymentSeries = paymentSeries.after(0).select(value => Math.abs(value));
+        const chargeStats = computeBoxplotStats(positiveChargeSeries.toArray());
+        const paymentStats = computeBoxplotStats(positivePaymentSeries.toArray());
+        let res = "";
+        for (var p in paymentStats) {
+          if (paymentStats.hasOwnProperty(p)) {
+            res += p + ": " + paymentStats[p] + "<br/>";
+          }
+        }
+        return "Payments" + "<br/>" + res + "Click to pin"  ;
+      });
+      anchor.call(tipForBar);
+
+
+
+
 
       const drawBackGroundRect = (xPosition, max, min, group) => {
         var data = [];
@@ -486,7 +496,9 @@ class ChartByProvider extends React.Component {
             this.updateTableData(d);
 
             update(d);
-          } );
+          } )
+          .on('mouseover' , tipForBar.show)
+          .on('mouseout', tipForBar.hide);
       };
 
       const xPosition = xScale(groupName);
@@ -699,6 +711,19 @@ class ChartByProvider extends React.Component {
     }
   }
 
+
+  switchTime(e){
+    const index = parseInt(e.target.value);
+    console.log("switching time" + e.target.value);
+    console.log("data" + this.state.data_list[index]);
+    if (this.state.data_list.length > 1) {
+      console.log("len >1" );
+      this.setState({data: this.state.data_list[index]}, () => {
+        this.setState({currentProvider: this.state.data.toArray()[0].BILLING_PROV_NM});
+        this.createBarChart(this.state.data);
+      });
+    }
+  }
 
 
   render() {
