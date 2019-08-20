@@ -167,7 +167,7 @@
 
 
 .d3-tip-for-bar {
-    transform: translate(0px, 200px);
+    transform: translate(0px, 0px);
     /*line-height: 1;*/
     padding: 6px;
     background: rgba(0, 0, 0, 0.8);

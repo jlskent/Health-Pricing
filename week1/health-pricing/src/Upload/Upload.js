@@ -152,6 +152,7 @@ class Upload extends React.Component {
       if (cols[i] === "CPT codes"){  cols[i] = "CPT_CODE";  }
       if (cols[i] === "Description"){  cols[i] = "PROC_NAME";  }
       if (cols[i] === "Units"){  cols[i] = "PROCQTY";  }
+      if (cols[i] === "WU Code"){  cols[i] = "PROC_CODE";  }
 
       if (cols[i] === "Medicare Code"){  cols[i] = "CPT_CODE";  }
 
